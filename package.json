@@ -1,0 +1,80 @@
+{
+  "name": "WebDAW",
+  "main": "./src/app/index.html",
+  "description": "Digital Audio Workstation",
+  "homepage": "https://webdaw.jrjmedia.net",
+  "version": "0.0.1",
+  "releaseName": "Why does half of the js break!",
+  "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features",
+  "keywords": [
+    "WebDAW",
+    "Digital Audio Workstation"
+  ],
+  "scripts": {
+    "postinstall": "node_modules/.bin/bower install && grunt setup",
+    "postupdate": "node_modules/.bin/bower update && grunt setup",
+    "test": "grunt --verbose"
+  },
+  "window": {
+    "title": "WebDAW",
+    "toolbar": false,
+    "frame": false,
+    "transparent": true,
+    "icon": "./src/app/resources/img/icon.png",
+    "single-instance": true,
+    "width": 1600,
+    "height": 800,
+    "position": "center",
+    "min_width": 1600,
+    "min_height": 800,
+    "max_width": 1920,
+    "max_height": 1080
+  },
+  "webkit": {
+    "plugin": true
+  },
+  "dependencies": {
+    "URIjs": "^1.13.2",
+    "adm-zip": "https://github.com/xeoncore/adm-zip/archive/78f820330c776bca72aad3f22d127b357f57a609.tar.gz",
+    "airplay-js": "git+https://git.popcorntime.io/stash/scm/mir/node-airplay2.git",
+    "async": "0.9.0",
+    "i18n": "0.5.0",
+    "iconv-lite": "^0.4.3",
+    "jschardet": "1.1.0",
+    "json-rpc2": "^0.7.0",
+    "memoizee": "^0.3.7",
+    "mime": "1.2.11",
+    "mkdirp": "*",
+    "moment": "^2.6.0",
+    "my-local-ip": "*",
+    "nedb": "^0.10.11",
+    "node-webkit-fdialogs": "latest",
+    "notifyjs": "1.2.3",
+    "q": "^2.0.2",
+    "readdirp": "*",
+    "request": "^2.36.0",
+    "rimraf": "2.2.8",
+    "semver": "^2.3.1",
+    "sha1": "1.1.0",
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {
+    "bower": "1.3.6",
+    "grunt": "0.4.5",
+    "grunt-bower-clean": "^0.2.1",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-compress": "^0.9.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-stylus": "0.16.0",
+    "grunt-contrib-watch": "0.6.x",
+    "grunt-exec": "0.4.x",
+    "grunt-githooks": "^0.3.1",
+    "grunt-jsbeautifier": "*",
+    "grunt-node-webkit-builder": "0.1.x",
+    "grunt-shell": "^1.1.1",
+    "load-grunt-tasks": "0.4.0",
+    "nw-gyp": "^0.12.2",
+    "stylus": "0.46.2",
+    "tmp": "0.0.23"
+  }
+}

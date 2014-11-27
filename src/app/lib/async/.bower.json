@@ -1,0 +1,14 @@
+{
+  "name": "nedb",
+  "homepage": "https://github.com/louischatriot/nedb",
+  "_release": "8de7d0c39d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8de7d0c39d9ba8f2e365e23907894da89d5e0281"
+  },
+  "_source": "git://github.com/louischatriot/nedb.git",
+  "_target": "*",
+  "_originalSource": "nedb",
+  "_direct": true
+}

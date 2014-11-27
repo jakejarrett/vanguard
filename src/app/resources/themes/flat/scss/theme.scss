@@ -1,0 +1,163 @@
+/*
+// Theme: Flat Theme
+// Author: Jake Jarrett
+// Website: https://github.com/jakehh/WebDAW
+*/
+
+$navbarColor: #FFFFFF;
+$navbarHColr: #FFFFFF;
+$navbarHBGColr: #0095bf;
+$navbarBG: #00acdd;
+$navbarBorder: #009bc7;
+$sidebarBG: #FFFFFF;
+$sidebarBorder: #e6f0f5;
+
+// Font
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700);
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700);
+@import url(http://fonts.googleapis.com/css?family=Lato:100,400,300,700);
+
+// Body, Load font
+
+body, html {
+  font-family: 'Raleway', 'sans-serif';
+}
+
+
+//  Bootstrap Navigation
+
+.navbar-inverse .navbar-nav > {
+  li > a {
+    color: $navbarColor;
+    display: inline-block;
+    vertical-align: middle;
+    &:hover, &:focus {
+      color: $navbarHColr;
+    }
+  }
+  .open > a {
+    color: $navbarHColr;
+    background: $navbarBG;
+    &:hover, &:focus {
+      color: $navbarHColr;
+      background: $navbarBG;
+    }
+  }
+}
+
+.dropdown-menu li > a {
+  &:hover, &:focus {
+    color: $navbarHColr;
+    background-color: $navbarBG;
+  }
+}
+
+.dropdown-menu {
+    border-radius: 0;
+}
+
+.dropdown-submenu:hover > a {
+  color: $navbarHColr;
+  background-color: $navbarBG;
+}
+
+.navbar-inverse {
+  background: $navbarBG;
+  border-bottom: 1px solid;
+  border-color: $navbarBorder;
+    .fa {
+        color: $navbarColor;
+    }
+}
+
+// Left Sidebar
+
+.sidebar {
+  background-color: $sidebarBG;
+  border-right: 1px solid $sidebarBorder;
+}
+
+// Right Sidebar (Channels etc)
+
+.rightsidebar {
+  background-color: #dedede;
+  border-left: 1px solid #a8a8a8;
+}
+
+// Instruments Button
+
+.instrumentsbutton {
+  border-bottom: 1px solid #a8a8a8;
+}
+
+// Landing page "No projects open"
+
+.new-content {
+  background-color: #ffffff;
+}
+
+// Effects
+
+#effectSortable {
+  li {
+    background-color: #E0E0E0;
+    border: 1px solid #000000;
+  }
+}
+
+// Tracks/Channels
+
+.track {
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+}
+
+// Add Track/Channel
+
+.addTrack {
+  border: 1px solid #e3e3e3;
+  background-color: #f5f5f5;
+}
+
+// Track/Channel Box
+
+.trackBox {
+  height: 82px;
+  position: relative;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+// Timeline
+
+.timeline {
+  height: 40px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+}
+
+// Titlebar
+
+.titlebar {
+  color: $navbarColor;
+  font-family: 'Open Sans', 'sans-serif';
+}
+
+// Right Sidebar
+
+.rightsidebar {
+  background-color: $sidebarBG;
+  border-left: 1px solid $sidebarBorder;
+}
+
+// Make modals Square
+
+.modal-content {
+  border-radius: 0px;
+}

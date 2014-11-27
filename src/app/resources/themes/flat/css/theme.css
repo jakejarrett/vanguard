@@ -1,0 +1,276 @@
+/*
+// Theme: Flat Theme
+// Author: Jake Jarrett
+// Website: https://github.com/jakehh/WebDAW
+*/
+@import url(../fonts/OpenSans/opensans.css);
+body, html {
+    font-family: 'Open Sans', 'sans-serif';
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #FFFFFF;
+    display: inline-block;
+    vertical-align: middle;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #FFFFFF;
+}
+.navbar-default .navbar-nav > .open > a {
+    color: #FFFFFF;
+    background: #5fafe4;
+}
+.navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #FFFFFF;
+    background: #5fafe4;
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus {
+    color: #FFFFFF;
+    background-color: #5fafe4;
+}
+
+.dropdown-menu {
+    border-radius: 0;
+}
+
+.dropdown-submenu:hover > a {
+    color: #FFFFFF;
+    background-color: #5fafe4;
+}
+
+.navbar-default {
+    background: #5fafe4;
+    border-bottom: 1px solid;
+    border-color: #6eb4e5;
+}
+.navbar-default .fa {
+    color: #FFFFFF;
+}
+
+.sidebar {
+    background-color: #FFFFFF;
+    border-right: 1px solid #e6f0f5;
+    z-index: 5;
+    margin-right: -3px;
+}
+
+.rightsidebar {
+    background-color: #dedede;
+    border-left: 1px solid #a8a8a8;
+    z-index: 5 !important;
+    overflow: hidden; 
+}
+
+.track {
+    z-index: 1 !important;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    width: 2560px;
+    max-width: none;
+}
+
+.timeline_pull {
+    width: 68%;
+    max-width: 68%;
+}
+
+#timeline {
+    width: 68%;
+    max-width: 68%;
+    z-index: 1;
+}
+
+.instrumentsbutton {
+    border-bottom: 1px solid #a8a8a8;
+}
+
+.new-content {
+    background-color: #ffffff;
+}
+
+#effectSortable li {
+    background-color: #E0E0E0;
+    border: 1px solid #000000;
+}
+
+.addTrack {
+    border: 1px solid #e3e3e3;
+    background-color: #f5f5f5;
+}
+
+.trackBox {
+    height: 82px;
+    position: relative;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.timeline {
+    height: 40px;
+    margin-bottom: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+}
+
+.titlebar {
+    color: #FFFFFF;
+}
+
+.rightsidebar {
+    background-color: #FFFFFF;
+    border-left: 1px solid #e6f0f5;
+}
+
+.modal-content {
+    border-radius: 0px;
+}
+
+.addTrack {
+    border-left: 1px solid #e6f0f5;
+    background-color: #ffffff;
+}
+
+.plusButton {
+    color: #cccccc;
+}
+
+.plusButton:hover {
+    transition: color .5s;
+    color: #5fafe4;
+    -webkit-animation: spin .25s 0 linear;
+}
+
+@-webkit-keyframes spin {
+	0%    {-webkit-transform: rotate(0deg);}
+	100%  {-webkit-transform: rotate(-90deg);}	
+}
+
+
+.trackBox {
+    height: 90px;
+    position: relative;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e6f0f5;
+    padding-right: 0px;
+}
+
+.timeline {
+    height: 40px;
+    margin-bottom: 10px;
+    background-color: #e5e5e5;
+    border: 1px solid #c5c5c5;
+    border-radius: 10px;
+}
+
+#left ul.nav li.parent a, #left ul.nav li.parent a {
+    margin-bottom: -1px;
+}
+
+#left ul.nav ul.children {
+    margin-top: -1px;
+    padding: 10px 3px 10px 0px; 
+    background-color: #ffffff;
+    border-top: 1px solid #dbdbdb;
+    margin-bottom: -2px;
+}
+
+
+.form-control, .bpm-input {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #5fafe4;
+    color: #999999;
+}
+
+
+
+@media screen and (min-width: 900px) {
+    .navbar-form .input-group > .form-control {
+        margin-right: 50px !important;
+    }
+}
+
+.fa.pull-right {
+    padding-top: 4px;
+}
+
+/* Scrollbar Fix */
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    background-color: #95a5a6;
+    border-radius: 0px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background-color: #7f8c8d;
+}
+
+::-webkit-scrollbar-track:inactive {
+    display: none;   
+}
+
+/* Fix for the fact that on 1080p the col-md-10 just cuts off */
+
+@media screen and (min-width: 1080px) {
+    .col-md-10 {
+        width: 85%;
+    }
+}
+
+@media screen and (width: 1600px) {
+    .col-md-10 {
+        width: 82%;
+    }
+}
+
+.bpm-push {
+    padding-left: 28px;
+}
+
+/* Titlebar */
+
+.titlebar {
+  line-height: 18px !important;
+  padding-top: 14px;
+  position: absolute;
+  float: center !important;
+  left: 50%;
+}
+
+.project {
+  margin-top: -5px;
+  font-size: 10px;
+  line-height: 20px;
+}
+
+/* Container */
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  padding-bottom: -60px;
+  height: 100%;
+}
+
+/* timeline fix */
+
+.timeline_pull {
+  padding-top: 5px;
+  position: fixed;
+  bottom: 0;
+  z-index: 2;
+  background-color: #ffffff;
+  margin-left: -15px;
+  padding-left: 15px;
+}
