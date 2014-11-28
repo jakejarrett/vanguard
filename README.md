@@ -1,8 +1,8 @@
-# [WebDAW](#)
+# [Vanguard](#)
 
-Allow any computer user to watch movies easily streaming from torrents, without any particular knowledge.
+Create music on Your Computer with HTML/JS!
 
-![WebDAW](http://i.imgur.com/pmTBOhP.png)
+![Vanguard](http://i.imgur.com/pmTBOhP.png)
 
 Visit the project's website at <http://jrjmedia.net>.
 
