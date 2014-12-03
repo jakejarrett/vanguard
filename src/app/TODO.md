@@ -1,57 +1,44 @@
 TODO
 ====
 
-What to finish off before starting work on implementing instruments & functionality
-
-
+#### What to begin work on before 0.1 release.
 
 #### UI
 
-* UI Needs to finalised (Sidebar for Instruments, Effects, Library & Sidebar for Channels)
+* ~~UI Needs to finalised (Sidebar for Instruments, Effects, Library & Sidebar for Channels)~~
 * Needs panel that comes up only when you select Channel/Instrument
-* Need to finish off Headerbar with all icons & then prepare them for functionality
+* ~~Need to finish off Headerbar with all icons & then prepare them for functionality~~
 * Themes (Default, Flat & more) & allow custom themes
-* Settings (And a bunch of other things, maybe controlling Instruments could have a Modal?) Popup
+* Settings Modal/Page
+* Timeline - Design & Implement new timeline to replace current timeline
+* Use native confirm/alert dialogs
+* Change theme depending on OS (Yosemite for OSX etc)
 
 #### JS / Performance
 
-* Minimize JS, only do what is 100% necessary, anything else that isn't part of the core will be moved into plugins / opt-in
-* Need to improve performance (Slow even when initializing)
-* Only load things when called? (EG/ don't need all the instruments loaded if you're not using any yet)
-* Improve how themes change (If local, doesn't matter as much, but can be demanding on resources if changing constantly for multiple users)
+* Minimize JS
+* Allow disabling of certain plugins
 * Add Looping to main.js & UI
 
-#### New "Core JS"
+#### vanguard.js / Core JS
 
-* Begin restructuring JS for Modular design
-* Create new channels via predefined JSON file (EG. User changes settings, it can be changed 
+* ~~Begin restructuring JS for Modular design (note- all code has been moved to /lib/ to keep it simple)~~
+* ~~Create new Project via Predefined JS Array~~
+* Begin writing core DAW functionality in vanguard.js (Will be done before a full release)
 
 #### Backend
 
-* Begin implementing Full Backend (Most likely use PHP & MySQL to start with)
-* Begin Planning how a user system could integrate with WebDAW (Cloud Support?)
+* Implement cloud support (Google Drive, Dropbox etc?) for saving files if the user chooses to.
 
 #### Themes
 
 * ~~Restructure CSS~~
 * Plan to support Instrument Theming too
 * Create Flat Theme, Light & Dark Themes.
-* Re-write SCSS for code to allow users to make their own style in SCSS or CSS (Maybe add LESS later)
-
-What to do before a BETA is released?
-===
-
-#### Code
-
-* Prepare code for packaging in CEF to test as a Desktop Application
-* Minimize outside frameworks (jQuery, Modernizr etc) to lower Resource
-* Have stable & Modular code.
-
-#### UI
-
-* Allow native windows for things that are handled via Modals in Bootstrap for Desktop Application (EG/ Closing could be an actual SAVE/CANCEL/DONT SAVE dialog)
-* The Theme engine should choose what theme defaults on first run for what OS (EG/ OS X could have default, Windows has Modern/Flat and Linux has GTK style theme)
+* Re-write SCSS for code to allow users to make their own style in SCSS or CSS
 
 #### Projects
-* Enable external saving & instruments (Could potentially bring this to the web version too, depending on how it is implemented)
-* Research other project types & try to convert things like Ardour, Non-Timeline, FLP etc
+
+* Ability to save instruments (JSON gzip?)
+* Optional write notes on clips/regions.
+* Write/Edit MIDI clips (Possibly export MIDI clips)
