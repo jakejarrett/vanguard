@@ -25,6 +25,7 @@ TODO
 * ~~Begin restructuring JS for Modular design (note- all code has been moved to /lib/ to keep it simple)~~
 * ~~Create new Project via Predefined JS Array~~
 * Begin writing core DAW functionality in vanguard.js (Will be done before a full release)
+* Split functionality so a new project calls newproject.js & Open project calls openproject.js (Easier to maintain)
 
 #### Backend
 
