@@ -1,13 +1,15 @@
 {
-  "name": "WebDAW",
+  "name": "Vanguard",
   "main": "./src/app/index.html",
   "description": "Digital Audio Workstation",
-  "homepage": "https://webdaw.jrjmedia.net",
+  "homepage": "https://github.com/jakehh/vanguard",
   "version": "0.0.1",
-  "releaseName": "Why does half of the js break!",
-  "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features",
+  "releaseName": "",
+  "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features --enable-transparent-visuals --disable-gpu",
   "keywords": [
+    "vanguard",
     "WebDAW",
+    "Music Production",
     "Digital Audio Workstation"
   ],
   "scripts": {
@@ -16,7 +18,7 @@
     "test": "grunt --verbose"
   },
   "window": {
-    "title": "WebDAW",
+    "title": "Vanguard",
     "toolbar": false,
     "frame": false,
     "transparent": true,
@@ -34,25 +36,22 @@
     "plugin": true
   },
   "dependencies": {
-    "URIjs": "^1.13.2",
-    "adm-zip": "https://github.com/xeoncore/adm-zip/archive/78f820330c776bca72aad3f22d127b357f57a609.tar.gz",
+    "adm-zip": "latest",
     "airplay-js": "git+https://git.popcorntime.io/stash/scm/mir/node-airplay2.git",
     "async": "0.9.0",
     "i18n": "0.5.0",
-    "iconv-lite": "^0.4.3",
     "jschardet": "1.1.0",
     "json-rpc2": "^0.7.0",
-    "memoizee": "^0.3.7",
     "mime": "1.2.11",
     "mkdirp": "*",
-    "moment": "^2.6.0",
     "my-local-ip": "*",
     "nedb": "^0.10.11",
+    "node-vst-host": "^0.0.3",
     "node-webkit-fdialogs": "latest",
     "notifyjs": "1.2.3",
     "q": "^2.0.2",
     "readdirp": "*",
-    "request": "^2.36.0",
+    "request": "^2.51.0",
     "rimraf": "2.2.8",
     "semver": "^2.3.1",
     "sha1": "1.1.0",

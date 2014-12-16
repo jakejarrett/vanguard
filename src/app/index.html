@@ -21,7 +21,7 @@
       <div id="holder"></div>
       <nav class="navbar navbar-default navbar-fixed-top" style="-webkit-app-region: drag" role="navigation">
           <!-- Collect the nav links, forms, and other content for toggling -->
-          
+
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav appbuttons close-project" style="-webkit-app-region: no-drag">
                 <li class="pull-left closebutton close-button" data-toggle="modal" data-target="#exit" draggable="false"></li>
@@ -29,7 +29,7 @@
                 <li class="fullscreen-button fullscreen-expand" style="-webkit-app-region: no-drag"></li>
             </ul>
             <!-- Always showing App Control Buttons (Close/Max/Min) -->
-            
+
             <ul class="nav navbar-nav landingnav" style="-webkit-app-region: no-drag" id="landingpage">
                 <li>
                     <a class="newproject" href="#" data-container="body" data-placement="bottom" data-content="New Project" data-trigger="hover" draggable="false">
@@ -50,37 +50,37 @@
             <!-- Center Navigation on Landing page (New Project, Open Project, Collaboration) -->
 
             <ul class="nav navbar-nav projectnav" style="-webkit-app-region: no-drag">
-                
+
                 <li>
                     <a id="playPause" href="#" draggable="false">
                       <i class="fa fa-play fa-3 icon-playpause"></i>
                     </a>
                 </li>
-                
+
                 <li>
                     <a id="stop" href="#" draggable="false">
                       <i class="fa fa-stop fa-3"></i>
                     </a>
                 </li>
-                
+
                 <li class="endofcontrols">
                     <a id="step-backward" href="#" draggable="false">
                       <i class="fa fa-step-backward fa-3"></i>
                     </a>
                 </li>
-                
+
                 <li>
                     <a id="undo-recent" href="#" draggable="false">
                       <i class="fa fa-undo fa-3"></i>
                     </a>
                 </li>
-                
+
                 <li>
                     <a id="redo-recent" href="#" draggable="false">
                       <i class="fa fa-repeat fa-3"></i>
                     </a>
                 </li>
-                
+
             </ul>
             <!-- Project Navigation (Close, Play/Pause, Stop, Step Back, Step Forward etc) -->
 
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <!-- Project Center (Project Title & Project Location) -->
-            
+
             <ul class="nav navbar-nav navbar-right projectnav" style="-webkit-app-region: no-drag">
                 <div class="col-xs-1">
                     <form id="bpm-control" class="navbar-form">
@@ -105,7 +105,7 @@
                     <ul class="dropdown-menu">
                       <li>
                           <a href="#" class="openproject" draggable="false">Open Project</a>
-                      </li>            
+                      </li>
                       <li>
                           <a href="#" data-toggle="modal" data-target="#collaborate-start" draggable="false" class="saveproject">Save Project</a>
                       </li>
@@ -144,9 +144,9 @@
                 </li>
             </ul>
             <!-- Right Project Navigation (BPM, Menu, Preferences & Fullscreen) -->
-            
+
           </div><!-- /.navbar-collapse -->
-          
+
       </nav>
       <!-- End Navigation -->
 
@@ -197,8 +197,8 @@
           <div class="row dawinner">
               <div class="col-md-2 sidebar">
                 <div id="left" class="span3">
-                    
-                    <ul id="instruments-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#instruments">  
+
+                    <ul id="instruments-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#instruments">
                       <li class="instruments deeper parent">
                           <a class="" href="#" draggable="false" class="menu-item">
                               <span class="sign">Instruments</span>
@@ -206,11 +206,11 @@
                           <ul class="children nav-child unstyled small collapse" id="instruments">
                               List of Instruments (Will be adding some JS Instruments soon)
                           </ul>
-                      </li>    			
+                      </li>
                     </ul>
                     <!-- End Instruments -->
-              
-                    <ul id="effects-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#effects">  
+
+                    <ul id="effects-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#effects">
                       <li class="instruments deeper parent">
                           <a class="" href="#" draggable="false">
                               <span class="sign">Effects</span>
@@ -218,11 +218,11 @@
                           <ul class="children nav-child unstyled small collapse" id="effects">
                               List of Effects (will be added later)
                           </ul>
-                      </li>    			
+                      </li>
                     </ul>
                     <!-- End Effects -->
 
-                    <ul id="library-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#library">  
+                    <ul id="library-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#library">
                       <li class="library deeper parent">
                           <a class="" href="#" draggable="false">
                               <span class="sign">Library</span>
@@ -230,13 +230,13 @@
                           <ul class="children nav-child unstyled small collapse" id="library">
                               List of Samples/Whatever is in /library/ for User
                           </ul>
-                      </li>    			
+                      </li>
                     </ul>
                     <!-- End Library -->
 		</div>
           </div>
               <!-- End Left Sidebar -->
-          
+
               <div class="col-md-10 scrollable dawcontent">
                   <!-- Start Timeline / DAW Contents -->
                   <div id="tracks" class="span9 scrollable">
@@ -259,34 +259,34 @@
                           </div>
                       </div>
                       <div class="span10 timeline">
-                          <canvas id="timeline">                            
-                          </canvas>                        
+                          <canvas id="timeline">
+                          </canvas>
                       </div>
                     </div>
-                </div>              
+                </div>
             </div>
             <!-- End Timeline / DAW -->
-          
+
             <div class="col-md-1 rightsidebar">
-                <div id="trackcontrols">                  
-                
+                <div id="trackcontrols">
+
                 </div>
-                
+
                 <div id="masterControl" class="span1 well">
                     <canvas id="VUmeterCanvas" width="30" height="80" style="display: block;">
-                      
+
                     </canvas>
-                    
+
                     <div id="masterVolume">
-                      
+
                     </div>
-                    
+
                 </div>
-                
+
                 <div id="newTrackButton" class="span9 addTrack">
                     <a id="addTrackButton" href="#"><p class="text-center"><i class="fa fa-plus fa-2x plusButton"></i></p></a>
                 </div>
-                
+
             </div>
             <!-- End Right Sidebar -->
           </div>
@@ -296,27 +296,27 @@
       <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-                
+
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="aboutLabel">WebDAW 0.0.1 (Pre-alpha)</h4>
                 </div>
                 <!-- End Modal Header -->
-                
+
                 <div class="modal-body">
                     WebDAW is a fork of OpenDAW, to create a more modern UI for a web based DAW (Digital Audio Workstation)
                 </div>
                 <!-- End Modal Body -->
-                
+
                 <div class="modal-footer">
                     <a type="button" class="btn btn-default">Licenses</a>
                     <a type="button" class="btn btn-primary" href="https://github.com/jakehh/WebDAW">Website</a>
                 </div>
                 <!-- End Modal Footer -->
-                
+
             </div>
             <!-- End Modal Content -->
-            
+
           </div>
       </div>
       <!-- End About Modal -->
@@ -324,22 +324,22 @@
       <div class="modal fade" id="collaborate" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
           <div class="modal-dialog collaboration">
             <div class="modal-content collaboration">
-                
+
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="collabLabel">WebDAW Collaboration - Search</h4>
                 </div>
                 <!-- End Modal Header -->
-            
+
                 <div class="modal-body">
                     Maybe a table to show a list of Candidates from Searching for {USERNAME}?
                 </div>
                 <!-- End Modal Body -->
-            
+
                 <div class="modal-footer collab-bottom">
                     <div class="row">
                       <div class="col-lg-12">
-                          
+
                           <div class="input-group custom-search-form">
                               <input type="text" placeholder="Enter username..." class="form-control">
                               <span class="input-group-btn">
@@ -348,45 +348,45 @@
                                 </button>
                               </span>
                           </div><!-- End of Input Group / Search Form -->
-                          
+
                       </div>
                     </div>
                 </div>
                 <!-- End Modal Footer -->
-            
+
             </div>
             <!-- End Modal Content -->
           </div>
       </div>
       <!-- End Collaboration (Landing Page) Modal -->
-      
+
       <div class="modal fade settings" id="settings" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-                
+
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="settingsLabel">Settings</h4>
                 </div>
                  <!-- End Modal Header -->
-                
+
                 <div class="modal-body">
-                    
+
                 </div>
                  <!-- End Modal Body -->
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss Changes</button>
                     <button type="button" class="btn btn-default">Save changes</button>
                 </div>
                  <!-- End Modal Footer -->
-                
+
             </div>
              <!-- End Modal Content -->
           </div>
       </div>
       <!-- End Settings Modal -->
-      
+
       <!-- 3rd party Dependencies, Run these first so the app knows that everything exists -->
       <script src="lib/jquery/jquery-1.11.0.min.js"></script>
       <script src="lib/jquery/jquery-migrate-1.2.1.min.js"></script>
@@ -409,72 +409,72 @@
       <script src="lib/core/recorder.js"></script>
       <script src="lib/core/effects.js"></script>
       <script src="lib/core/vumeter.js"></script>
-      
+
       <!-- Requirements to run the Application -->
       <script src="database.js"></script>
       <script src="settings.js"></script>
       <script src="app.js"></script>
-      
+
       <script>
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
-          
+
           nwin.on('close', function() {
             alertify.confirm('Do you wish to exit WebDAW?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
           });
-          
+
           $( ".fullscreen" ).click(function() {
             nwin.toggleFullscreen();
             var $this = $(".icon-fullscreen");
-              
+
             if ($this.hasClass("fa-expand"))
             {
                 $this.removeClass("fa-expand").addClass("fa-compress");
                 return;
             }
-              
+
             if ($this.hasClass("fa-compress"))
             {
                 $this.removeClass("fa-compress").addClass("fa-expand");
                 return;
             }
-              
+
           });
-          
+
           $( "#playPause" ).click(function() {
               var $this = $(".icon-playpause");
-              
+
               if ($this.hasClass("fa-play"))
               {
                   $this.removeClass("fa-play").addClass("fa-pause");
                   return;
               }
-              
+
               if ($this.hasClass("fa-pause"))
               {
                   $this.removeClass("fa-pause").addClass("fa-play");
                   return;
               }
-              
+
           });
-          
+
           $( "#stop" ).click(function() {
               var $this = $(".icon-playpause");
-              
+
               if ($this.hasClass("fa-play"))
               {
                   $this.removeClass("fa-play").addClass("fa-pause");
                   return;
               }
-              
+
               if ($this.hasClass("fa-pause")) {
                   $this.removeClass("fa-pause").addClass("fa-play");
                   return;
               }
-              
+
           });
 
-          // Functions  
+          // Functions
           function newProject()  // New Project
           {
               $( "#bpm" ).show();
@@ -487,10 +487,17 @@
               $(".title").html(defaultTitle);
               $(".project").html(defaultLocation);
               projectState.currentState = "newProject";
+              // These are currently the only way to bypass the original code while I continue work on making a new code base.
+              createTrack(1);
+              createTrack(2);
+              createTrack(3);
+              createTrack(4);
+              globalNumberOfTracks = 4;
+              newTrackNumber = 5;
               console.log(projectState);
           };
-          
-          function closeCurrent() // Close Project
+
+          function closeCurrent() // Close Project. Is this required anymore?
           {
               if(projectState.currentState != null)
               {
@@ -513,7 +520,7 @@
                   nwin.close();
               }
           }
-          
+
           function openProject()  // Open Project
           {
               fileChooser('#openfileDialog');
@@ -522,19 +529,19 @@
                   console.log(projectState);
               }
           };
-          
+
           function saveProject() // Save Project
           {
               saveFile('#saveasDialog');
           }
-          
+
           function consoleLog()
           {
               console.log('%cWebDAW is a fork of OpenDAW, to create a more modern UI for a web based DAW (Digital Audio Workstation) [PS. ur liek supa hax !!! congratz]', 'color: lightgreen; background-color: black;');
           }
-          
+
           // Not Functions
-          
+
           $( "body" ).load(function() {
               // Loading screen, probably do this in index
               $( "#newpage" ).hide();
@@ -544,7 +551,7 @@
               $( "#project" ).hide();
               $( "#bpm" ).hide();
               $( ".projectnav" ).hide();
-              
+
               // A little about snippet for some fun / little easter egg :~)
               consoleLog();
           });
@@ -557,57 +564,57 @@
               $( "#project" ).hide();
               $( "#bpm" ).hide();
               $( ".projectnav" ).hide();
-              
+
               // A little about snippet for some fun / little easter egg :~)
               consoleLog();
           });
-          
+
           $( ".newproject" ).click(function()  // New Project
           {
               newProject();
           });
-          
+
           $( ".openproject" ).click(function()  // Open Project
           {
               openProject();
           });
-          
+
           $( ".saveproject" ).click(function()  // Save Project
           {
               saveProject();
           });
-          
+
           $( ".close-button" ).click (function() // Close Project
           {
               nwin.close();
           });
-          
+
           $( ".minimize-button" ).click(function() {
               win.minimize();
           });
-          
+
           // Listen to the minimize event
           win.on('minimize', function() {
               console.log('Window is minimized');
           });
-          
+
           // Toggle between Fullscreen icons
-          
+
           $( ".fullscreen-button" ).click(function() {
               win.toggleFullscreen();
-              var $this = $(".fullscreen-button");              
+              var $this = $(".fullscreen-button");
               if ($this.hasClass("fullscreen-expand")) {
                   $this.removeClass("fullscreen-expand").addClass("fullscreen-compress");
                   return;
               }
               // End IF statement
-              
+
               if ($this.hasClass("fullscreen-compress")) {
                   $this.removeClass("fullscreen-compress").addClass("fullscreen-expand");
                   return;
               }
               // End IF statement
-              
+
           });
           // End of .click
 
@@ -617,9 +624,9 @@
               console.log(e.keyCode);
               // Output which keys the user Presses (Have REMOVE-DEBUG at end of each Debug feature inside index.html) REMOVE-DEBUG
               var key = window.event? event : e
-              
-              
-              if(key.keyCode == 78 && key.ctrlKey)  // New Project 
+
+
+              if(key.keyCode == 78 && key.ctrlKey)  // New Project
               {
                   newProject();
               }
@@ -633,7 +640,7 @@
               {
                   $('body').trigger('playPause-event');
                   var $this = $(".icon-playpause");
-                  
+
                   if ($this.hasClass("fa-play"))
                   {
                     $this.removeClass("fa-play").addClass("fa-pause");
@@ -648,8 +655,8 @@
 
               if(key.keyCode == 87 && key.ctrlKey) // Close Project
               {
-                  closeCurrent();                  
-              }              
+                  closeCurrent();
+              }
 
               if(key.keyCode == 188 && key.ctrlKey) // Settings
               {
@@ -662,29 +669,29 @@
           $( ".newproject" ).popover({ trigger: "hover" });
           $( ".openproject" ).popover({ trigger: "hover" });
           $( ".collaborations" ).popover({ trigger: "hover" });
-          
+
           // Handler for pressing enter on BPM/Tempo
           $( "#bpm-control" ).submit(function( event ) {
               alert( "Handler for .submit() called." );
               event.preventDefault();
           });
-          
-          // Drag events for when a user drags a file onto the program          
+
+          // Drag events for when a user drags a file onto the program
           window.ondragover = function(e) { e.preventDefault(); return false };
           window.ondrop = function(e) { e.preventDefault(); return false };
-          
+
           var holder = document.getElementById('holder');
-          
+
           holder.ondragover = function ()
           {
               this.className = 'hover'; return false;
           };
-          
+
           holder.ondragend = function ()
           {
               this.className = ''; return false;
           };
-          
+
           holder.ondrop = function (e)
           {
               e.preventDefault();
@@ -694,12 +701,12 @@
               {
                   console.log(event.target);
               };
-              
+
               console.log(file);
               reader.readAsDataURL(file);
               return false;
           };
-        
+
           $('#instruments-menu').click(function() {
             var $this = $(".menu-item");
               if ($this.hasClass("selectedmenu")) {
@@ -707,13 +714,13 @@
                   return;
               }
               // End IF statement
-              
+
               else {
                   $this.addClass("selectedmenu");
                   return;
               }
           });
-          
+
           // When you scroll in the DAW the Track Controls Should also scroll.
           $('.dawcontent').on('scroll', function () {
               $('.rightsidebar').scrollTop($(this).scrollTop());

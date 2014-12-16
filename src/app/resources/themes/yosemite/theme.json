@@ -2,6 +2,7 @@
     "theme":
     {
         "title"  : "Yosemite Theme",
+        "Desc"   : "Theme to suit OS X Yosemite, Built in Bootstrap",
         "version": "0.1",
         "author" : "Jake Jarrett",
         "url"    : "https://github.com/jakehh/nw-shell"

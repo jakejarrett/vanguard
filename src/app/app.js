@@ -40,33 +40,33 @@ var
 
     // Q JS for Promises
 	//Q = require('q'),
-    
+
     // Notify for Notifications
     //notify = require('notify'),
-    
+
     // Create Menu
     //createMenu = require('./lib/core/menu.js'),
 
-        
+
     // Default Project (New Project defaults)
     //main = require('./lib/core/main.js'),
-    
-    
+
+
     // Default Project (New Project defaults)
     defaultproj = require('./lib/core/newproject.js'),
-    
+
     // Settings
     settings = require('./settings.js'),
-    
+
     // Create Track
     //createTrack = require('./lib/core/createtrack.js'),
-    
+
     // Project State
-    projectState = require('./lib/core/projectState.js'),
-    
+    projectState = require('./lib/core/projectstate.js'),
+
     // VST Support
     VSTHost = require("node-vst-host").host,
-    
+
     // Create VST Host
     host = new VSTHost();
 
@@ -126,15 +126,15 @@ function fileChooser(name) {
             console.log(data);
         });
     }, false);
-    
-    chooser.click();  
+
+    chooser.click();
 }
 
 // File Saver
 function saveFile(name) {
     var testSave = JSON.stringify(NewProject['projectInfo'], null, 4);
     var fs = require('fs');
-    var saver = document.querySelector(name);    
+    var saver = document.querySelector(name);
     saver.addEventListener("change", function(evt) {
         // Write to selected file via node's writeFile()
         fs.writeFile(this.value, testSave, function (err,data) {
@@ -142,17 +142,17 @@ function saveFile(name) {
                 return console.log(err);
             }
         });
-        
+
         fs.readFile(this.value, 'utf8', function (err,data) {
             if (err) {
                 return console.log(err);
             }
             console.log(data);
         });
-        
+
     }, false);
-    
-    saver.click();  
+
+    saver.click();
 }
 
 var wavesurfer = (function () {
@@ -164,7 +164,7 @@ var wavesurfer = (function () {
         var sampleUrl = song.url.split("/");
         var sampleTitle = sampleUrl[sampleUrl.length-1];
         var obj;
-        $("#libraryList").append("<li id=librarySample" + song.id +" class=\"librarySample\" data-id="+song.id+" data-url="+song.url+" data-duration="+song.duration+"><a href=\"#\">" + sampleTitle + "</a></li>");
+        $("#libraryList").append("<li id=librarySample" + song.id +" class='librarySample' data-id="+song.id+" data-url="+song.url+" data-duration="+song.duration+"><a href='#'>" + sampleTitle + "</a></li>");
         $("#librarySample" + song.id).draggable({
             revert: true,
             helper: "clone",
@@ -324,7 +324,7 @@ $(document).ready(function(){
 	revert: true,
 	helper: "clone"
     });
-    
+
     $("#effectSortable").sortable({
 	cancel: "canvas,input",
 	/*
@@ -528,7 +528,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#compressorRatioKnob").knob({
 	change : function(v) {
 	    setCompressorRatioValue(activeTrack,v);
@@ -539,7 +539,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#compressorAttackKnob").knob({
 	change : function(v) {
 	    setCompressorAttackValue(activeTrack,v);
@@ -561,7 +561,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#filterQKnob").knob({
 	change : function(v) {
 	    setFilterQValue(activeTrack,v);
@@ -572,7 +572,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#filterTypeKnob").knob({
 	change : function(v) {
 	    setFilterType(activeTrack,v);
@@ -594,7 +594,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#reverbIrSelectKnob").knob({
 	change : function(v) {
 	    setReverbIr(activeTrack,v);
@@ -618,7 +618,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#delayFeedbackKnob").knob({
 	change : function(v) {
 	    setDelayFeedbackValue(activeTrack,v);
@@ -650,7 +650,7 @@ $(document).ready(function(){
 	    });
 	}
     });
-    
+
     $("#tremoloDepthKnob").knob({
 	change : function(v) {
 	    setTremoloDepthValue(activeTrack,v);
@@ -667,19 +667,19 @@ $(document).ready(function(){
     $("#playPause").click(function(){
         $('body').trigger('playPause-event');
     });
-    
+
     $("#stop").click(function(){
         $('body').trigger('stop-event');
     });
-    
+
     $("#step-backward").click(function(){
         $('body').trigger('stepBackward-event');
     });
-    
+
     $("#step-forward").click(function(){
         $('body').trigger('stepForward-event');
     });
-    
+
     $("#zoomIn").click(function(){
         $('body').trigger('zoomIn-event');
 	var WavesurferCanvases = $(".sample");
@@ -692,7 +692,7 @@ $(document).ready(function(){
 	    var oldLeft = parseInt($($(wavesurferCanvas).parent()[0]).css("left"));
 	    $($(wavesurferCanvas).parent()[0]).css("left",""+oldLeft*2+"px");
 	});
-        
+
 	$.each(globalWavesurfers, function(){
 	    var wavesurfer = this;
 	    wavesurfer.drawer.clear();
@@ -700,7 +700,7 @@ $(document).ready(function(){
 	    wavesurfer.drawer.drawBuffer(wavesurfer.backend.currentBuffer);
 	});
     });
-    
+
     $("#zoomOut").click(function(){
         $('body').trigger('zoomOut-event');
 	var WavesurferCanvases = $(".sample");
@@ -719,7 +719,7 @@ $(document).ready(function(){
 	    wavesurfer.drawer.drawBuffer(wavesurfer.backend.currentBuffer);
 	});
     });
-    
+
     $("#trackEffectsClose").click(function(){
 	$("#trackEffects").css("display","none");
 	$("#masterControl").css("display","none");
@@ -735,8 +735,9 @@ $(document).ready(function(){
 	setMasterVolume(ui.value );
       }
     });
-    
+
     // Create "addChannel()" so i can call this function for a Keyboard shortcut & GUI Shortcut. (And Other shortcuts if added later on)
+	// Will probably need to remake the entire process of creating & handling tracks
     function addChannel() {
         var newTrackNumber = globalNumberOfTracks+1;
         globalNumberOfTracks++;
@@ -756,14 +757,14 @@ $(document).ready(function(){
         trackVolumeGains[newTrackNumber] = trackVolumeNode;
         trackInputNodes[newTrackNumber] = trackInputNode;
     }
-    
+
     $("#addTrackButton").click(function(){
         addChannel();
     });
-    
+
     $( window ).keyup(function (e) {
-        var key = window.event? event : e              
-        if(key.keyCode == 107 && key.ctrlKey)  // New Project 
+        var key = window.event? event : e
+        if(key.keyCode == 107 && key.ctrlKey)  // New Project
         {
             addChannel();
         }
@@ -774,9 +775,9 @@ $(document).ready(function(){
 });
 
 function createTrack(trackNumber){
-    $("#tracks").append("<div id=\"track"+trackNumber+"\" class=\"span10 track\"></div>");
-    $("#trackcontrols").append("<div class=\"row-fluid\" id=\"selectTrack"+trackNumber+"\"><div class=\"span2 trackBox\"><p class=\"trackID \" id=\"track"+trackNumber+"title\">Track"+trackNumber+"</p><div class=\"volume-slider\" id=\"volumeSlider"+trackNumber+"\"></div><div class=\"btn-toolbar\" style=\"margin-top: 0px;\"><div class=\"btn-group\"><button type=\"button\" class=\"btn btn-mini\" id = \"solo"+trackNumber+"\"><i class=\"fa fa-headphones\"></i></button><button type=\"button\" class=\"btn btn-mini\" id = \"mute"+trackNumber+"\"><i class=\"fa fa-volume-off\"></i></button><button type=\"button\" class=\"btn btn-mini\" data-toggle=\"button\" id = \"remove"+trackNumber+"\"><i class=\"fa fa-minus\"></i></button></div><div class=\"btn-group\"><button type=\"button\" class=\"btn btn-mini\" data-toggle=\"button\" id = \"record"+trackNumber+"\"><i class=\"fa fa-microphone\"></i></button></div></div></div></div>");
-    
+    $("#tracks").append("<div id='track"+trackNumber+"' class='span10 track'></div>");
+    $("#trackcontrols").append("<div class='row-fluid' id='selectTrack"+trackNumber+"'><div class='span2 trackBox'><p class='trackID ' id='track"+trackNumber+"title'>Track"+trackNumber+"</p><div class='volume-slider' id='volumeSlider"+trackNumber+"'></div><div class='btn-toolbar' style='margin-top: 0px;'><div class='btn-group'><button type='button' class='btn btn-mini' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button><button type='button' class='btn btn-mini' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button><button type='button' class='btn btn-mini' data-toggle='button' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button></div><div class='btn-group'><button type='button' class='btn btn-mini' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button></div></div></div></div>");
+
     $("#volumeSlider"+trackNumber).slider({
 	value: 80,
 	orientation: "horizontal",
@@ -789,7 +790,7 @@ function createTrack(trackNumber){
 	    setTrackVolume(muteTrackNumber, ui.value );
 	}
     });
-    
+
     $("#selectTrack"+trackNumber).click(function(){
         var printTrackNumber = $(this).attr('id').split('selectTrack')[1];
         activeTrack = printTrackNumber;
@@ -823,7 +824,7 @@ function createTrack(trackNumber){
             $("#tremeloDepthKnob").val(currentEffect.depth).trigger('change');
             }
         });
-        
+
         Object.keys(effects[activeTrack-1]);
 
         $("#trackEffectsHeader").html("Track "+printTrackNumber);
@@ -833,25 +834,27 @@ function createTrack(trackNumber){
         $("#masterControl").css("display","block");
 
     });
-    
+
     $("#mute"+trackNumber).click(function(){
 	$(this).button('toggle');
 	var muteTrackNumber = $(this).attr('id').split('mute')[1];
 	$('body').trigger('mute-event', muteTrackNumber);
     });
-    
+
     $("#remove"+trackNumber).click(function(){
         console.log("removed "+trackNumber);
         $("#track"+trackNumber).remove();
         $("#selectTrack"+trackNumber).remove();
+		globalNumberOfTracks--;
+		newTrackNumber--;
     });
-    
+
     $("#solo"+trackNumber).click(function(){
 	$(this).button('toggle');
 	var soloTrackNumber = $(this).attr('id').split('solo')[1];
 	$('body').trigger('solo-event', soloTrackNumber);
     });
-    
+
     $("#record"+trackNumber).click(function(){
 	var recordTrackNumber = $(this).attr('id').split('record')[1];
 	$(this).button('toggle');
@@ -947,11 +950,11 @@ function createTrack(trackNumber){
 	}
 
     });
-    
+
     $("#track"+trackNumber+"title").storage({
 	storageKey : 'track'+trackNumber
     });
-    
+
     $( "#track"+trackNumber ).droppable({
 	accept: ".librarySample",
 	drop: function( event, ui ) {
@@ -1012,7 +1015,7 @@ function createTrack(trackNumber){
 	    }
 	}
     });
-    
+
     trackNumber++;
 }
 
@@ -1167,17 +1170,17 @@ if (process.platform === 'darwin') {
 	Mousetrap.bind('command+ctrl+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
-        var $this = $(".icon-fullscreen");  
+        var $this = $(".icon-fullscreen");
         if ($this.hasClass("fa-expand"))
         {
             $this.removeClass("fa-expand").addClass("fa-compress");
             return;
-        }              
+        }
         if ($this.hasClass("fa-compress"))
         {
             $this.removeClass("fa-compress").addClass("fa-expand");
             return;
-        } 
+        }
 	});
 }
 
@@ -1185,17 +1188,17 @@ else {
 	Mousetrap.bind('ctrl+alt+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
-        var $this = $(".icon-fullscreen");  
+        var $this = $(".icon-fullscreen");
         if ($this.hasClass("fa-expand"))
         {
             $this.removeClass("fa-expand").addClass("fa-compress");
             return;
-        }              
+        }
         if ($this.hasClass("fa-compress"))
         {
             $this.removeClass("fa-compress").addClass("fa-expand");
             return;
-        }      
+        }
 	});
 }
 
@@ -1240,7 +1243,7 @@ window.ondrop = function (e) {
 
 	if (file != null && file.name.indexOf('.json') !== -1) {
 		var reader = new FileReader();
-        
+
 		reader.onload = function (event) {
 			var content = reader.result;
 		};

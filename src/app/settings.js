@@ -9,19 +9,14 @@ var
 
 // User interface
 Settings.language = 'en';
-Settings.coversShowRating = false;
-Settings.watchedCovers = 'fade';
 Settings.showAdvancedSettings = false;
 
 // Advanced UI
 Settings.alwaysOnTop = false;
-Settings.theme = 'Flat_UI';
-Settings.ratingStars = true; //trigger on click in details
-Settings.startScreen = 'Movies';
-Settings.lastTab = '';
+Settings.theme = 'Yosemite'; // Maybe try and implement GTK Theme support?
 
-// Check for Connection (Can Set alternate server if users wish not to use Google)
-Settings.connectionCheckUrl = 'http://google.com/';
+// Check for Connection (This will be enabled when collaboration is being developed)
+// Settings.connectionCheckUrl = 'http://google.com/';
 
 // App Settings
 Settings.version = false;

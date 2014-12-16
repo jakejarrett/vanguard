@@ -1,75 +1,19 @@
+//
+// Currently not supported
+// 
+
 var proj = require('./newproject.js');
 
-/*
-var project = JSON.parse(proj.defaultProject);
-
-var tempo = project.projectInfo.bpm;
-
-var numberOfTracks = parseInt(project.projectInfo.tracks)
-*/
- /* var processData = function (json) {
-    var numberOfTracks = parseInt(json.projectInfo.tracks);
-        if(numberOfTracks == null) {
-            var numberOfTracks = 4;
-        }
-	effects = json.projectInfo.effects;
-	//create track-specific nodes
-	globalNumberOfTracks = numberOfTracks;
-	createNodes(numberOfTracks);
-
-	for(var i=0;i<numberOfTracks;i++){
-	   var currentTrackNumber = i+1;
-	    createTrack(currentTrackNumber);
-	    $.each(effects[i],function(){
-		if(this.type == "Compressor"){
-		    var trackCompressor = ac.createDynamicsCompressor();
-		    var inputNode = trackInputNodes[currentTrackNumber];
-		    var volumeNode = trackVolumeGains[currentTrackNumber];
-		    inputNode.disconnect();
-		    inputNode.connect(trackCompressor);
-		    trackCompressor.connect(volumeNode);
-		    trackCompressors[currentTrackNumber] = trackCompressor;
-		}
-		if(this.type == "Filter"){
-		    var trackFilter = ac.createBiquadFilter();
-		    var inputNode = trackInputNodes[currentTrackNumber];
-		    var volumeNode = trackVolumeGains[currentTrackNumber];
-		    inputNode.disconnect();
-		    inputNode.connect(trackFilter);
-		    trackFilter.connect(volumeNode);
-		    trackFilters[currentTrackNumber] = trackFilter;
-		}
-	    });
-
-	}
-	//wavesurfers is array of all tracks
-        var wavesurfers = json.samples.map(createWavesurfer);
-	$.each(wavesurfers, function(){
-	    var currentSample = this;
-	    //if they are in workspace...
-	    if(currentSample != undefined){
-		//load the buffer
-		load(currentSample.bufferURL, currentSample.id);
-		//store the times
-		$.each(currentSample.startTimes, function(){
-		    var currentStartTime = this;
-		 if(times[currentStartTime] == null){
-			times[currentStartTime] = [{id: currentSample.id, track: currentSample.track}];
-		    } else {
-			times[currentStartTime].push({id: currentSample.id, track: currentSample.track});
-		    }
-		});
-	    }
-	});
-}; */
-
-function createTrack(trackNumber){    
-    $("#tracks").append("<div id=\"track"+trackNumber+"\" class=\"span10 track\"></div>");
-    $("#trackcontrols").append("<div class=\"row-fluid\" id=\"selectTrack"+trackNumber+"\"><div class=\"span2 trackBox\"><p class=\"trackID \" id=\"track"+trackNumber+"title\">Track"+trackNumber+"</p><div class=\"volume-slider\" id=\"volumeSlider"+trackNumber+"\"></div><div class=\"btn-toolbar\" style=\"margin-top: 0px;\"><div class=\"btn-group\"><button type=\"button\" class=\"btn btn-mini\" id = \"solo"+trackNumber+"\"><i class=\"fa fa-headphones\"></i></button><button type=\"button\" class=\"btn btn-mini\" id = \"mute"+trackNumber+"\"><i class=\"fa fa-volume-off\"></i></button><button type=\"button\" class=\"btn btn-mini\" data-toggle=\"button\" id = \"remove"+trackNumber+"\"><i class=\"fa fa-minus\"></i></button></div><div class=\"btn-group\"><button type=\"button\" class=\"btn btn-mini\" data-toggle=\"button\" id = \"record"+trackNumber+"\"><i class=\"fa fa-microphone\"></i></button></div></div></div></div>");
+function createTrack(trackNumber){
+    var appendTrack = "<div id='track";
+        appendTrack += trackNumber;
+        appendTrack += "' class='span10 track'></div>";
+    $("#tracks").append(appendTrack);
+    $("#trackcontrols").append("<div class='row-fluid' id='selectTrack"+trackNumber+"'><div class='span2 trackBox'><p class='trackID ' id='track"+trackNumber+"title'>Track"+trackNumber+"</p><div class='volume-slider' id='volumeSlider"+trackNumber+"'></div><div class='btn-toolbar' style='margin-top: 0px;'><div class='btn-group'><button type='button' class='btn btn-mini' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button><button type='button' class='btn btn-mini' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button><button type='button' class='btn btn-mini' data-toggle='button' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button></div><div class='btn-group'><button type='button' class='btn btn-mini' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button></div></div></div></div>");
     if(effects[trackNumber-1] == null){
 	   effects[trackNumber-1] = [];
     }
-    
+
     $("#volumeSlider"+trackNumber).slider({
 	value: 80,
 	orientation: "horizontal",
@@ -82,7 +26,7 @@ function createTrack(trackNumber){
 	    setTrackVolume(muteTrackNumber, ui.value );
 	}
     });
-    
+
     $("#selectTrack"+trackNumber).click(function(){
         var printTrackNumber = $(this).attr('id').split('selectTrack')[1];
         activeTrack = printTrackNumber;
@@ -116,7 +60,7 @@ function createTrack(trackNumber){
             $("#tremeloDepthKnob").val(currentEffect.depth).trigger('change');
             }
         });
-        
+
         Object.keys(effects[activeTrack-1]);
 
         $("#trackEffectsHeader").html("Track "+printTrackNumber);
@@ -126,25 +70,25 @@ function createTrack(trackNumber){
         $("#masterControl").css("display","block");
 
     });
-    
+
     $("#mute"+trackNumber).click(function(){
 	$(this).button('toggle');
 	var muteTrackNumber = $(this).attr('id').split('mute')[1];
 	$('body').trigger('mute-event', muteTrackNumber);
     });
-    
+
     $("#remove"+trackNumber).click(function(){
         console.log("removed "+trackNumber);
         $("#track"+trackNumber).remove();
         $("#selectTrack"+trackNumber).remove();
     });
-    
+
     $("#solo"+trackNumber).click(function(){
 	$(this).button('toggle');
 	var soloTrackNumber = $(this).attr('id').split('solo')[1];
 	$('body').trigger('solo-event', soloTrackNumber);
     });
-    
+
     $("#record"+trackNumber).click(function(){
         var recordTrackNumber = $(this).attr('id').split('record')[1];
         $(this).button('toggle');
@@ -237,11 +181,11 @@ function createTrack(trackNumber){
         }
 
     });
-    
+
     $("#track"+trackNumber+"title").storage({
 	storageKey : 'track'+trackNumber
     });
-    
+
     $( "#track"+trackNumber ).droppable({
 	accept: ".librarySample",
 	drop: function( event, ui ) {
