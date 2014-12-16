@@ -30,30 +30,19 @@ var
 	url = require('url'),
 
 	// i18n module (translations)
-	//i18n = require('i18n'),
+	i18n = require('i18n'),
 
 	// Mime type parsing
 	//mime = require('mime'),
 
-    // Moment for Time Parsing
+	// Moment for Time Parsing
 	//moment = require('moment'),
 
-    // Q JS for Promises
+	// Q JS for Promises
 	//Q = require('q'),
 
-    // Notify for Notifications
-    //notify = require('notify'),
-
-    // Create Menu
-    //createMenu = require('./lib/core/menu.js'),
-
-
-    // Default Project (New Project defaults)
-    //main = require('./lib/core/main.js'),
-
-
-    // Default Project (New Project defaults)
-    defaultproj = require('./lib/core/newproject.js'),
+	// Default Project (New Project defaults)
+	defaultproj = require('./lib/core/newproject.js'),
 
     // Settings
     settings = require('./settings.js'),
@@ -70,48 +59,54 @@ var
     // Create VST Host
     host = new VSTHost();
 
-var ac = new (window.AudioContext || window.webkitAudioContext);
-//navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
-var masterGainNode = ac.createGain();
+// New Instance of AudioContext, Only need to create webkit specific code.
+var ac = new (window.AudioContext || window.webkitAudioContext),
+	masterGainNode = ac.createGain();
+
+// Set Master Volume for entire project
 masterGainNode.gain.value = .8;
 masterGainNode.connect(ac.destination);
 
 // newProject Info
 var NewProject = $.parseJSON(defaultproj.newProject);
 
-var micStream;
-var activeRecorder;
-var recordingCount = 1000;
+// Recording Variables
+var micStream,
+	activeRecorder,
+	recordingCount = 1000;
 
 //array of track master gain nodes
-var trackMasterGains = [];
-var trackVolumeGains = [];
-var trackInputNodes = [];
-var trackCompressors = [];
-var trackReverbs = [];
-var trackFilters = [];
-var trackDelays = [];
-var trackTremolos = [];
+var trackMasterGains = [],
+	trackVolumeGains = [],
+	trackInputNodes = [],
+	trackCompressors = [],
+	trackReverbs = [],
+	trackFilters = [],
+	trackDelays = [],
+	trackTremolos = [];
 
 //the currently selected track (for editing effects etc.)
 var activeTrack;
 
-//json of effect data
-var effects;
-
-var buffers = []; //contains AudioBuffer and id# of samples in workspace
-var times = []; //contains start times of samples and their id#
-var reverbIRs = []
-var pixelsPer16 = 6; 			//pixels per 16th note. used for grid snapping
-var pixelsPer4 = 4*pixelsPer16;		//pixels per 1/4 note	used for sample canvas size
-var bpm = NewProject['projectInfo'].tempo;
-var secondsPer16 = 0.25 * 60 / bpm;
-var defaultTitle = NewProject['projectInfo'].title;
-var defaultLocation = NewProject['projectInfo'].location;
-var trackNumber = Number(NewProject['projectInfo'].tracks);
-
-var globalNumberOfTracks;
-var globalWavesurfers = [];
+	//json of effect data
+var effects,
+	//contains AudioBuffer and id# of samples in workspace
+	buffers = [],
+	//contains start times of samples and their id#
+	times = [],
+	reverbIRs = [],
+	//pixels per 16th note. used for grid snapping
+	pixelsPer16 = 6,
+	//pixels per 1/4 note	used for sample canvas size
+	pixelsPer4 = 4*pixelsPer16,
+	bpm = NewProject['projectInfo'].tempo,
+	secondsPer16 = 0.25 * 60 / bpm,
+	defaultTitle = NewProject['projectInfo'].title,
+	defaultLocation = NewProject['projectInfo'].location,
+	trackNumber = Number(NewProject['projectInfo'].tracks),
+	// Set Global Vars for track management
+	globalNumberOfTracks,
+	globalWavesurfers = [];
 
 // File Chooser
 function fileChooser(name) {
@@ -132,17 +127,21 @@ function fileChooser(name) {
 
 // File Saver
 function saveFile(name) {
-    var testSave = JSON.stringify(NewProject['projectInfo'], null, 4);
-    var fs = require('fs');
-    var saver = document.querySelector(name);
+	// Replace testSave with actual data, This was just to test how to handle the saving function
+	// Will probably make it grab all the Project Info on Save so it doesn't try to constantly update an object/json
+	var testSave = JSON.stringify(NewProject['projectInfo'], null, 4),
+    	fs = require('fs'),
+    	saver = document.querySelector(name);
     saver.addEventListener("change", function(evt) {
         // Write to selected file via node's writeFile()
         fs.writeFile(this.value, testSave, function (err,data) {
             if (err) {
                 return console.log(err);
+				alert(err);
             }
         });
 
+		// This is a Debug feature to ensure saving works. Maybe have an option to enable this by --debug ?
         fs.readFile(this.value, 'utf8', function (err,data) {
             if (err) {
                 return console.log(err);
@@ -159,11 +158,12 @@ var wavesurfer = (function () {
     'use strict';
 
     var createWavesurfer = function (song) {
-        var startTimes = song.startTime;
-        var sampleNumber = 0;
-        var sampleUrl = song.url.split("/");
-        var sampleTitle = sampleUrl[sampleUrl.length-1];
-        var obj;
+        var startTimes = song.startTime,
+        	sampleNumber = 0,
+        	sampleUrl = song.url.split("/"),
+        	sampleTitle = sampleUrl[sampleUrl.length-1],
+        	obj;
+		// Will need to clean this up
         $("#libraryList").append("<li id=librarySample" + song.id +" class='librarySample' data-id="+song.id+" data-url="+song.url+" data-duration="+song.duration+"><a href='#'>" + sampleTitle + "</a></li>");
         $("#librarySample" + song.id).draggable({
             revert: true,
@@ -174,37 +174,38 @@ var wavesurfer = (function () {
 	    if(sampleNumber == 0){
 		obj = ({bufferURL: song.url, id: song.id, startTimes: song.startTime, track: song.track});
 	    }
-	    var currentStartTime = song.startTime[sampleNumber];
-            var span = document.createElement('span');
-            span.id = "sample" + song.id + "Span" + sampleNumber;
-            var canvas = document.createElement('canvas');
+	    var currentStartTime = song.startTime[sampleNumber],
+			span = document.createElement('span');
+		span.id = "sample" + song.id + "Span" + sampleNumber;
+		var canvas = document.createElement('canvas');
 	    canvas.className = "sample";
-            canvas.id = "sample" + song.id + "Canvas" + sampleNumber;
-            $("#track"+song.track).append(span);
-            $("#sample" + song.id + "Span" + sampleNumber).append(canvas);
-            $("#sample" + song.id + "Span" + sampleNumber).width(parseFloat(song.duration) * ((pixelsPer4*bpm)/60));
-            canvas.width = parseFloat(song.duration) * ((pixelsPer4*bpm)/60);
-            canvas.height = 80;
-            $( "#sample" + song.id + "Span" + sampleNumber).attr('data-startTime',song.startTime[sampleNumber]);
-            $( "#sample" + song.id + "Span" + sampleNumber).css('left',"" + parseInt(currentStartTime*pixelsPer16) + "px");
-	        $( "#sample" + song.id + "Span" + sampleNumber).css('position','absolute');
-            $( "#sample" + song.id + "Span" + sampleNumber).draggable({
-                axis: "x",
-                containment: "parent",
-                grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-                stop: function() {
-		    //get rid of old entry in table
-		    var currentStartBar = $(this).attr('data-startTime');
-		    times[currentStartBar] = jQuery.removeFromArray(song.id, times[currentStartBar]);
-                    $(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-		    var newStartTime = $(this).attr('data-startTime');
-		    if(times[newStartTime] == null){
-			times[newStartTime] = [{id: song.id, track: song.track}];
-		    } else {
-			times[newStartTime].push({id: song.id, track: song.track});
-		    }
-                }
-            });
+		canvas.id = "sample" + song.id + "Canvas" + sampleNumber;
+		$("#track"+song.track).append(span);
+		$("#sample" + song.id + "Span" + sampleNumber).append(canvas);
+		$("#sample" + song.id + "Span" + sampleNumber).width(parseFloat(song.duration) * ((pixelsPer4*bpm)/60));
+		// Wavesurfer Dimension Control
+		canvas.width = parseFloat(song.duration) * ((pixelsPer4*bpm)/60);
+		canvas.height = 80;
+		$( "#sample" + song.id + "Span" + sampleNumber).attr('data-startTime',song.startTime[sampleNumber]);
+		$( "#sample" + song.id + "Span" + sampleNumber).css('left',"" + parseInt(currentStartTime*pixelsPer16) + "px");
+		$( "#sample" + song.id + "Span" + sampleNumber).css('position','absolute');
+		$( "#sample" + song.id + "Span" + sampleNumber).draggable({
+			axis: "x",
+			containment: "parent",
+			grid: [pixelsPer16, 0],		//grid snaps to 16th notes
+			stop: function() {
+				//get rid of old entry in table
+				var currentStartBar = $(this).attr('data-startTime');
+				times[currentStartBar] = jQuery.removeFromArray(song.id, times[currentStartBar]);
+				$(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
+				var newStartTime = $(this).attr('data-startTime');
+				if(times[newStartTime] == null){
+					times[newStartTime] = [{id: song.id, track: song.track}];
+				} else {
+					times[newStartTime].push({id: song.id, track: song.track});
+				}
+			}
+		});
 	    $( "#sample" + song.id + "Span" + sampleNumber ).resizable({
 		helper: "ui-resizable-helper",
 		handles: "e",
@@ -229,6 +230,8 @@ var wavesurfer = (function () {
 
 
     var processData = function (json) {
+		// Process JSON Data (New Project)
+		// Still inside of a wavesurfer instance.
         var numberOfTracks = Number(NewProject['projectInfo'].tracks);
         effects = NewProject['projectInfo'].effects;
         var trackNumber = Number(NewProject['projectInfo'].tracks);
@@ -260,11 +263,11 @@ var wavesurfer = (function () {
 		}
 	    });
     }
-        //wavesurfers is array of all tracks
+        // wavesurfers is an array of all tracks
         var wavesurfers = json.samples.map(createWavesurfer);
         $.each(wavesurfers, function(){
 	    var currentSample = this;
-	    //if they are in workspace...
+	    // if they are in workspace...
 	    if(currentSample != undefined){
             //load the buffer
             load(currentSample.bufferURL, currentSample.id);
@@ -287,6 +290,7 @@ initSched({
     audioContext: ac
 });
 
+// PLayback & Timeline Event Handlers ()
 $('body').bind('playPause-event', function(e){
     schedPlay(ac.currentTime);
 });
@@ -319,6 +323,7 @@ $('body').bind('zoomOut-event', function(e){
     timelineZoomOut();
 });
 
+// Initialize all the divs on ready (Probably move this to when you have opened/created a project?)
 $(document).ready(function(){
     $(".effectDrag").draggable({
 	revert: true,
@@ -774,7 +779,9 @@ $(document).ready(function(){
 
 });
 
-function createTrack(trackNumber){
+// Create Tracks/Channels
+// Really need to create a new way of creating tracks to create a better track handler. (this will be done before an alpha/beta release)
+function createTrack(trackNumber) {
     $("#tracks").append("<div id='track"+trackNumber+"' class='span10 track'></div>");
     $("#trackcontrols").append("<div class='row-fluid' id='selectTrack"+trackNumber+"'><div class='span2 trackBox'><p class='trackID ' id='track"+trackNumber+"title'>Track"+trackNumber+"</p><div class='volume-slider' id='volumeSlider"+trackNumber+"'></div><div class='btn-toolbar' style='margin-top: 0px;'><div class='btn-group'><button type='button' class='btn btn-mini' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button><button type='button' class='btn btn-mini' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button><button type='button' class='btn btn-mini' data-toggle='button' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button></div><div class='btn-group'><button type='button' class='btn btn-mini' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button></div></div></div></div>");
 
@@ -791,6 +798,7 @@ function createTrack(trackNumber){
 	}
     });
 
+	// Select Track/Channel
     $("#selectTrack"+trackNumber).click(function(){
         var printTrackNumber = $(this).attr('id').split('selectTrack')[1];
         activeTrack = printTrackNumber;
@@ -835,203 +843,207 @@ function createTrack(trackNumber){
 
     });
 
+	// Mute Track/Channel
     $("#mute"+trackNumber).click(function(){
-	$(this).button('toggle');
-	var muteTrackNumber = $(this).attr('id').split('mute')[1];
-	$('body').trigger('mute-event', muteTrackNumber);
+		$(this).button('toggle');
+		var muteTrackNumber = $(this).attr('id').split('mute')[1];
+		$('body').trigger('mute-event', muteTrackNumber);
     });
 
+	// Remove Track/Channel (would like to move this outside of the createTrack() function)
     $("#remove"+trackNumber).click(function(){
         console.log("removed "+trackNumber);
+		// Check if globalNumberOfTracks is higher than this track number
+		if(globalNumberOfTracks > trackNumber) {
+			// Because globalNumberOfTracks is Higher than this track number, We should change the track ID of the higher Tracks
+		}
         $("#track"+trackNumber).remove();
         $("#selectTrack"+trackNumber).remove();
 		globalNumberOfTracks--;
 		newTrackNumber--;
     });
 
+	// Solo Track/Channel
     $("#solo"+trackNumber).click(function(){
 	$(this).button('toggle');
 	var soloTrackNumber = $(this).attr('id').split('solo')[1];
 	$('body').trigger('solo-event', soloTrackNumber);
     });
 
+	// Record Track/Channel
     $("#record"+trackNumber).click(function(){
-	var recordTrackNumber = $(this).attr('id').split('record')[1];
-	$(this).button('toggle');
-	if($(this).hasClass('active')){
-	    //Start Recording
-	    var input = ac.createMediaStreamSource(micStream);
-	    //input.connect(ac.destination);
-	    activeRecorder = new Recorder(input);
-	    activeRecorder.record();
-	    schedPlay(ac.currentTime);
-	} else {
-	    //Stop Recording
-	    activeRecorder.stop();
+		var recordTrackNumber = $(this).attr('id').split('record')[1];
+		$(this).button('toggle');
+		if($(this).hasClass('active')){
+		    //Start Recording
+		    var input = ac.createMediaStreamSource(micStream);
+		    //input.connect(ac.destination);
+		    activeRecorder = new Recorder(input);
+		    activeRecorder.record();
+		    schedPlay(ac.currentTime);
+		} else {
+		    //Stop Recording
+		    activeRecorder.stop();
 
-	    var recordingDuration;
+		    var recordingDuration;
 
-	    var startBar;
-	    if(pauseBeat==undefined){
-		startBar = 0;
-	    } else {
-		startBar = pauseBeat;
-	    }
-
-	    activeRecorder.getBuffer(function(recordingBuffer){
-		recordingDuration = recordingBuffer[0].length/ac.sampleRate;
-
-		var newBuffer = ac.createBuffer( 2, recordingBuffer[0].length, ac.sampleRate );
-		//var newSource = ac.createBufferSourceNode();
-		newBuffer.getChannelData(0).set(recordingBuffer[0]);
-		newBuffer.getChannelData(1).set(recordingBuffer[1]);
-		//newSource.buffer = newBuffer;
-
-		var span = document.createElement('span');
-		span.id = "recording" + recordingCount + "Span";
-		var canvas = document.createElement('canvas');
-		canvas.className = "sample";
-		canvas.id = "recording" + recordingCount + "Canvas";
-		$("#track"+recordTrackNumber).append(span);
-		$("#recording" + recordingCount + "Span").append(canvas);
-		$("#recording" + recordingCount + "Span").width(parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60));
-		$("#recording" + recordingCount + "Span").attr('data-startTime',startBar);
-		$("#recording" + recordingCount + "Span").css('left',"" + startBar*pixelsPer16 + "px");
-		$("#recording" + recordingCount + "Span").css('position','absolute');
-		$("#recording" + recordingCount + "Span").draggable({
-		    axis: "x",
-		    containment: "parent",
-		    grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-		    stop: function() {
-			//get rid of old entry in table
-			var currentRecordingCount = parseInt($(this).attr('id').split('recording')[1]);
-			var currentStartBar = $(this).attr('data-startTime');
-			times[currentStartBar] = jQuery.removeFromArray(currentRecordingCount, times[currentStartBar]);
-			$(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-			var newStartTime = $(this).attr('data-startTime');
-			if(times[newStartTime] == null){
-			    times[newStartTime] = [{id: currentRecordingCount, track: recordTrackNumber}];
-			} else {
-			    times[newStartTime].push({id: currentRecordingCount, track: recordTrackNumber});
-			}
-			console.log("Old Start Time: "+ currentStartBar);
-			console.log("New Start Time: "+ newStartTime);
+		    var startBar;
+		    if(pauseBeat==undefined){
+			startBar = 0;
+		    } else {
+			startBar = pauseBeat;
 		    }
-		});
-		canvas.width = parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60);
-		canvas.height = 80;
 
-		activeRecorder.exportWAV(function(blob){
-		    var url = URL.createObjectURL(blob);
+		    activeRecorder.getBuffer(function(recordingBuffer){
+			recordingDuration = recordingBuffer[0].length/ac.sampleRate;
+
+			var newBuffer = ac.createBuffer( 2, recordingBuffer[0].length, ac.sampleRate );
+			//var newSource = ac.createBufferSourceNode();
+			newBuffer.getChannelData(0).set(recordingBuffer[0]);
+			newBuffer.getChannelData(1).set(recordingBuffer[1]);
+			//newSource.buffer = newBuffer;
+
+			var span = document.createElement('span');
+			span.id = "recording" + recordingCount + "Span";
+			var canvas = document.createElement('canvas');
+			canvas.className = "sample";
+			canvas.id = "recording" + recordingCount + "Canvas";
+			$("#track"+recordTrackNumber).append(span);
+			$("#recording" + recordingCount + "Span").append(canvas);
+			$("#recording" + recordingCount + "Span").width(parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60));
+			$("#recording" + recordingCount + "Span").attr('data-startTime',startBar);
+			$("#recording" + recordingCount + "Span").css('left',"" + startBar*pixelsPer16 + "px");
+			$("#recording" + recordingCount + "Span").css('position','absolute');
+			$("#recording" + recordingCount + "Span").draggable({
+			    axis: "x",
+			    containment: "parent",
+			    grid: [pixelsPer16, 0],		//grid snaps to 16th notes
+			    stop: function() {
+				//get rid of old entry in table
+				var currentRecordingCount = parseInt($(this).attr('id').split('recording')[1]);
+				var currentStartBar = $(this).attr('data-startTime');
+				times[currentStartBar] = jQuery.removeFromArray(currentRecordingCount, times[currentStartBar]);
+				$(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
+				var newStartTime = $(this).attr('data-startTime');
+				if(times[newStartTime] == null){
+				    times[newStartTime] = [{id: currentRecordingCount, track: recordTrackNumber}];
+				} else {
+				    times[newStartTime].push({id: currentRecordingCount, track: recordTrackNumber});
+				}
+				console.log("Old Start Time: "+ currentStartBar);
+				console.log("New Start Time: "+ newStartTime);
+			    }
+			});
+			canvas.width = parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60);
+			canvas.height = 80;
+
+			activeRecorder.exportWAV(function(blob){
+			    var url = URL.createObjectURL(blob);
+			    var wavesurfer = Object.create(WaveSurfer);
+			    wavesurfer.init({
+				canvas: canvas,
+				waveColor: '#08c',
+				progressColor: '#08c',
+				loadingColor: 'purple',
+				cursorColor: 'navy',
+				audioContext: ac
+			    });
+			    wavesurfer.load(url);
+			    globalWavesurfers.push(wavesurfer);
+			    buffers[recordingCount] = {buffer: newBuffer};
+
+			    if(times[startBar] == null){
+				times[startBar] = [{id: recordingCount, track: recordTrackNumber}];
+			    } else {
+				times[startBar].push({id: recordingCount, track: recordTrackNumber});
+			    }
+			    recordingCount++;
+			});
+		    });
+
+
+
+		}
+
+    });
+
+	// Storage API (Maybe remove this as we're able to take advantage of the Users Local Storage Devices)
+    $("#track"+trackNumber+"title").storage({
+		storageKey : 'track'+trackNumber
+    });
+
+	// Track Drop Functionality
+    $( "#track"+trackNumber ).droppable({
+		accept: ".librarySample",
+		drop: function( event, ui ) {
+		    var startBar = Math.floor((ui.offset.left-$(this).offset().left)/6);
+		    var sampleStartTime = startBar;
+		    var rand = parseInt(Math.random() * 10000);
+		    var span = document.createElement('span');
+		    var sampleID = ui.helper.attr("data-id");
+		    var sampleDuration = ui.helper.attr("data-duration");
+		    var sampleURL = ui.helper.attr("data-url");
+		    span.id = "sample" + sampleID + "Span" + rand;
+		    var canvas = document.createElement('canvas');
+		    canvas.className = "sample";
+		    canvas.id = "sample" + sampleID + "Canvas" + rand;
+		    $(this).append(span);
+		    $("#sample" + sampleID + "Span" + rand).append(canvas);
+		    $("#sample" + sampleID + "Span" + rand).width(parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60));
+		    canvas.width = parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60);
+		    canvas.height = 80;
+		    $( "#sample" + sampleID + "Span" + rand).attr('data-startTime',startBar);
+		    $( "#sample" + sampleID + "Span" + rand).css('left',"" + startBar*pixelsPer16 + "px");
+		    $( "#sample" + sampleID + "Span" + rand).css('position','absolute');
+		    $( "#sample" + sampleID + "Span" + rand).draggable({
+			axis: "x",
+			containment: "parent",
+			grid: [pixelsPer16, 0],		//grid snaps to 16th notes
+			stop: function() {
+			    var currentStartBar = $(this).attr('data-startTime');
+			    times[currentStartBar] = jQuery.removeFromArray(sampleID, times[currentStartBar]);
+			    $(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
+			    var newStartTime = $(this).attr('data-startTime');
+			    if(times[newStartTime] == null){
+				times[newStartTime] = [{id: sampleID, track: trackNumber}];
+			    } else {
+				times[newStartTime].push({id: sampleID, track: trackNumber});
+			    }
+			}
+		    });
+
 		    var wavesurfer = Object.create(WaveSurfer);
 		    wavesurfer.init({
 			canvas: canvas,
-			waveColor: '#08c',
-			progressColor: '#08c',
+			waveColor: 'violet',
+			progressColor: 'purple',
 			loadingColor: 'purple',
 			cursorColor: 'navy',
 			audioContext: ac
 		    });
-		    wavesurfer.load(url);
+		    wavesurfer.load(sampleURL);
 		    globalWavesurfers.push(wavesurfer);
-		    buffers[recordingCount] = {buffer: newBuffer};
-
-		    if(times[startBar] == null){
-			times[startBar] = [{id: recordingCount, track: recordTrackNumber}];
-		    } else {
-			times[startBar].push({id: recordingCount, track: recordTrackNumber});
+		    if(buffers[sampleID]==undefined){
+			load(sampleURL, sampleID);
 		    }
-		    recordingCount++;
-		});
-	    });
-
-
-
-	}
-
-    });
-
-    $("#track"+trackNumber+"title").storage({
-	storageKey : 'track'+trackNumber
-    });
-
-    $( "#track"+trackNumber ).droppable({
-	accept: ".librarySample",
-	drop: function( event, ui ) {
-	    var startBar = Math.floor((ui.offset.left-$(this).offset().left)/6);
-	    var sampleStartTime = startBar;
-	    var rand = parseInt(Math.random() * 10000);
-	    var span = document.createElement('span');
-	    var sampleID = ui.helper.attr("data-id");
-	    var sampleDuration = ui.helper.attr("data-duration");
-	    var sampleURL = ui.helper.attr("data-url");
-	    span.id = "sample" + sampleID + "Span" + rand;
-	    var canvas = document.createElement('canvas');
-	    canvas.className = "sample";
-	    canvas.id = "sample" + sampleID + "Canvas" + rand;
-	    $(this).append(span);
-	    $("#sample" + sampleID + "Span" + rand).append(canvas);
-	    $("#sample" + sampleID + "Span" + rand).width(parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60));
-	    canvas.width = parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60);
-	    canvas.height = 80;
-	    $( "#sample" + sampleID + "Span" + rand).attr('data-startTime',startBar);
-	    $( "#sample" + sampleID + "Span" + rand).css('left',"" + startBar*pixelsPer16 + "px");
-	    $( "#sample" + sampleID + "Span" + rand).css('position','absolute');
-	    $( "#sample" + sampleID + "Span" + rand).draggable({
-		axis: "x",
-		containment: "parent",
-		grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-		stop: function() {
-		    var currentStartBar = $(this).attr('data-startTime');
-		    times[currentStartBar] = jQuery.removeFromArray(sampleID, times[currentStartBar]);
-		    $(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-		    var newStartTime = $(this).attr('data-startTime');
-		    if(times[newStartTime] == null){
-			times[newStartTime] = [{id: sampleID, track: trackNumber}];
+		    if(times[sampleStartTime] == null){
+			times[sampleStartTime] = [{id: sampleID, track: trackNumber}];
 		    } else {
-			times[newStartTime].push({id: sampleID, track: trackNumber});
+			times[sampleStartTime].push({id: sampleID, track: trackNumber});
 		    }
 		}
-	    });
-
-	    var wavesurfer = Object.create(WaveSurfer);
-	    wavesurfer.init({
-		canvas: canvas,
-		waveColor: 'violet',
-		progressColor: 'purple',
-		loadingColor: 'purple',
-		cursorColor: 'navy',
-		audioContext: ac
-	    });
-	    wavesurfer.load(sampleURL);
-	    globalWavesurfers.push(wavesurfer);
-	    if(buffers[sampleID]==undefined){
-		load(sampleURL, sampleID);
-	    }
-	    if(times[sampleStartTime] == null){
-		times[sampleStartTime] = [{id: sampleID, track: trackNumber}];
-	    } else {
-		times[sampleStartTime].push({id: sampleID, track: trackNumber});
-	    }
-	}
     });
 
+	// +1 on trackNumber for everytime we create a new track.
     trackNumber++;
 }
 
-// Create New Project (This can move most OpenDAW code into one function thus allowing a predefined Default Project to be the new project)
-function startNewProject() {
-createTrack(1);
-createTrack(2);
-createTrack(3);
-}
-
 function createNodes(numTracks) {
-    //for each track create a master gain node. specific tracks represented by array index i
+    // for each track create a master gain node. specific tracks represented by array index i
     for (var i = 1; i <= numTracks; i++) {
-	var trackMasterGainNode = ac.createGain();
-	var trackInputNode = ac.createGain();
-	var trackVolumeNode = ac.createGain();
+	var trackMasterGainNode = ac.createGain(),
+		trackInputNode = ac.createGain(),
+		trackVolumeNode = ac.createGain();
 
 	trackMasterGainNode.connect(masterGainNode);
 	trackVolumeNode.connect(trackMasterGainNode);
@@ -1047,39 +1059,42 @@ function startUserMedia(stream) {
     micStream = stream;
 }
 
+// Ask user to use microphone on load (Probably should do this at the moment they press record, (If user selects allow, It should then initiate recording, otherwise tell the user they can't record))
 window.onload = function init() {
     try {
-      // webkit shim
-//      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-      window.URL = window.URL || window.webkitURL;
+		window.URL = window.URL || window.webkitURL;
+	} catch (e) {
+		alert('No web audio support in this browser!');
+	}
 
-    } catch (e) {
-      alert('No web audio support in this browser!');
-    }
+	navigator.webkitGetUserMedia({audio: true}, startUserMedia, function(e) {
 
-    navigator.webkitGetUserMedia({audio: true}, startUserMedia, function(e) {
-    });
+	});
 };
 
 window.addEventListener("load", initSched);
 
 // Special Debug Console Calls!
 win.log = console.log.bind(console);
+
 win.debug = function () {
 	var params = Array.prototype.slice.call(arguments, 1);
 	params.unshift('%c[%cDEBUG%c] %c' + arguments[0], 'color: black;', 'color: green;', 'color: black;', 'color: blue;');
 	console.debug.apply(console, params);
 };
+
 win.info = function () {
 	var params = Array.prototype.slice.call(arguments, 1);
 	params.unshift('[%cINFO%c] ' + arguments[0], 'color: blue;', 'color: black;');
 	console.info.apply(console, params);
 };
+
 win.warn = function () {
 	var params = Array.prototype.slice.call(arguments, 1);
 	params.unshift('[%cWARNING%c] ' + arguments[0], 'color: orange;', 'color: black;');
 	console.warn.apply(console, params);
 };
+
 win.error = function () {
 	var params = Array.prototype.slice.call(arguments, 1);
 	params.unshift('%c[%cERROR%c] ' + arguments[0], 'color: black;', 'color: red;', 'color: black;');
@@ -1170,17 +1185,20 @@ if (process.platform === 'darwin') {
 	Mousetrap.bind('command+ctrl+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
-        var $this = $(".icon-fullscreen");
-        if ($this.hasClass("fa-expand"))
-        {
-            $this.removeClass("fa-expand").addClass("fa-compress");
-            return;
-        }
-        if ($this.hasClass("fa-compress"))
-        {
-            $this.removeClass("fa-compress").addClass("fa-expand");
-            return;
-        }
+		// Toggle button when user enters Fullscreen
+
+		var $this = $(".icon-fullscreen");
+		if ($this.hasClass("fa-expand"))
+		{
+			$this.removeClass("fa-expand").addClass("fa-compress");
+			return;
+		}
+
+		if ($this.hasClass("fa-compress"))
+		{
+			$this.removeClass("fa-compress").addClass("fa-expand");
+			return;
+		}
 	});
 }
 
@@ -1188,6 +1206,7 @@ else {
 	Mousetrap.bind('ctrl+alt+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
+		// Toggle button when user enters Fullscreen
         var $this = $(".icon-fullscreen");
         if ($this.hasClass("fa-expand"))
         {
@@ -1268,7 +1287,5 @@ if (gui.App.fullArgv.indexOf('-f') !== -1) {
 // Show 404 page on uncaughtException
 process.on('uncaughtException', function (err) {
 	window.console.error(err, err.stack);
+	// Maybe warn the user with "We've detected an issue, Please wait while we restart the program" and save a backup project so when the user comes back it's ready to continue.
 });
-
-// Show Menu
-//createMenu();
