@@ -1,12 +1,12 @@
 # [Vanguard](#)
 
-Create music on Your Computer with HTML/JS!
+Digital Audio Workstation created in node-webkit!
 
 ![Vanguard](http://i.imgur.com/57SMBAB.png)
 
 ***
 
-# You can install dependencies simply by running ```npm install``` in the project root.
+### You can install dependencies simply by running ```npm install``` in the project root.
 
 ***
 
