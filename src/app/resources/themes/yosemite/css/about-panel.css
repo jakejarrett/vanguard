@@ -1,0 +1,145 @@
+/*
+// Theme: Yosemite (About Panel)
+// Author: Jake Jarrett
+// Website: https://github.com/jakehh/nw-shell
+//
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700);
+
+body, html {
+    font-family: 'Open Sans', 'sans-serif';
+    background: transparent;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+/* Navigation (Headerbar) */
+
+.navbar-default {
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(234,234,234,0.8)), color-stop(100%, rgba(213,213,213,0.8)));
+    background: -webkit-linear-gradient(top, rgba(234,234,234,1) 0%, rgba(213,213,213,1) 100%);
+    border: 1px solid #a6a6a8;
+    border-right: 1px solid #a6a6a8;
+    border-left: 1px solid #a6a6a8;
+    border-radius: 7px 7px 0px 0px;
+    padding-top: 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-app-region: drag;
+}
+
+.navbar {
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding-left: 5px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #4c4c4c;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #424242;
+}
+
+.navbar-default .navbar-nav > .open > a {
+    color: #6f6f6f;
+    background: transparent;
+}
+
+.navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #2c2c2c;
+    background: transparent;
+}
+
+/* Close/Minimize/Fullscreen */
+
+.close-button {
+    margin-top: 2px;
+    margin-left: 20px;
+    height: 12px;
+    width: 12px;
+    background: url(../img/yosemite-trafficlight.png) 0 0;
+    -webkit-app-region: no-drag
+}
+
+.close-button:hover {
+    background: url(../img/yosemite-trafficlight.png) 0 -14px;
+}
+
+.close-button:focus {
+
+    background: url(../img/yosemite-trafficlight.png) 0 -28px;
+}
+
+.minimize-disabled {
+    margin-top: 2px;
+    margin-left: 40px;
+    height: 12px;
+    width: 12px;
+    background: url(../img/disabled-2.png);
+    -webkit-app-region: no-drag
+}
+
+.fullscreen-disabled {
+    margin-top: -12px;
+    margin-left: 60px;
+    margin-right: -60px;
+    height: 12px;
+    width: 12px;
+    background: url(../img/disabled-2.png);
+    -webkit-app-region: no-drag
+}
+
+/* Content */
+
+.content {
+    position: absolute;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    outline-style: none;
+}
+
+.container-fluid {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    margin-top: 25px;
+    padding-top: 20px;
+    z-index: 1;
+    position: relative;
+    background-color: #ececec;
+    left: 0px;
+    outline-style: none;
+    border-bottom: 1px solid #ececec;
+    border-radius: 0px 0px 4px 4px;
+}
+
+.about-text {
+    font-size: 12px;
+}
+
+/* Border */
+
+html {
+    z-index: 100;
+    border: 1px solid #a6a6a8;
+    border-radius: 7px 7px 4px 4px;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,7 +1,7 @@
 /*
-// Theme: default
+// Theme: Yosemite
 // Author: Jake Jarrett
-// Website: https://github.com/jakehh/WebDAW
+// Website: https://github.com/jakehh/nw-shell
 //
 */
 
@@ -114,7 +114,7 @@ input.bpm-input {
 
 @-webkit-keyframes spin {
 	0%  {-webkit-transform: rotate(0deg);}
-	100% {-webkit-transform: rotate(-90deg);}	
+	100% {-webkit-transform: rotate(-90deg);}
 }
 
 .trackBox {

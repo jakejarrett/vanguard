@@ -53,43 +53,48 @@ var
     // Project State
     projectState = require('./lib/core/projectstate.js'),
 
+	// Vanguard JS
+	vanguard = require('./lib/vanguard/vanguard.js'),
+
     // VST Support
     VSTHost = require("node-vst-host").host,
 
     // Create VST Host
-    host = new VSTHost();
+    host = new VSTHost(),
 
-// New Instance of AudioContext, Only need to create webkit specific code.
-var ac = new (window.AudioContext || window.webkitAudioContext),
+	// New Instance of AudioContext, Only need to create webkit specific code.
+	ac = new (window.AudioContext || window.webkitAudioContext),
+
+	// Master Gain
 	masterGainNode = ac.createGain();
 
-// Set Master Volume for entire project
+// Set global Master Volume for entire project
 masterGainNode.gain.value = .8;
 masterGainNode.connect(ac.destination);
 
 // newProject Info
-var NewProject = $.parseJSON(defaultproj.newProject);
+var NewProject = $.parseJSON(defaultproj.newProject),
 
 // Recording Variables
-var micStream,
+	micStream,
 	activeRecorder,
-	recordingCount = 1000;
+	recordingCount = 1000,
 
 //array of track master gain nodes
-var trackMasterGains = [],
+	trackMasterGains = [],
 	trackVolumeGains = [],
 	trackInputNodes = [],
 	trackCompressors = [],
 	trackReverbs = [],
 	trackFilters = [],
 	trackDelays = [],
-	trackTremolos = [];
+	trackTremolos = [],
 
-//the currently selected track (for editing effects etc.)
-var activeTrack;
+	//the currently selected track (for editing effects etc.)
+	activeTrack,
 
 	//json of effect data
-var effects,
+	effects,
 	//contains AudioBuffer and id# of samples in workspace
 	buffers = [],
 	//contains start times of samples and their id#
@@ -99,6 +104,7 @@ var effects,
 	pixelsPer16 = 6,
 	//pixels per 1/4 note	used for sample canvas size
 	pixelsPer4 = 4*pixelsPer16,
+	// Project BPM (Need to change this) maybe change this to newproject.bpm; & call all playback functionality once you're in a project?
 	bpm = NewProject['projectInfo'].tempo,
 	secondsPer16 = 0.25 * 60 / bpm,
 	defaultTitle = NewProject['projectInfo'].title,
@@ -110,8 +116,8 @@ var effects,
 
 // File Chooser
 function fileChooser(name) {
-    var fs = require('fs');
-    var chooser = document.querySelector(name);
+    var fs = require('fs'),
+    	chooser = document.querySelector(name);
     chooser.addEventListener("change", function(evt) {
         console.log(this.value);
         fs.readFile(this.value, 'utf8', function (err,data) {
@@ -1283,6 +1289,13 @@ window.ondrop = function (e) {
 if (gui.App.fullArgv.indexOf('-f') !== -1) {
 	win.enterFullscreen();
 }
+win.on("devtools-opened", function(url) {
+	console.log("devtools-opened: " + url);
+	schedStop();
+});
+
+// About Dialog
+
 
 // Show 404 page on uncaughtException
 process.on('uncaughtException', function (err) {

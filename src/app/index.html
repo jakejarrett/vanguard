@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>WebDAW</title>
+    <title>Vanguard</title>
     <link rel="stylesheet" href="lib/jquery/jquery-ui.css" />
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
@@ -138,7 +138,7 @@
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a href="#" data-toggle="modal" data-target="#about" draggable="false">About</a>
+                          <a href="#" id="about-panel" draggable="false">About</a>
                       </li>
                     </ul>
                 </li>
@@ -292,34 +292,6 @@
           </div>
       </div>
       <!-- End Project Page -->
-
-      <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="aboutLabel">WebDAW 0.0.1 (Pre-alpha)</h4>
-                </div>
-                <!-- End Modal Header -->
-
-                <div class="modal-body">
-                    WebDAW is a fork of OpenDAW, to create a more modern UI for a web based DAW (Digital Audio Workstation)
-                </div>
-                <!-- End Modal Body -->
-
-                <div class="modal-footer">
-                    <a type="button" class="btn btn-default">Licenses</a>
-                    <a type="button" class="btn btn-primary" href="https://github.com/jakehh/WebDAW">Website</a>
-                </div>
-                <!-- End Modal Footer -->
-
-            </div>
-            <!-- End Modal Content -->
-
-          </div>
-      </div>
-      <!-- End About Modal -->
 
       <div class="modal fade" id="collaborate" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
           <div class="modal-dialog collaboration">
@@ -487,6 +459,7 @@
               $(".title").html(defaultTitle);
               $(".project").html(defaultLocation);
               projectState.currentState = "newProject";
+              vanguard.newProject();
               // These are currently the only way to bypass the original code while I continue work on making a new code base.
               createTrack(1);
               createTrack(2);
@@ -587,6 +560,19 @@
           $( ".close-button" ).click (function() // Close Project
           {
               nwin.close();
+          });
+
+          $( "#about-panel" ).click (function(){
+              aboutWindow = gui.Window.open('about.html', {
+                  position: 'center',
+                  toolbar: false,
+                  frame: false,
+                  transparent: true,
+                  resizable: false,
+                  focus: true,
+                  width: 400,
+                  height: 500
+              });
           });
 
           $( ".minimize-button" ).click(function() {

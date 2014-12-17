@@ -13,6 +13,7 @@ TODO
 * Timeline - Design & Implement new timeline to replace current timeline
 * Use native confirm/alert dialogs
 * Change theme depending on OS (Yosemite for OSX etc)
+* Fix alertify to look native (Or remove alertify completely)
 
 #### JS / Performance
 
