@@ -2,7 +2,7 @@
 
 Create music on Your Computer with HTML/JS!
 
-![Vanguard](http://i.imgur.com/pmTBOhP.png)
+![Vanguard](http://i.imgur.com/57SMBAB.png)
 
 ***
 
