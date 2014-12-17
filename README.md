@@ -10,4 +10,4 @@ Create music on Your Computer with HTML/JS!
 
 ***
 
-<h3 style="text-align: center;">Only runs on node-webkit builds of ^0.11.2 (0.11.2 or higher) due to transparency</h3>
+### Only runs on node-webkit builds of ^0.11.2 (0.11.2 or higher) due to transparency
