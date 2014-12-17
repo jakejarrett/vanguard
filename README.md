@@ -4,10 +4,10 @@ Create music on Your Computer with HTML/JS!
 
 ![Vanguard](http://i.imgur.com/pmTBOhP.png)
 
-Visit the project's website at <http://jrjmedia.net/>.
+***
+
+# You can install dependencies simply by running ```npm install``` in the project root.
 
 ***
 
-# Will add dependencies very shortly! Hold tight!
-
-# ~ More coming soon
+<h3 style="text-align: center;">Only runs on node-webkit builds of ^0.11.2 (0.11.2 or higher) due to transparency</h3>
