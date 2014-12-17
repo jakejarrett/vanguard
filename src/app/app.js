@@ -80,7 +80,7 @@ var NewProject = $.parseJSON(defaultproj.newProject),
 	activeRecorder,
 	recordingCount = 1000,
 
-//array of track master gain nodes
+	//array of track master gain nodes
 	trackMasterGains = [],
 	trackVolumeGains = [],
 	trackInputNodes = [],
