@@ -123,14 +123,14 @@
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a href="https://github.com/jakehh" draggable="false"><i class="fa fa-github"></i> Github</a>
+                          <a class="open-external" href="https://github.com/jakehh/vanguard" draggable="false"><i class="fa fa-github"></i> Github</a>
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a href="/bugs.html" target="_blank" draggable="false">Report a Bug</a>
+                          <a class="open-external" href="https://github.com/jakehh/vanguard/issues" target="_blank" draggable="false">Report a Bug</a>
                       </li>
                       <li>
-                          <a href="/help.php" target="_blank" draggable="false">Help</a>
+                          <a class="open-external" href="https://github.com/jakehh/vanguard/wiki" target="_blank" draggable="false">Help</a>
                       </li>
                       <li class="divider"></li>
                       <li>
@@ -391,8 +391,15 @@
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
 
+          //   On Close, Confirm the user wants to close the application
           nwin.on('close', function() {
             alertify.confirm('Do you wish to exit WebDAW?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
+          });
+
+          // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)
+          $('.open-external').click(function(e) {
+              e.preventDefault();
+              ngui.Shell.openExternal($(this).attr('href'));
           });
 
           $( ".fullscreen" ).click(function() {

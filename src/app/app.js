@@ -1294,9 +1294,6 @@ win.on("devtools-opened", function(url) {
 	schedStop();
 });
 
-// About Dialog
-
-
 // Show 404 page on uncaughtException
 process.on('uncaughtException', function (err) {
 	window.console.error(err, err.stack);
