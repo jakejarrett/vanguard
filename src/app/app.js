@@ -125,6 +125,7 @@ function fileChooser(name) {
                 return console.log(err);
             }
             console.log(data);
+			//  Handle opening Project here.
         });
     }, false);
 
@@ -1148,7 +1149,7 @@ String.prototype.endsWith = function (suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-// Developer Shortcuts
+// Shortcuts
 Mousetrap.bind(['shift+f12', 'f12', 'command+0'], function (e) {
 	win.showDevTools();
 });
@@ -1159,8 +1160,21 @@ Mousetrap.bind(['shift+f10', 'f10', 'command+9'], function (e) {
 });
 
 Mousetrap.bind('mod+,', function (e) {
-	App.vent.trigger('about:close');
-	App.vent.trigger('settings:show');
+	// Open Settings
+	$('#settings').modal('toggle');
+	// App.vent.trigger('about:close');
+	// App.vent.trigger('settings:show');
+});
+
+Mousetrap.bind('up up down down left right left right b a enter', function() {
+	console.log("30 Lives Unlocked");
+	// Change this before any releases
+});
+
+Mousetrap.bind('alt', function() {
+	console.log("alt key");
+	// When holding alt key, You should be able to switch to maximize. This will feel more native for OS X Uses
+
 });
 
 Mousetrap.bind('f11', function (e) {
@@ -1229,61 +1243,15 @@ else {
 
 // Drop & Drap Files to open project (Not supported yet)
 
-window.ondragenter = function (e) {
-
-	$('#drop-mask').show();
-	var showDrag = true;
-	var timeout = -1;
-	$('#drop-mask').on('dragenter',
-		function (e) {
-			$('.drop-indicator').show();
-			console.log('drag init');
-		});
-	$('#drop-mask').on('dragover',
-		function (e) {
-			var showDrag = true;
-		});
-
-	$('#drop-mask').on('dragleave',
-		function (e) {
-			var showDrag = false;
-			clearTimeout(timeout);
-			timeout = setTimeout(function () {
-				if (!showDrag) {
-					console.log('drag aborted');
-					$('.drop-indicator').hide();
-					$('#drop-mask').hide();
-				}
-			}, 100);
-		});
-};
-
-window.ondrop = function (e) {
+holder.ondrop = function (e) {
 	e.preventDefault();
-	$('#drop-mask').hide();
-	console.log('drag completed');
-	$('.drop-indicator').hide();
 
-	var file = e.dataTransfer.files[0];
-
-	if (file != null && file.name.indexOf('.json') !== -1) {
-		var reader = new FileReader();
-
-		reader.onload = function (event) {
-			var content = reader.result;
-		};
-
-		reader.readAsBinaryString(file);
-	} else {
-		var data = e.dataTransfer.getData('text/plain');
-		handleTorrent(data);
-		// if (data != null && data.substring(0, 8) === 'magnet:?') {
-		//     startTorrentStream(data);
-		// }
+	for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+		console.log(e.dataTransfer.files[i].path);
 	}
-
 	return false;
 };
+
 
 // -f argument to open in fullscreen
 if (gui.App.fullArgv.indexOf('-f') !== -1) {

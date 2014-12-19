@@ -653,7 +653,7 @@
 
               if(key.keyCode == 188 && key.ctrlKey) // Settings
               {
-                  $('#settings').modal('toggle');
+                //   $('#settings').modal('toggle');
               }
 
           });
@@ -665,25 +665,17 @@
 
           // Handler for pressing enter on BPM/Tempo
           $( "#bpm-control" ).submit(function( event ) {
-              alert( "Handler for .submit() called." );
+              //   alert( "Handler for .submit() called." );
+              $('input').blur();
+
+              var bpm = $( "#bpm" ).val();
+              console.log(bpm);
               event.preventDefault();
           });
 
           // Drag events for when a user drags a file onto the program
-          window.ondragover = function(e) { e.preventDefault(); return false };
-          window.ondrop = function(e) { e.preventDefault(); return false };
-
-          var holder = document.getElementById('holder');
-
-          holder.ondragover = function ()
-          {
-              this.className = 'hover'; return false;
-          };
-
-          holder.ondragend = function ()
-          {
-              this.className = ''; return false;
-          };
+          window.ondragover = function(e) { e.preventDefault(); return false; };
+          window.ondrop = function(e) { e.preventDefault(); return false; };
 
           holder.ondrop = function (e)
           {

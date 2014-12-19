@@ -78,6 +78,8 @@ input.bpm-input {
 
 .new-content {
   background-color: #ffffff;
+  border-bottom: 1px solid #a6a6a8;
+  border-radius: 0px 0px 5px 5px;
 }
 
 #effectSortable li {
