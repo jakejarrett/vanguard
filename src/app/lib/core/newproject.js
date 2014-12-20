@@ -23,7 +23,7 @@ var defaultProject =
 module.exports.newProject = defaultProject;
 
 // New Project (This shouldn't be exported, So it should be fine to leave it as is for now)
-var Project = $.parseJSON(defaultProject),
+var Project = JSON.parse(defaultProject),
 
 bpm = Project['projectInfo'].tempo,
 ProjectTitle = Project['projectInfo'].title,
