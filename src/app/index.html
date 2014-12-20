@@ -391,9 +391,16 @@
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
 
-          //   On Close, Confirm the user wants to close the application
+          //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
           nwin.on('close', function() {
-            alertify.confirm('Do you wish to exit WebDAW?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
+              if(projectState.currentState != null) {
+                //   If the program has changed projectState, Ask the user "Do you wish to exit?", Maybe use native confirm instead?
+                  alertify.confirm('Do you wish to exit Vanguard?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
+              } else {
+                //   Otherwise, Just close the program because you're on the landing page.
+                  nwin.hide();
+                  nwin.close(true);
+              }
           });
 
           // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)

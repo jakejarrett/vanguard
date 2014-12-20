@@ -44,6 +44,7 @@
     "json-rpc2": "^0.7.0",
     "mime": "1.2.11",
     "mkdirp": "*",
+    "moment": "^2.8.4",
     "my-local-ip": "*",
     "nedb": "^0.10.11",
     "node-vst-host": "^0.0.3",

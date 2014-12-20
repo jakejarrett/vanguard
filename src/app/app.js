@@ -36,10 +36,7 @@ var
 	//mime = require('mime'),
 
 	// Moment for Time Parsing
-	//moment = require('moment'),
-
-	// Q JS for Promises
-	//Q = require('q'),
+	moment = require('moment'),
 
 	// Default Project (New Project defaults)
 	defaultproj = require('./lib/core/newproject.js'),
