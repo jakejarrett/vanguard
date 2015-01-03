@@ -391,6 +391,11 @@
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
 
+          // OS X Menu
+          var nativeMenuBar = new ngui.Menu({ type: "menubar" });
+          nativeMenuBar.createMacBuiltin("Vanguard");
+          nwin.menu = nativeMenuBar;
+
           //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
           nwin.on('close', function() {
               if(projectState.currentState != null) {
