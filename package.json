@@ -27,10 +27,8 @@
     "width": 1400,
     "height": 800,
     "position": "center",
-    "min_width": 1600,
-    "min_height": 800,
-    "max_width": 1920,
-    "max_height": 1080
+    "min_width": 1400,
+    "min_height": 800
   },
   "webkit": {
     "plugin": true
