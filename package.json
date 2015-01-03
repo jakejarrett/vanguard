@@ -24,7 +24,7 @@
     "transparent": true,
     "icon": "./src/app/resources/img/icon.png",
     "single-instance": true,
-    "width": 1600,
+    "width": 1400,
     "height": 800,
     "position": "center",
     "min_width": 1600,
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "adm-zip": "latest",
-    "airplay-js": "git+https://git.popcorntime.io/stash/scm/mir/node-airplay2.git",
+    "airplay-js": "^0.2.6",
     "async": "0.9.0",
     "i18n": "0.5.0",
     "jschardet": "1.1.0",
