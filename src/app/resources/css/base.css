@@ -21,7 +21,7 @@ p {
 }
 
 .navbar-form {
-  padding: 10px 15px;
+  padding: 8px 15px;
   height: 30px;
   margin-top: 6px;
   margin-bottom: 8.5px;
@@ -416,10 +416,10 @@ a.landingpage-content {
   text-decoration: none;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
   padding: 0px !important;
   overflow-y: hidden;
   overflow-x: hidden;

@@ -8,15 +8,16 @@
   "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features",
   "keywords": [
     "vanguard",
-    "WebDAW",
     "Music Production",
     "Digital Audio Workstation"
   ],
-  "scripts": {
-    "postinstall": "node_modules/.bin/bower install && grunt setup",
-    "postupdate": "node_modules/.bin/bower update && grunt setup",
-    "test": "grunt --verbose"
-  },
+  "author": [
+      {
+          "name": "Jake Jarrett",
+          "email": "jake@jrjmedia.net",
+          "web": "http://www.jrjmedia.net"
+      }
+  ],
   "window": {
     "title": "Vanguard",
     "toolbar": false,
@@ -27,11 +28,8 @@
     "width": 1400,
     "height": 800,
     "position": "center",
-    "min_width": 1400,
-    "min_height": 800
-  },
-  "webkit": {
-    "plugin": true
+    "min_width": 992,
+    "min_height": 750
   },
   "dependencies": {
     "adm-zip": "latest",

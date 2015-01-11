@@ -159,7 +159,7 @@
                     <div class="col-md-2">
                       <i class="fa fa-file fa-5x"></i>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                       <h3>New Project</h3>
                       <h5>Start a new project</h5>
                     </div>
@@ -171,7 +171,7 @@
                     <div class="col-md-2">
                       <i class="fa fa-clipboard fa-5x"></i>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                       <h3>Open Project</h3>
                       <h5>Open a new project</h5>
                     </div>
@@ -183,7 +183,7 @@
                     <div class="col-md-2">
                       <i class="fa fa-users fa-5x"></i>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3">
                       <h3>Collaborate</h3>
                       <h5>Collaborate with friends</h5>
                     </div>
@@ -239,7 +239,7 @@
 
               <div class="col-md-10 scrollable dawcontent">
                   <!-- Start Timeline / DAW Contents -->
-                  <div id="tracks" class="span9 scrollable">
+                  <div class="span9 scrollable">
                       <div class="row-fluid timeline_pull">
                           <div class="span1" style="position:relative;">
                               <div id="clock" class="clock"></div>
@@ -262,6 +262,8 @@
                           <canvas id="timeline">
                           </canvas>
                       </div>
+                    </div>
+                    <div id="tracks">
                     </div>
                 </div>
             </div>
@@ -381,6 +383,7 @@
       <script src="lib/core/recorder.js"></script>
       <script src="lib/core/effects.js"></script>
       <script src="lib/core/vumeter.js"></script>
+      <script src="lib/core/osx-menu.js"></script>
 
       <!-- Requirements to run the Application -->
       <script src="database.js"></script>
@@ -391,22 +394,21 @@
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
 
-          // OS X Menu
-          var nativeMenuBar = new ngui.Menu({ type: "menubar" });
-          nativeMenuBar.createMacBuiltin("Vanguard");
-          nwin.menu = nativeMenuBar;
-
           //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
           nwin.on('close', function() {
               if(projectState.currentState != null) {
-                //   If the program has changed projectState, Ask the user "Do you wish to exit?", Maybe use native confirm instead?
-                  alertify.confirm('Do you wish to exit Vanguard?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
+                  var confirmExit = confirm('Do You wish to exit Vanguard?');
+                  if(confirmExit == true) {
+                      nwin.hide();
+                      nwin.close(true);
+                  }
               } else {
                 //   Otherwise, Just close the program because you're on the landing page.
                   nwin.hide();
                   nwin.close(true);
               }
           });
+
 
           // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)
           $('.open-external').click(function(e) {
@@ -466,8 +468,17 @@
           });
 
           // Functions
-          function newProject()  // New Project
-          {
+          function clearProject() {
+
+              $("#tracks").empty();
+              $("#trackcontrols").empty();
+              trackNumber = 0;
+              globalNumberOfTracks = 0;
+              newTrackNumber = 1;
+          }
+
+          //   Create New Project
+          function newProject() {
               $( "#bpm" ).show();
               $( "#project" ).show();
               $( ".projectnav" ).show();
@@ -489,21 +500,22 @@
               console.log(projectState);
           };
 
-          function closeCurrent() // Close Project. Is this required anymore?
-          {
-              if(projectState.currentState != null)
-              {
-                  alertify.confirm('Do you wish to close this project?').setting('onok', function(){
-                    $( "#newpage" ).show();
-                    $( "#landingpage" ).show();
-                    $( "#landingpage-left").show();
-                    $( "#landingpage-right").show();
-                    $( "#project" ).hide();
-                    $( "#bpm" ).hide();
-                    $( ".projectnav" ).hide();
-                    projectState.currentState = null;
-                    console.log(projectState);
-                  });
+          // Close Current Project
+          function closeCurrent() {
+              if(projectState.currentState != null) {
+                  var confirmExit = confirm('Do You wish to close this project?');
+                  if(confirmExit == true) {
+                      $( "#newpage" ).show();
+                      $( "#landingpage" ).show();
+                      $( "#landingpage-left").show();
+                      $( "#landingpage-right").show();
+                      $( "#project" ).hide();
+                      $( "#bpm" ).hide();
+                      $( ".projectnav" ).hide();
+                      projectState.currentState = null;
+                      console.log(projectState);
+                      clearProject();
+                  }
               }
               else
               {

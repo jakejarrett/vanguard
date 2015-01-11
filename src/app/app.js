@@ -1197,19 +1197,6 @@ Mousetrap.bind('shift+up shift+up shift+down shift+down shift+left shift+right s
 	$('body').addClass('knm');
 });
 
-
-// Quit App (Fix for OS X, doesn't react when CMD+Q is pressed)
-Mousetrap.bind('command+q', function () {
-	if(projectState.currentState != null) {
-		//   If the program has changed projectState, Ask the user "Do you wish to exit?", Maybe use native confirm instead?
-		alertify.confirm('Do you wish to exit Vanguard?').setting('onok', function(){ nwin.hide(); nwin.close(true); } );
-	} else {
-		//   Otherwise, Just close the program because you're on the landing page.
-		nwin.hide();
-		nwin.close(true);
-	}
-});
-
 // Fullscreen for OS X
 if (process.platform === 'darwin') {
 	Mousetrap.bind('command+ctrl+f', function (e) {
