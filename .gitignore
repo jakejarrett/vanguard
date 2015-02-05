@@ -93,29 +93,4 @@ bower_components
 nwsnapshot
 
 *.icns
-
-node-webkit.app/Contents/PkgInfo
-
-node-webkit.app/Contents/MacOS/node-webkit
-
-*.plist
-
-node-webkit.app/Contents/Frameworks/crash_inspector
-
-*.so
-
-node-webkit.app/Contents/Frameworks/node-webkit Framework.framework/node-webkit Framework
-
-*.nib
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper EH.app/Contents/MacOS/node-webkit Helper EH
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper NP.app/Contents/MacOS/node-webkit Helper NP
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper EH.app/Contents/PkgInfo
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper NP.app/Contents/PkgInfo
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper.app/Contents/MacOS/node-webkit Helper
-
-node-webkit.app/Contents/Frameworks/node-webkit Helper.app/Contents/PkgInfo
+*.app

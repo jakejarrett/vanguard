@@ -464,3 +464,22 @@ html {
   margin-left: -15px;
   padding-left: 15px;
 }
+
+/* Track ID */
+
+.trackID {
+    margin-bottom: 20px;
+}
+
+/* Volume Control & Track Controls */
+input.volumeController {
+    max-height: 24px;
+    height: 24px;
+    width: 150px;
+    margin-top: -20px;
+    margin-bottom: 15px;
+}
+
+.trackController {
+    margin-top: 15px;
+}
