@@ -394,6 +394,7 @@
           var ngui = require('nw.gui');
           var nwin = ngui.Window.get();
 
+          nwin.showDevTools();
           //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
           nwin.on('close', function() {
               if(projectState.currentState != null) {
@@ -409,29 +410,50 @@
               }
           });
 
+          // Make AppButtons act like native buttons
+          $('.close-button').hover(
+              function () {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+              },
+              function() {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+              }
+          );
+
+          $('.minimize-button').hover(
+              function () {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+              },
+              function() {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+              }
+          );
+
+          $('.fullscreen-button').hover(
+              function () {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+              },
+              function() {
+                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
+                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
+                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+              }
+          );
 
           // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)
           $('.open-external').click(function(e) {
               e.preventDefault();
               ngui.Shell.openExternal($(this).attr('href'));
-          });
-
-          $( ".fullscreen" ).click(function() {
-            nwin.toggleFullscreen();
-            var $this = $(".icon-fullscreen");
-
-            if ($this.hasClass("fa-expand"))
-            {
-                $this.removeClass("fa-expand").addClass("fa-compress");
-                return;
-            }
-
-            if ($this.hasClass("fa-compress"))
-            {
-                $this.removeClass("fa-compress").addClass("fa-expand");
-                return;
-            }
-
           });
 
           $( "#playPause" ).click(function() {
@@ -516,17 +538,13 @@
                       console.log(projectState);
                       clearProject();
                   }
-              }
-              else
-              {
-                  // Ask if the user wants to exit WebDAW?
-                  // This way, if a user clicks Ctrl+W on the landing page, It's a better experience as you'd expect it to behave in a way where Ctrl+W would close the window if you didn't have any projects open.
+              } else {
                   nwin.close();
               }
           }
 
-          function openProject()  // Open Project
-          {
+          // Open Project
+          function openProject() {
               fileChooser('#openfileDialog');
               if( $('#openfileDialog').val() == "" ) {
                   projectState.currentState = "openedProject";
@@ -534,14 +552,9 @@
               }
           };
 
-          function saveProject() // Save Project
-          {
+          // Save Project
+          function saveProject() {
               saveFile('#saveasDialog');
-          }
-
-          function consoleLog()
-          {
-              console.log('%cWebDAW is a fork of OpenDAW, to create a more modern UI for a web based DAW (Digital Audio Workstation) [PS. ur liek supa hax !!! congratz]', 'color: lightgreen; background-color: black;');
           }
 
           // Not Functions
@@ -555,9 +568,6 @@
               $( "#project" ).hide();
               $( "#bpm" ).hide();
               $( ".projectnav" ).hide();
-
-              // A little about snippet for some fun / little easter egg :~)
-              consoleLog();
           });
 
           $( window ).ready(function() {
@@ -568,32 +578,29 @@
               $( "#project" ).hide();
               $( "#bpm" ).hide();
               $( ".projectnav" ).hide();
-
-              // A little about snippet for some fun / little easter egg :~)
-              consoleLog();
           });
 
-          $( ".newproject" ).click(function()  // New Project
-          {
+          // New Project
+          $( ".newproject" ).click(function() {
               newProject();
           });
 
-          $( ".openproject" ).click(function()  // Open Project
-          {
+          // Open Project
+          $( ".openproject" ).click(function() {
               openProject();
           });
 
-          $( ".saveproject" ).click(function()  // Save Project
-          {
+          // Save Project
+          $( ".saveproject" ).click(function() {
               saveProject();
           });
 
-          $( ".close-button" ).click (function() // Close Project
-          {
+          // Close Project
+          $( ".close-button" ).click (function() {
               nwin.close();
           });
 
-          $( "#about-panel" ).click (function(){
+          $( "#about-panel" ).click (function() {
               aboutWindow = gui.Window.open('about.html', {
                   position: 'center',
                   toolbar: false,
@@ -616,7 +623,6 @@
           });
 
           // Toggle between Fullscreen icons
-
           $( ".fullscreen-button" ).click(function() {
               win.toggleFullscreen();
               var $this = $(".fullscreen-button");
