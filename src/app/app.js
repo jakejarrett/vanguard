@@ -51,6 +51,9 @@ var
     projectState = require('./lib/core/projectstate.js'),
 
 	// Vanguard JS
+	file = require('./lib/core/files.js'),
+
+	// Vanguard JS
 	vanguard = require('./lib/vanguard/vanguard.js'),
 
     // VST Support
@@ -111,52 +114,6 @@ var NewProject = $.parseJSON(defaultproj.newProject),
 	globalNumberOfTracks,
 	globalWavesurfers = [];
 
-// File Chooser
-function fileChooser(name) {
-    var fs = require('fs'),
-    	chooser = document.querySelector(name);
-    chooser.addEventListener("change", function(evt) {
-        console.log(this.value);
-        fs.readFile(this.value, 'utf8', function (err,data) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log(data);
-			//  Handle opening Project here.
-        });
-    }, false);
-
-    chooser.click();
-}
-
-// File Saver
-function saveFile(name) {
-	// Replace testSave with actual data, This was just to test how to handle the saving function
-	// Will probably make it grab all the Project Info on Save so it doesn't try to constantly update an object/json
-	var testSave = JSON.stringify(NewProject['projectInfo'], null, 4),
-    	fs = require('fs'),
-    	saver = document.querySelector(name);
-    saver.addEventListener("change", function(evt) {
-        // Write to selected file via node's writeFile()
-        fs.writeFile(this.value, testSave, function (err,data) {
-            if (err) {
-                return console.log(err);
-				alert(err);
-            }
-        });
-
-		// This is a Debug feature to ensure saving works. Maybe have an option to enable this by --debug ?
-        fs.readFile(this.value, 'utf8', function (err,data) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log(data);
-        });
-
-    }, false);
-
-    saver.click();
-}
 
 var wavesurfer = (function () {
     'use strict';
@@ -1064,7 +1021,7 @@ function startUserMedia(stream) {
 }
 
 // Ask user to use microphone on load (Probably should do this at the moment they press record, (If user selects allow, It should then initiate recording, otherwise tell the user they can't record))
-window.onload = function init() {
+window.addEventListener("load", function() {
     try {
 		window.URL = window.URL || window.webkitURL;
 	} catch (e) {
@@ -1074,7 +1031,7 @@ window.onload = function init() {
 	navigator.webkitGetUserMedia({audio: true}, startUserMedia, function(e) {
 
 	});
-};
+});
 
 window.addEventListener("load", initSched);
 
@@ -1254,6 +1211,7 @@ holder.ondrop = function (e) {
 if (gui.App.fullArgv.indexOf('-f') !== -1) {
 	win.enterFullscreen();
 }
+
 win.on("devtools-opened", function(url) {
 	console.log("devtools-opened: " + url);
 	schedStop();

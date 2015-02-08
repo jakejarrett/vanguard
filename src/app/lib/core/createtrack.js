@@ -1,11 +1,5 @@
-//
-// Currently not supported
-// 
-
-var proj = require('./newproject.js');
-
-function createTrack(trackNumber){
-    var appendTrack = "<div id='track";
+exports.createTrack = function(trackNumber) {
+    var appendTrack = "<div id='track";
         appendTrack += trackNumber;
         appendTrack += "' class='span10 track'></div>";
     $("#tracks").append(appendTrack);

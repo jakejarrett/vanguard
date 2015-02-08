@@ -4,13 +4,14 @@ if (process.platform === "darwin") {
         win = gui.Window.get(),
         nativeMenuBar = new gui.Menu({ type: "menubar" }),
         file = new gui.Menu(),
-        edit = new gui.Menu(),
         Window = new gui.Menu(),
         playback = new gui.Menu(),
-        help = new gui.Menu();
+        help = new gui.Menu(),
+        clipboard = gui.Clipboard.get();
+
 
     nativeMenuBar.createMacBuiltin("Vanguard", {
-        hideEdit: true,
+        hideEdit: false,
         hideWindow: true
     });
 
@@ -29,7 +30,7 @@ if (process.platform === "darwin") {
             click: function() {
                 console.log("New Project");
                 clearProject();
-                newProject();
+                vanguard.newProject();
             },
             key: "n",
             modifiers: "cmd"
@@ -42,9 +43,22 @@ if (process.platform === "darwin") {
             label: 'Open Project',
             click: function() {
                 console.log("Open Project");
-                openProject();
+                vanguard.openProject();
             },
             key: "o",
+            modifiers: "cmd"
+        })
+    );
+
+    // Save Project
+    file.append(
+        new gui.MenuItem({
+            label: 'Save Project',
+            click: function() {
+                console.log("Save Project");
+                vanguard.saveProject();
+            },
+            key: "s",
             modifiers: "cmd"
         })
     );
@@ -80,13 +94,13 @@ if (process.platform === "darwin") {
         })
     );
 
-    // Create Edit Menu
-    nativeMenuBar.insert(
-        new gui.MenuItem({
-            label: 'Edit',
-            submenu: edit
-        }), 2
-    );
+    // // Create Edit Menu
+    // nativeMenuBar.insert(
+    //     new gui.MenuItem({
+    //         label: 'Edit',
+    //         submenu: edit
+    //     }), 2
+    // );
 
     // Create Window Menu
     nativeMenuBar.insert(
