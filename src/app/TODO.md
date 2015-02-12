@@ -1,47 +1,39 @@
-TODO
+High Priority
 ====
 
-#### What to begin work on before 0.1 release.
+#### vanguard.js
+* Landing Page
+* New Project
+* Save Project
+* Open Project
+* Write/Edit MIDI Clips
+* Play, Pause & Stop
+
+#### Core JS (OpenDAW Code)
+* Instruments
+* Effects
+* Library
+* Timeline
+* Regions (Wavesurfer)
+
+#### Testing / Building
+* Implement GulpJS for testing & Builds
 
 #### UI
+* New Traffic Light buttons (High Res)
 
-* ~~UI Needs to finalised (Sidebar for Instruments, Effects, Library & Sidebar for Channels)~~
-* Needs panel that comes up only when you select Channel/Instrument
-* ~~Need to finish off Headerbar with all icons & then prepare them for functionality~~
-* Themes (Default, Flat & more) & allow custom themes
-* Settings Modal/Page
-* Timeline - Design & Implement new timeline to replace current timeline
-* Use native confirm/alert dialogs
-* Change theme depending on OS (Yosemite for OSX etc)
-* Fix alertify to look native (Or remove alertify completely)
+Low priority
+===========
 
-#### JS / Performance
+#### vanguard.js
+* Settings
+* Collaboration
+* Autosave
+* Export MIDI Clips
+* Notes on Regions/Clips (Wavesurfer)
 
-* Minimize JS
-* Allow disabling of certain plugins
-* Add Looping to main.js & UI
-
-#### vanguard.js / Core JS
-
-* ~~Begin restructuring JS for Modular design (note- all code has been moved to /lib/ to keep it simple)~~
-* ~~Create new Project via Predefined JS Array~~
-* Begin writing core DAW functionality in vanguard.js (Will be done before a full release)
-* Make "New Project" essentially opening a prebuilt 4 channel project. (Users can save their own "New Project" template)
-
-#### Backend
-
-* Implement cloud support (Google Drive, Dropbox etc?) for saving files if the user chooses to.
-
-#### Themes
-
-* ~~Restructure CSS~~
-* Plan to support Instrument Theming too
-* Create Flat Theme, Light & Dark Themes.
-* Re-write SCSS for code to allow users to make their own style in SCSS or CSS
-
-#### Projects
-
-* Ability to save instruments (JSON gzip?)
-* Optional write notes on clips/regions.
-* Write/Edit MIDI clips (Possibly export MIDI clips)
-* Make "New Project" essentially opening a prebuilt 4 channel project. (Users can save their own "New Project" template)
+#### UI
+* Themes
+* Logo/Icon
+* ~~OS X Application Menu~~
+* ~~Headerbar~~
