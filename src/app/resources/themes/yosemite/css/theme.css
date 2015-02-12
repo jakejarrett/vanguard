@@ -388,7 +388,7 @@ input.bpm-input {
 /* Drop Downs */
 
 ul.dropdown-menu {
-    background-color: rgba(253, 253, 254, 0.8);
+    background-color: rgba(253, 253, 254, 1);
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
     box-shadow: 0px 8px 16px 0.00px rgba(131, 150, 166, 0.75);
