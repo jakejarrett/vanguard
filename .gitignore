@@ -94,3 +94,5 @@ nwsnapshot
 
 *.icns
 *.app
+build/*
+cache/*

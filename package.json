@@ -52,8 +52,10 @@
   },
   "devDependencies": {
     "gulp": "3.8.11",
+    "gulp-install": "^0.2.0",
     "gulp-sass": "1.3.2",
-    "generator-gulp-plugin-boilerplate": "latest",
+    "gulp-util": "^3.0.3",
+    "node-webkit-builder": "^1.0.8",
     "tmp": "0.0.23"
   }
 }
