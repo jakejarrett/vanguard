@@ -1,15 +1,19 @@
 /*
+//
 // Theme: Yosemite
 // Author: Jake Jarrett
 // Website: https://github.com/jakehh/nw-shell
+// Using OpenSans (https://github.com/FontFaceKit/open-sans)
 //
 */
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700);
+@import url("./opensans.css");
 
 body, html {
     font-family: 'Open Sans', 'sans-serif';
     background: transparent;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /* Navigation (Headerbar) */
@@ -70,6 +74,8 @@ input.bpm-input {
   background-color: #fffffff;
   border-left: 1px solid #d9d9d9;
   border-radius: 0px 0px 4px 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .instrumentsbutton {

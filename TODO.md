@@ -6,6 +6,8 @@ High Priority
 * New Project
 * Save Project
 * Open Project
+* Add Track
+* Remove Track
 * Write/Edit MIDI Clips
 * Play, Pause & Stop
 
@@ -16,11 +18,15 @@ High Priority
 * Timeline
 * Regions (Wavesurfer)
 
+#### Offline Mode
+* ~~Pull all dependencies to allow a user to use the application offline~~
+
 #### Testing / Building
 * Implement GulpJS for testing & Builds
 
 #### UI
 * New Traffic Light buttons (High Res)
+* When DAW Becomes scrollable, Headerbar becomes transparent.
 
 Low priority
 ===========
