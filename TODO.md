@@ -9,6 +9,7 @@ High Priority
 * Add Track
 * Remove Track
 * Write/Edit MIDI Clips
+* Import & Edit Audio Clips
 * Play, Pause & Stop
 
 #### Core JS (OpenDAW Code)

@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     NwBuilder = require('node-webkit-builder'),
 
     nw = new NwBuilder({
-        files: ['*', '!./*.app', './**', '!./cache/**', '!./build/**'], // use the glob format
+        files: ['**', './**', '!./nwjs.app/**',  '!./cache/**', '!./build/**'], // use the glob format
+        macZip: 'true',
         platforms: ['win', 'osx', 'linux']
     });
 

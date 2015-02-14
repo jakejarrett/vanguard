@@ -6,8 +6,11 @@ Digital Audio Workstation created in node-webkit!
 
 ***
 
-### You can install dependencies simply by running ```npm install``` in the project root.
+### node-webkit 0.11.2 or higher is required to run vanguard
 
 ***
 
-### Only runs on node-webkit builds of ^0.11.2 (0.11.2 or higher) due to transparency
+Supported Platforms
+====
+
+* vanguard is developed to work on Linux, OS X & Windows
