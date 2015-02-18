@@ -507,6 +507,10 @@ input.volumeController {
 }
 
 .pushTrackDIV {
-    height: 19px;
+    height: 20px;
     background-color: #FFFFFF;
+}
+
+.btn-toolbar {
+    margin-top: 20px;
 }
