@@ -87,7 +87,7 @@ function createTrack(trackNumber) {
     // Create Track Controls
     var controls = "<div class='row-fluid trackController' id='selectTrack"+trackNumber+"'>";
         controls += "<div class='span2 trackBox'>";
-        controls += "<p class='trackID' id='track"+trackNumber+"title'>Track "+trackNumber+"</p>";
+        controls += "<p class='trackID btn btn-default' id='track"+trackNumber+"title'>Track "+trackNumber+"</p>";
         controls += "<div class='btn-toolbar' style='margin-top: 0px;'>";
         controls += "<div class='btn-group'>";
         controls += "<button type='button' class='btn btn-default btn-sm' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button>";
@@ -350,7 +350,7 @@ function removeTrack(trackNumber) {
         // Remove "pushID" which fixes some CSS
         var pushDIV = window.document.getElementById("push" + trackNumber);
         pushDIV.remove();
-        
+
         // Remove 1 from Global Number of Tracks & The New track Number
         globalNumberOfTracks--;
         newTrackNumber--;

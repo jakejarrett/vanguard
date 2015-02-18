@@ -486,6 +486,9 @@ html {
 .trackID {
     margin-bottom: 20px;
     text-align: center;
+    padding: 2px;
+    width: 95%;
+    margin-top: 5px;
 }
 
 /* Volume Control & Track Controls */
