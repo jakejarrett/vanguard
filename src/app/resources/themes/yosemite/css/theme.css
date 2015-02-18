@@ -103,6 +103,7 @@ input.bpm-input {
   border-bottom: 1px solid #a6a6a8;
   border-radius: 0px 0px 4px 0px;
   background-color: #ffffff;
+  z-index: 50;
 }
 
 .plusButton {
@@ -126,10 +127,10 @@ input.bpm-input {
 }
 
 .trackBox {
-  height: 90px;
   position: relative;
   background-color: #f5f5f5;
   border-top: 1px solid #a8a8a8;
+  border-bottom: 1px solid #a8a8a8;
 }
 
 .timeline {
@@ -421,6 +422,14 @@ ul.dropdown-menu {
     padding-left: 15px;
 }
 
+/* Clock */
+
+.clock {
+    top: 0;
+    margin-top: 10px;
+    padding-top: 3px;
+}
+
 /* Content */
 
 .content {
@@ -465,27 +474,39 @@ html {
   padding-top: 5px;
   position: fixed;
   bottom: 0;
-  z-index: 2;
+  z-index: 50;
   background-color: transparent;
-  margin-left: -15px;
-  padding-left: 15px;
+  max-width: 99%;
+  margin-left: -5px;
+  padding-left: 5px;
 }
 
 /* Track ID */
 
 .trackID {
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Volume Control & Track Controls */
 input.volumeController {
     max-height: 24px;
     height: 24px;
-    width: 150px;
+    width: 75px;
     margin-top: -20px;
     margin-bottom: 15px;
 }
 
-.trackController {
-    margin-top: 15px;
+#trackControls {
+    padding-top: 0px !important;
+}
+
+#pushTracks {
+    height: 15px;
+    background-color: #FFFFFF;
+}
+
+.pushTrackDIV {
+    height: 19px;
+    background-color: #FFFFFF;
 }

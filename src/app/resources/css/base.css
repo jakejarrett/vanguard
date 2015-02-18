@@ -132,7 +132,6 @@ p {
 
 .clock {
   position: absolute;
-  top: 12px;
 }
 
 #VUmeterCanvas {
@@ -253,8 +252,8 @@ p {
 }
 
 .trackBox {
-  height: 90px;
-  margin-top: 10px;
+  height: 83px;
+  margin-top: 0px;
   padding-bottom: 5px !important;
   margin-bottom: -10px !important;
   margin-left: -15px;
@@ -275,20 +274,6 @@ p {
   z-index: 2;
 }
 
-@media screen and (min-width: 768px) {
-    .timeline {
-      width: 100%;
-      max-width: 100%;
-    }
-}
-
-@media screen and (min-width: 900px) {
-    .timeline {
-      width: 110%;
-      max-width: 110%;
-    }
-}
-
 .tcontrols {
     margin-bottom: -37px;
 }
@@ -303,7 +288,7 @@ p {
 }
 
 .scrollable {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 #trackEffects, #masterControl {

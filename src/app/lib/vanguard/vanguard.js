@@ -6,10 +6,14 @@
 var projectState = require('../core/projectstate.js'),
     defaultProject = require('../core/newproject.js'),
     files = require('../core/files.js'),
+    ac = new (window.AudioContext || window.webkitAudioContext),
+    masterGainNode = ac.createGain(),
     $ = require('jquery')(window),
     newProject = JSON.parse(defaultProject.newProject),
     exports = module.exports = {},
-    effects = {};
+    globalNumberOfTracks = 0,
+    effects = {},
+    trackMasterGains = {};
 
 // Provide jQuery like functions
 function empty(name) {
@@ -17,10 +21,11 @@ function empty(name) {
         console.log(name);
         window.document.getElementById(name).innerHTML = "";
     } else {
-        alert(name);
+        console.log("Error clearing this DOM: " + name);
     }
 }
 
+// Hide a DOM
 function hide(name) {
     if(name != null) {
         console.log(name);
@@ -30,6 +35,7 @@ function hide(name) {
     }
 }
 
+// Show a DOM
 function show(name) {
     if(name != null) {
         console.log(name);
@@ -39,6 +45,7 @@ function show(name) {
     }
 }
 
+// Change the contents of a DOM
 function html(name, content) {
     if(name != null) {
         console.log(name);
@@ -49,11 +56,26 @@ function html(name, content) {
     }
 }
 
+// Append contents to a DOM
 function append(name, content) {
     if(name != null) {
         var div = window.document.getElementById(name);
         div.innerHTML = div.innerHTML + content;
+    } else {
+        return false;
     }
+}
+
+// Mute Track
+function muteTrack(trackNumber) {
+    console.log(trackNumber);
+
+    var mute = window.document.querySelectorAll('button[id^="mute"]');
+    // Mute Track
+
+    // $(this).button('toggle');
+    // var muteTrackNumber = $(this).attr('id').split('mute')[1];
+    // $('body').trigger('mute-event', muteTrackNumber);
 }
 
 // Create Track
@@ -66,19 +88,20 @@ function createTrack(trackNumber) {
     var controls = "<div class='row-fluid trackController' id='selectTrack"+trackNumber+"'>";
         controls += "<div class='span2 trackBox'>";
         controls += "<p class='trackID' id='track"+trackNumber+"title'>Track "+trackNumber+"</p>";
-        controls += "<input type='number' class='form-control volumeController' placeholder='0' min='-99' max='6' id='trackVolume"+trackNumber+"' name='channelVolume' value='0' autocomplete='off' required='required'>";
         controls += "<div class='btn-toolbar' style='margin-top: 0px;'>";
         controls += "<div class='btn-group'>";
-        controls += "<button type='button' class='btn btn-mini' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button>";
-        controls += "<button type='button' class='btn btn-mini' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button>";
-        controls += "<button type='button' class='btn btn-mini' data-toggle='button' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm' data-toggle='button' onClick='vanguard.removeTrack("+trackNumber+");' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button>";
         controls += "</div>";
         controls += "<div class='btn-group'>";
-        controls += "<button type='button' class='btn btn-mini' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm volumePop' data-toggle='popover' id = 'volumePopover"+trackNumber+"'><i class='fa fa-volume-up'></i></button>";  // Need to add Volume control here.
         controls += "</div>";
         controls += "</div>";
         controls += "</div>";
         controls += "</div>";
+        controls += "<div class='pushTrackDIV' id='push"+trackNumber+"'></div>";
 
     append("tracks", track);
     append("trackControls", controls);
@@ -143,18 +166,7 @@ function createTrack(trackNumber) {
     //
     // });
     //
-    // var mute = window.document.getElementById("mute");
-    // mute.addEventListener("click", function() {
-    //     $(this).button('toggle');
-    //     var muteTrackNumber = $(this).attr('id').split('mute')[1];
-    //     $('body').trigger('mute-event', muteTrackNumber);
-    // });
-    //
-    // $("#remove"+trackNumber).click(function(){
-    //     console.log("removed "+trackNumber);
-    //     $("#track"+trackNumber).remove();
-    //     $("#selectTrack"+trackNumber).remove();
-    // });
+
     //
     // $("#solo"+trackNumber).click(function(){
     //     $(this).button('toggle');
@@ -322,12 +334,43 @@ function createTrack(trackNumber) {
 
 }
 
+// Remove Track
+function removeTrack(trackNumber) {
+    if (trackNumber > globalNumberOfTracks) {
+        return false;
+    } else if(trackNumber != null) {
+        // Remove Timeline for that Track/Channel
+        var timelineDIV = window.document.getElementById("track" + trackNumber);
+        timelineDIV.remove();
+
+        // Remove Track Controls for that Track/Channel
+        var trackDIV = window.document.getElementById("selectTrack" + trackNumber);
+        trackDIV.remove();
+
+        // Remove "pushID" which fixes some CSS
+        var pushDIV = window.document.getElementById("push" + trackNumber);
+        pushDIV.remove();
+        
+        // Remove 1 from Global Number of Tracks & The New track Number
+        globalNumberOfTracks--;
+        newTrackNumber--;
+
+        // Output what track you removed (This is more a debug feature)
+        console.log('Track ' + trackNumber + ' Removed');
+    } else {
+        return false;
+    }
+}
+
+// Export Create & Remove Track(s) so they can be used outside of vanguard.js
 exports.createTrack = createTrack;
+exports.removeTrack = removeTrack;
+exports.muteTrack = muteTrack;
 
 // Create a Project
 exports.newProject = function() {
 
-    // We define the core Variables of Vanguard inside of this IF statement to allow easier functionality
+    // Define all of the needed Variables first
     var bpm = newProject['projectInfo'].tempo,
         secondsPer16 = 0.25 * 60 / bpm,
         defaultTitle = newProject['projectInfo'].title,
@@ -335,7 +378,7 @@ exports.newProject = function() {
         trackNumber = Number(newProject['projectInfo'].tracks);
 
 
-    if(projectState.currentState == "newProject") {
+    if(projectState.currentState != null) {
         var confirmNew = window.confirm("Do you wish to dismiss Changes?");
         if(confirmNew == true){
             // default the project, this way we can prevent adding multiple new projects onto each other
@@ -359,18 +402,22 @@ exports.newProject = function() {
         hide("newpage");
         hide("landingpage");
 
-        // Change Title & Location
+        // Change Title & Location - Needs to be fixed
         // html("title", defaultTitle);
         // html("project", defaultLocation);
 
         projectState.currentState = "newProject";
 
+        // Create 4 Tracks, Need to handle this better.
         createTrack(1);
         createTrack(2);
         createTrack(3);
         createTrack(4);
+
         globalNumberOfTracks = 4;
         newTrackNumber = 5;
+
+        // Log Project state, This is for debugging purposes.
         console.log(projectState);
 
         return newProject;
@@ -382,6 +429,7 @@ exports.openProject = function() {
     if(projectState.currentState == undefined) {
         files.Open('#openfileDialog');
         if( window.document.querySelector('#openfileDialog').value == "" ) {
+            // You have opened a project
             projectState.currentState = "openedProject";
             console.log(projectState);
         }
@@ -391,9 +439,75 @@ exports.openProject = function() {
 // Save a Project
 exports.saveProject = function() {
     if(projectState.currentState == undefined) {
-        console.log("Oops, seems the project state is undefined!");
+        console.log("Oops, seems the project state is undefined! (usually means you're in the landing page)");
         window.alert("Oops, You can't save when you're not in a project!")
     } else if(projectState.currentState == "openProject") {
 
     }
 };
+
+exports.closeProject = function() {
+    if(projectState.currentState != null) {
+        var confirmExit = confirm('Do You wish to close this project?');
+        if(confirmExit == true) {
+            $( "#newpage" ).show();
+            $( "#landingpage" ).show();
+            $( "#landingpage-left").show();
+            $( "#landingpage-right").show();
+            $( "#project" ).hide();
+            $( "#bpm" ).hide();
+            $( ".projectnav" ).hide();
+
+            // Empty Tracks & trackControls
+            empty("tracks");
+            empty("trackControls");
+
+            // reset variables
+            trackNumber = 0;
+            globalNumberOfTracks = 0;
+            newTrackNumber = 1;
+
+            projectState.currentState = null;
+
+            console.log(projectState);
+        } else {
+            return false;
+        }
+    }
+}
+// Add Channel
+exports.addChannel = function() {
+    var newTrackNumber = globalNumberOfTracks+1;
+
+    globalNumberOfTracks++;
+
+    if(globalNumberOfTracks>4){
+        var sidebarClass = window.document.getElementById("channelSidebar");
+            currentSideBarHeight = parseInt(sidebarClass.offsetHeight);
+        currentSideBarHeight+=90;
+        currentHeight = sidebarClass.style.size;
+        sidebarClass.style.size = currentHeight + currentSideBarHeight;
+    }
+
+    createTrack(newTrackNumber);
+
+    var trackMasterGainNode = ac.createGain();
+        trackInputNode = ac.createGain(),
+        trackVolumeNode = ac.createGain(),
+        //array of track master gain nodes
+        trackMasterGains = [],
+        trackVolumeGains = [],
+        trackInputNodes = [],
+        trackCompressors = [],
+        trackReverbs = [],
+        trackFilters = [],
+        trackDelays = [],
+        trackTremolos = [];
+
+    trackMasterGainNode.connect(masterGainNode);
+    trackVolumeNode.connect(trackMasterGainNode);
+    trackInputNode.connect(trackVolumeNode);
+    trackMasterGains[newTrackNumber] = {node: trackMasterGainNode, isMuted: false, isSolo: false};
+    trackVolumeGains[newTrackNumber] = trackVolumeNode;
+    trackInputNodes[newTrackNumber] = trackInputNode;
+}

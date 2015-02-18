@@ -49,7 +49,7 @@
             </ul>
             <!-- Center Navigation on Landing page (New Project, Open Project, Collaboration) -->
 
-            <ul class="nav navbar-nav projectnav" style="-webkit-app-region: no-drag">
+            <ul class="nav navbar-nav projectnav" id="projectRight" style="-webkit-app-region: no-drag">
 
                 <li>
                     <a id="playPause" href="#" draggable="false">
@@ -84,7 +84,7 @@
             </ul>
             <!-- Project Navigation (Close, Play/Pause, Stop, Step Back, Step Forward etc) -->
 
-            <div class="nav navbar-nav projectnav text-center" style="-webkit-app-region: no-drag">
+            <div class="nav navbar-nav projectnav text-center" id="projectTitle" style="-webkit-app-region: no-drag">
                 <div class="titlebar">
                     <p class="title">Project Name</p>
                     <p class="project">~/Projects/Project Name</p>
@@ -92,7 +92,10 @@
             </div>
             <!-- Project Center (Project Title & Project Location) -->
 
-            <ul class="nav navbar-nav navbar-right projectnav" style="-webkit-app-region: no-drag">
+            <ul class="nav navbar-nav navbar-right projectnav" id="projectNav" style="-webkit-app-region: no-drag">
+                <div class="col-xs-1">
+                    <div id="clock" class="clock btn btn-default"></div>
+                </div>
                 <div class="col-xs-1">
                     <form id="bpm-control" class="navbar-form">
                       <div class="input-group">
@@ -111,6 +114,10 @@
                       </li>
                       <li class="divider"> </li>
                       <li>
+                          <a href="#" data-toggle="modal" data-target="#collaborate-start" draggable="false">Add User(s) to Project</a>
+                      </li>
+                      <li class="divider"> </li>
+                      <li>
                           <a href="#" draggable="false">Export</a>
                       </li>
                     </ul>
@@ -119,26 +126,26 @@
                     <a href="#preferences" class="dropdown-toggle" data-toggle="dropdown" draggable="false"><div class="btn btn-default"><div class="cog-button"></div></div></a>
                     <ul class="dropdown-menu">
                       <li>
-                          <a href="#" data-toggle="modal" data-target="#collaborate-start" draggable="false">Add User(s) to Project</a>
+                          <a class="open-external" href="https://github.com/jakejarrett/vanguard" draggable="false"><i class="fa fa-github"></i> Github</a>
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a class="open-external" href="https://github.com/jakehh/vanguard" draggable="false"><i class="fa fa-github"></i> Github</a>
+                          <a class="open-external" href="https://github.com/jakejarrett/vanguard/issues" target="_blank" draggable="false"><i class="fa fa-bug"></i> Report a Bug</a>
+                      </li>
+                      <li>
+                          <a class="open-external" href="https://github.com/jakejarrett/vanguard/wiki" target="_blank" draggable="false"><i class="fa fa-question"></i> Help</a>
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a class="open-external" href="https://github.com/jakehh/vanguard/issues" target="_blank" draggable="false">Report a Bug</a>
-                      </li>
-                      <li>
-                          <a class="open-external" href="https://github.com/jakehh/vanguard/wiki" target="_blank" draggable="false">Help</a>
+                          <a class="open-devtools" href="#" draggable="false"><i class="fa fa-terminal"></i> Developer Tools</a>
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a href="#" data-toggle="modal" data-target="#settings" draggable="false">Preferences</a>
+                          <a href="#" data-toggle="modal" data-target="#settings" draggable="false"><i class="fa fa-cogs"></i> Preferences</a>
                       </li>
                       <li class="divider"></li>
                       <li>
-                          <a href="#" id="about-panel" draggable="false">About</a>
+                          <a href="#" id="about-panel" draggable="false"><i class="fa fa-info-circle"></i> About</a>
                       </li>
                     </ul>
                 </li>
@@ -196,8 +203,9 @@
       <div class="container-fluid" id="project">
           <div class="row dawinner">
               <div class="col-md-2 sidebar">
-                <div id="left" class="span3">
+                <div id="left" class="span2">
 
+                    <!-- Instruments Menu -->
                     <ul id="instruments-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#instruments">
                       <li class="instruments deeper parent">
                           <a class="" href="#" draggable="false" class="menu-item">
@@ -210,6 +218,7 @@
                     </ul>
                     <!-- End Instruments -->
 
+                    <!-- Effects Menu -->
                     <ul id="effects-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#effects">
                       <li class="instruments deeper parent">
                           <a class="" href="#" draggable="false">
@@ -222,6 +231,7 @@
                     </ul>
                     <!-- End Effects -->
 
+                    <!-- Library Menu -->
                     <ul id="library-menu" class="nav menu" data-toggle="collapse" data-parent="#menu-group-1" href="#library">
                       <li class="library deeper parent">
                           <a class="" href="#" draggable="false">
@@ -233,44 +243,45 @@
                       </li>
                     </ul>
                     <!-- End Library -->
-		</div>
-          </div>
+                </div>
+              </div>
               <!-- End Left Sidebar -->
 
-              <div class="col-md-10 scrollable dawcontent">
+              <div class="col-md-10 scrollable dawcontent" id="DAWContent">
                   <!-- Start Timeline / DAW Contents -->
                   <div class="span9 scrollable">
-                      <div class="row-fluid timeline_pull">
-                          <div class="span1" style="position:relative;">
-                              <div id="clock" class="clock"></div>
-                          </div>
-                          <div class="span1 tcontrols" >
+                      <div class="row timeline_pull">
+                          <div class="span1 tcontrols">
                           <div id="zoom">
                               <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-mini" id = "zoomOut">
+                                    <button type="button" class="btn btn-mini" id="zoomOut">
                                         <i class="fa fa-minus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-mini" id = "zoomIn">
+                                    <button type="button" class="btn btn-mini" id="zoomIn">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                               </div>
                           </div>
                       </div>
-                      <div class="span10 timeline">
+                      <div class="span9 timeline">
                           <canvas id="timeline">
                           </canvas>
                       </div>
                     </div>
                     <div id="tracks">
+
                     </div>
                 </div>
             </div>
             <!-- End Timeline / DAW -->
 
-            <div class="col-md-1 rightsidebar">
-                <div id="trackcontrols">
+            <div class="col-md-1 rightsidebar" id="channelSidebar">
+                <div id="pushTracks">
+
+                </div>
+                <div id="trackControls">
 
                 </div>
 
@@ -391,10 +402,9 @@
       <script src="app.js"></script>
 
       <script>
-          var ngui = require('nw.gui');
-          var nwin = ngui.Window.get();
+          var ngui = require('nw.gui'),
+              nwin = ngui.Window.get();
 
-          nwin.showDevTools();
           //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
           nwin.on('close', function() {
               if(projectState.currentState != null) {
@@ -456,28 +466,14 @@
               ngui.Shell.openExternal($(this).attr('href'));
           });
 
+          $('.open-devtools').click(function(e) {
+              nwin.showDevTools();
+          });
+
           $( "#playPause" ).click(function() {
               var $this = $(".icon-playpause");
 
-              if ($this.hasClass("fa-play"))
-              {
-                  $this.removeClass("fa-play").addClass("fa-pause");
-                  return;
-              }
-
-              if ($this.hasClass("fa-pause"))
-              {
-                  $this.removeClass("fa-pause").addClass("fa-play");
-                  return;
-              }
-
-          });
-
-          $( "#stop" ).click(function() {
-              var $this = $(".icon-playpause");
-
-              if ($this.hasClass("fa-play"))
-              {
+              if ($this.hasClass("fa-play")) {
                   $this.removeClass("fa-play").addClass("fa-pause");
                   return;
               }
@@ -486,6 +482,19 @@
                   $this.removeClass("fa-pause").addClass("fa-play");
                   return;
               }
+
+          });
+
+          $( "#stop" ).click(function() {
+              var $this = $(".icon-playpause");
+              if(isPlaying == true) {
+                //   Check if the DAW is actually playing anything, We don't want to just change the icon even though it does nothing.
+                  if ($this.hasClass("fa-pause")) {
+                      $this.removeClass("fa-pause").addClass("fa-play");
+                      return;
+                  }
+              }
+
 
           });
 
@@ -498,29 +507,6 @@
               globalNumberOfTracks = 0;
               newTrackNumber = 1;
           }
-
-          //   Create New Project
-          function newProject() {
-              $( "#bpm" ).show();
-              $( "#project" ).show();
-              $( ".projectnav" ).show();
-              $( "#newpage" ).hide();
-              $( "#landingpage" ).hide();
-              $( "#landingpage-left").hide();
-              $( "#landingpage-right").hide();
-              $(".title").html(defaultTitle);
-              $(".project").html(defaultLocation);
-              projectState.currentState = "newProject";
-              vanguard.newProject();
-              // These are currently the only way to bypass the original code while I continue work on making a new code base.
-              createTrack(1);
-              createTrack(2);
-              createTrack(3);
-              createTrack(4);
-              globalNumberOfTracks = 4;
-              newTrackNumber = 5;
-              console.log(projectState);
-          };
 
           // Close Current Project
           function closeCurrent() {
@@ -582,7 +568,7 @@
 
           // New Project
           $( ".newproject" ).click(function() {
-              newProject();
+              vanguard.newProject();
           });
 
           // Open Project
@@ -593,6 +579,11 @@
           // Save Project
           $( ".saveproject" ).click(function() {
               saveProject();
+          });
+
+          // New Track/Channel
+          $("#addTrackButton").click(function(){
+              vanguard.addChannel();
           });
 
           // Close Project
@@ -692,6 +683,7 @@
           $( ".newproject" ).popover({ trigger: "hover" });
           $( ".openproject" ).popover({ trigger: "hover" });
           $( ".collaborations" ).popover({ trigger: "hover" });
+          $('[data-toggle="popover"]').popover({ trigger: "hover" });
 
           // Handler for pressing enter on BPM/Tempo
           $( "#bpm-control" ).submit(function( event ) {
@@ -737,8 +729,11 @@
           });
 
           // When you scroll in the DAW the Track Controls Should also scroll.
-          $('.dawcontent').on('scroll', function () {
-              $('.rightsidebar').scrollTop($(this).scrollTop());
+          var sidebar = $("#channelSidebar")[0]; // <== Getting raw element
+
+          $('#DAWContent').on('scroll', function () {
+              sidebar.scrollTop = this.scrollTop;
+              sidebar.scrollLeft = this.scrollLeft;
           });
       </script>
       <input style="display:none;" id="openfileDialog" type="file" accept=".zip,.json,.xml" />

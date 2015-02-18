@@ -27,7 +27,7 @@ High Priority
 
 #### UI
 * New Traffic Light buttons (High Res)
-* When DAW Becomes scrollable, Headerbar becomes transparent.
+* ~~When DAW Becomes scrollable, Headerbar becomes transparent.~~
 
 Low priority
 ===========
