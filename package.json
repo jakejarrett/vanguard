@@ -28,7 +28,7 @@
     "width": 1400,
     "height": 800,
     "position": "center",
-    "min_width": 992,
+    "min_width": 1200,
     "min_height": 750
   },
   "dependencies": {

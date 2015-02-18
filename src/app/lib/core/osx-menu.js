@@ -176,7 +176,7 @@ if (process.platform === "darwin") {
         new gui.MenuItem({
             label: 'Github',
             click: function() {
-                gui.Shell.openExternal("https://github.com/jakehh/vanguard");
+                gui.Shell.openExternal("https://github.com/jakejarrett/vanguard");
             }
         })
     );
