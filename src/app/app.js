@@ -675,14 +675,6 @@ $(document).ready(function(){
       }
     });
 
-    $( window ).keyup(function (e) {
-        var key = window.event? event : e
-        if(key.keyCode == 107 && key.ctrlKey)  // New Project
-        {
-            addChannel();
-        }
-    });
-
     drawTimeline();
 
 });

@@ -394,6 +394,8 @@
       <script src="lib/core/recorder.js"></script>
       <script src="lib/core/effects.js"></script>
       <script src="lib/core/vumeter.js"></script>
+
+      <!-- Platform Specific Code -->
       <script src="lib/core/osx-menu.js"></script>
 
       <!-- Requirements to run the Application -->
@@ -402,21 +404,21 @@
       <script src="app.js"></script>
 
       <script>
-          var ngui = require('nw.gui'),
-              nwin = ngui.Window.get();
+          var gui = require('nw.gui'),
+              win = gui.Window.get();
 
           //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
-          nwin.on('close', function() {
+          win.on('close', function() {
               if(projectState.currentState != null) {
                   var confirmExit = confirm('Do You wish to exit Vanguard?');
                   if(confirmExit == true) {
-                      nwin.hide();
-                      nwin.close(true);
+                      win.hide();
+                      win.close(true);
                   }
               } else {
                 //   Otherwise, Just close the program because you're on the landing page.
-                  nwin.hide();
-                  nwin.close(true);
+                  win.hide();
+                  win.close(true);
               }
           });
 
@@ -463,11 +465,11 @@
           // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)
           $('.open-external').click(function(e) {
               e.preventDefault();
-              ngui.Shell.openExternal($(this).attr('href'));
+              gui.Shell.openExternal($(this).attr('href'));
           });
 
           $('.open-devtools').click(function(e) {
-              nwin.showDevTools();
+              win.showDevTools();
           });
 
           $( "#playPause" ).click(function() {
@@ -500,9 +502,7 @@
 
           // Functions
           function clearProject() {
-
-              $("#tracks").empty();
-              $("#trackcontrols").empty();
+              vanguard.removeTrack("*");
               trackNumber = 0;
               globalNumberOfTracks = 0;
               newTrackNumber = 1;
@@ -525,22 +525,8 @@
                       clearProject();
                   }
               } else {
-                  nwin.close();
+                  win.close();
               }
-          }
-
-          // Open Project
-          function openProject() {
-              fileChooser('#openfileDialog');
-              if( $('#openfileDialog').val() == "" ) {
-                  projectState.currentState = "openedProject";
-                  console.log(projectState);
-              }
-          };
-
-          // Save Project
-          function saveProject() {
-              saveFile('#saveasDialog');
           }
 
           // Not Functions
@@ -573,12 +559,12 @@
 
           // Open Project
           $( ".openproject" ).click(function() {
-              openProject();
+              vanguard.openProject();
           });
 
           // Save Project
           $( ".saveproject" ).click(function() {
-              saveProject();
+              vanguard.saveProject();
           });
 
           // New Track/Channel
@@ -588,7 +574,7 @@
 
           // Close Project
           $( ".close-button" ).click (function() {
-              nwin.close();
+              win.close();
           });
 
           $( "#about-panel" ).click (function() {
@@ -642,12 +628,12 @@
 
               if(key.keyCode == 78 && key.ctrlKey)  // New Project
               {
-                  newProject();
+                  vanguard.newProject();
               }
 
               if(key.keyCode == 79 && key.ctrlKey)  // Open Project
               {
-                  openProject();
+                  vanguard.openProject();
               }
 
               if(key.keyCode == 32)  // Pause/Play
@@ -669,7 +655,7 @@
 
               if(key.keyCode == 87 && key.ctrlKey) // Close Project
               {
-                  closeCurrent();
+                  vanguard.closeProject();
               }
 
               if(key.keyCode == 188 && key.ctrlKey) // Settings

@@ -15,16 +15,6 @@ var projectState = require('../core/projectstate.js'),
     effects = {},
     trackMasterGains = {};
 
-// Provide jQuery like functions
-function empty(name) {
-    if(name == null) {
-        console.log(name);
-        window.document.getElementById(name).innerHTML = "";
-    } else {
-        console.log("Error clearing this DOM: " + name);
-    }
-}
-
 // Hide a DOM
 function hide(name) {
     if(name != null) {
@@ -92,7 +82,7 @@ function createTrack(trackNumber) {
         controls += "<div class='btn-group'>";
         controls += "<button type='button' class='btn btn-default btn-sm' id = 'solo"+trackNumber+"'><i class='fa fa-headphones'></i></button>";
         controls += "<button type='button' class='btn btn-default btn-sm' id = 'mute"+trackNumber+"'><i class='fa fa-volume-off'></i></button>";
-        controls += "<button type='button' class='btn btn-default btn-sm' data-toggle='button' onClick='vanguard.removeTrack("+trackNumber+");' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button>";
+        controls += "<button type='button' class='btn btn-default btn-sm' onClick='vanguard.removeTrack("+trackNumber+");' id = 'remove"+trackNumber+"'><i class='fa fa-minus'></i></button>";
         controls += "</div>";
         controls += "<div class='btn-group'>";
         controls += "<button type='button' class='btn btn-default btn-sm' data-toggle='button' id = 'record"+trackNumber+"'><i class='fa fa-microphone'></i></button>";
@@ -338,6 +328,32 @@ function createTrack(trackNumber) {
 function removeTrack(trackNumber) {
     if (trackNumber > globalNumberOfTracks) {
         return false;
+    } else if(trackNumber == "*") {
+        // Remove ALL tracks
+        var timelineDIV = window.document.querySelectorAll(".track");
+        Array.prototype.forEach.call( timelineDIV, function( node ) {
+            node.parentNode.removeChild( node );
+        });
+
+
+        // Remove Track Controls for that Track/Channel
+        var trackDIV = window.document.querySelectorAll(".trackController");
+        Array.prototype.forEach.call( trackDIV, function( node ) {
+            node.parentNode.removeChild( node );
+        });
+
+        // Remove "pushID" which fixes some CSS
+        var pushDIV = window.document.querySelectorAll(".pushTrackDIV");
+        Array.prototype.forEach.call( pushDIV, function( node ) {
+            node.parentNode.removeChild( node );
+        });
+
+        // reset variables
+        trackNumber = 0;
+        globalNumberOfTracks = 0;
+        newTrackNumber = 1;
+
+        console.log(trackNumber);
     } else if(trackNumber != null) {
         // Remove Timeline for that Track/Channel
         var timelineDIV = window.document.getElementById("track" + trackNumber);
@@ -382,11 +398,7 @@ exports.newProject = function() {
         var confirmNew = window.confirm("Do you wish to dismiss Changes?");
         if(confirmNew == true){
             // default the project, this way we can prevent adding multiple new projects onto each other
-            empty("tracks");
-            empty("trackControls");
-            trackNumber = 0;
-            globalNumberOfTracks = 0;
-            newTrackNumber = 1;
+            removeTrack("*");
         }
     }
         // Show
@@ -446,6 +458,7 @@ exports.saveProject = function() {
     }
 };
 
+// Close Project
 exports.closeProject = function() {
     if(projectState.currentState != null) {
         var confirmExit = confirm('Do You wish to close this project?');
@@ -459,13 +472,7 @@ exports.closeProject = function() {
             $( ".projectnav" ).hide();
 
             // Empty Tracks & trackControls
-            empty("tracks");
-            empty("trackControls");
-
-            // reset variables
-            trackNumber = 0;
-            globalNumberOfTracks = 0;
-            newTrackNumber = 1;
+            vanguard.removeTrack("*");
 
             projectState.currentState = null;
 
@@ -475,6 +482,7 @@ exports.closeProject = function() {
         }
     }
 }
+
 // Add Channel
 exports.addChannel = function() {
     var newTrackNumber = globalNumberOfTracks+1;
@@ -510,4 +518,11 @@ exports.addChannel = function() {
     trackMasterGains[newTrackNumber] = {node: trackMasterGainNode, isMuted: false, isSolo: false};
     trackVolumeGains[newTrackNumber] = trackVolumeNode;
     trackInputNodes[newTrackNumber] = trackInputNode;
+}
+
+// List Channels
+exports.listChannels = function() {
+    var timelineDIV = window.document.querySelectorAll(".track");
+
+    console.log(timelineDIV.length);
 }
