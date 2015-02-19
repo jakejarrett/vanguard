@@ -407,7 +407,7 @@
           var gui = require('nw.gui'),
               win = gui.Window.get();
 
-          //   On Close, Verify if the user has changed anything, if the application hasn't had any changes, Close without asking the user.
+          // If the application has changes, Ask the user to confirm they wish to close.
           win.on('close', function() {
               if(projectState.currentState != null) {
                   var confirmExit = confirm('Do You wish to exit Vanguard?');
@@ -500,14 +500,6 @@
 
           });
 
-          // Functions
-          function clearProject() {
-              vanguard.removeTrack("*");
-              trackNumber = 0;
-              globalNumberOfTracks = 0;
-              newTrackNumber = 1;
-          }
-
           // Close Current Project
           function closeCurrent() {
               if(projectState.currentState != null) {
@@ -522,17 +514,15 @@
                       $( ".projectnav" ).hide();
                       projectState.currentState = null;
                       console.log(projectState);
-                      clearProject();
+                      vanguard.removeTrack("*");
                   }
               } else {
                   win.close();
               }
           }
 
-          // Not Functions
-
           $( "body" ).load(function() {
-              // Loading screen, probably do this in index
+              // Loading screen. Currently it just hides everything until ready.
               $( "#newpage" ).hide();
               $( "#landingpage" ).hide();
               $( "#landingpage-left" ).hide();
