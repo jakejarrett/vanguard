@@ -68,6 +68,7 @@ input.bpm-input {
   background-color: #ffffff;
   border-right: 1px solid #d9d9d9;
   border-radius: 0px 0px 4px 4px;
+  padding-left: 0px !important;
 }
 
 .rightsidebar {
@@ -516,4 +517,28 @@ input.volumeController {
 
 .btn-toolbar {
     margin-top: 20px;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+	border: 0px;
+	box-shadow: 0px 0px 0px transparent inset;
+	border-radius:0px;
+}
+::-webkit-scrollbar-thumb {
+	background: #a09ea4;
+	border: 1px;
+	border-radius:5px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #5c575c;
 }

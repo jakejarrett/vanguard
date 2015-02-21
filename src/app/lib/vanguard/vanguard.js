@@ -1,6 +1,5 @@
 /*
-    Vanguard.js - Essentials of Project Handling
-    This will be where all project information (New Project, Open Project, Save Project) is all handled.
+    Vanguard.js - Essentials of the DAW Functionality.
 */
 
 var projectState = require('../core/projectstate.js'),
@@ -461,15 +460,16 @@ exports.saveProject = function() {
 // Close Project
 exports.closeProject = function() {
     if(projectState.currentState != null) {
-        var confirmExit = confirm('Do You wish to close this project?');
+        var confirmExit = window.confirm('Do You wish to close this project?');
         if(confirmExit == true) {
-            $( "#newpage" ).show();
-            $( "#landingpage" ).show();
-            $( "#landingpage-left").show();
-            $( "#landingpage-right").show();
-            $( "#project" ).hide();
-            $( "#bpm" ).hide();
-            $( ".projectnav" ).hide();
+            show("newpage");
+            show("landingpage");
+            show("landingpage-left");
+            // show("landingpage-right");
+
+            hide("project");
+            hide("bpm");
+            // $( ".projectnav" ).hide();
 
             // Empty Tracks & trackControls
             vanguard.removeTrack("*");
@@ -526,3 +526,5 @@ exports.listChannels = function() {
 
     console.log(timelineDIV.length);
 }
+
+//

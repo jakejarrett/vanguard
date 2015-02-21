@@ -201,7 +201,7 @@
       <!-- End Landing Page -->
 
       <div class="container-fluid" id="project">
-          <div class="row dawinner">
+          <div class="row-fluid dawinner">
               <div class="col-md-2 sidebar">
                 <div id="left" class="span2">
 
@@ -247,35 +247,36 @@
               </div>
               <!-- End Left Sidebar -->
 
-              <div class="col-lg-10 scrollable dawcontent" id="DAWContent">
+              <div class="col-lg-11 scrollable dawcontent" id="DAWContent">
                   <!-- Start Timeline / DAW Contents -->
                   <div class="span9 scrollable">
                       <div class="row timeline_pull">
                           <div class="span1 tcontrols">
-                          <div id="zoom">
-                              <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-mini" id="zoomOut">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-mini" id="zoomIn">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
+                              <div id="zoom">
+                                  <div class="btn-toolbar">
+                                      <div class="btn-group">
+                                          <button type="button" class="btn btn-mini" id="zoomOut">
+                                              <i class="fa fa-minus"></i>
+                                          </button>
+                                          <button type="button" class="btn btn-mini" id="zoomIn">
+                                              <i class="fa fa-plus"></i>
+                                          </button>
+                                      </div>
+                                  </div>
                               </div>
                           </div>
+                          <div class="span9 timeline">
+                              <canvas id="timeline">
+                              </canvas>
+                          </div>
                       </div>
-                      <div class="span9 timeline">
-                          <canvas id="timeline">
-                          </canvas>
-                      </div>
-                    </div>
-                    <div id="tracks">
+                      <!-- All the tracks are created within this DIV -->
+                      <div id="tracks">
 
-                    </div>
-                </div>
-            </div>
-            <!-- End Timeline / DAW -->
+                      </div>
+                  </div>
+              </div>
+              <!-- End Timeline / DAW -->
 
             <div class="col-md-1 rightsidebar" id="channelSidebar">
                 <div id="pushTracks">
@@ -522,6 +523,7 @@
           }
 
           $( "body" ).load(function() {
+              console.log("Loading...");
               // Loading screen. Currently it just hides everything until ready.
               $( "#newpage" ).hide();
               $( "#landingpage" ).hide();
@@ -533,6 +535,7 @@
           });
 
           $( window ).ready(function() {
+              console.log("Done loading...");
               $( "#newpage" ).show();
               $( "#landingpage" ).show();
               $( "#landingpage-left" ).show();
