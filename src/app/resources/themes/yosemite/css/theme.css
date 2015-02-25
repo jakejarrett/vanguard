@@ -26,6 +26,7 @@ body, html {
     border-left: 1px solid #a6a6a8;
     border-radius: 7px 7px 0px 0px;
     padding-top: 0px;
+    cursor: default;
 }
 
 .navbar {
@@ -479,7 +480,7 @@ html {
   background-color: transparent;
   max-width: 99%;
   margin-left: -5px;
-  padding-left: 5px;
+  padding-left: 20px;
 }
 
 /* Track ID */
@@ -490,6 +491,10 @@ html {
     padding: 2px;
     width: 95%;
     margin-top: 5px;
+}
+
+.trackID:hover, .trackID:focus {
+    cursor: default;
 }
 
 /* Volume Control & Track Controls */
