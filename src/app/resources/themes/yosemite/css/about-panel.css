@@ -88,7 +88,8 @@ body, html {
     margin-left: 40px;
     height: 12px;
     width: 12px;
-    background: url(../img/disabled-2.png);
+    background: url(../img/pack/min-nofocus.svg);
+    background-size: 12px 12px;
     -webkit-app-region: no-drag
 }
 
@@ -98,7 +99,8 @@ body, html {
     margin-right: -60px;
     height: 12px;
     width: 12px;
-    background: url(../img/disabled-2.png);
+    background: url(../img/pack/max-nofocus.svg);
+    background-size: 12px 12px;
     -webkit-app-region: no-drag
 }
 
