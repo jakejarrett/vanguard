@@ -414,52 +414,52 @@
                   var confirmExit = confirm('Do You wish to exit Vanguard?');
                   if(confirmExit == true) {
                       win.hide();
-                      win.close(true);
+                      gui.App.quit();
                   }
               } else {
                 //   Otherwise, Just close the program because you're on the landing page.
                   win.hide();
-                  win.close(true);
+                  gui.App.quit();
               }
           });
 
           // Make AppButtons act like native buttons
           $('.close-button').hover(
               function () {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               },
               function() {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               }
           );
 
           $('.minimize-button').hover(
               function () {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               },
               function() {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               }
           );
 
           $('.fullscreen-button').hover(
               function () {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -14px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -14px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -14px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               },
               function() {
-                  $('.close-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -0px -0px");
-                  $('.minimize-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -14px -0px");
-                  $('.fullscreen-button').css("background", "url(resources/themes/yosemite/img/yosemite-trafficlight.png) -28px -0px");
+                  $('.close-button').toggleClass("hover");
+                  $('.minimize-button').toggleClass("hover");
+                  $('.fullscreen-button').toggleClass("hover");
               }
           );
 

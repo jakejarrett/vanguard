@@ -35,9 +35,9 @@ body, html {
 }
 
 .navbar {
-    height: 30px !important;
-    min-height: 30px !important;
-    max-height: 30px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     padding-left: 5px;
 }
 
@@ -65,25 +65,26 @@ body, html {
 /* Close/Minimize/Fullscreen */
 
 .close-button {
-    margin-top: 2px;
+    margin-top: -5px;
     margin-left: 20px;
     height: 12px;
     width: 12px;
-    background: url(../img/yosemite-trafficlight.png) 0 0;
-    -webkit-app-region: no-drag
+    background: url(../img/pack/close-normal.svg);
+    background-size: 12px 12px;
 }
 
-.close-button:hover {
-    background: url(../img/yosemite-trafficlight.png) 0 -14px;
+.close-button:hover, .close-button.hover {
+    background: url(../img/pack/close-hover.svg);
+    background-size: 12px 12px;
 }
 
-.close-button:focus {
-
-    background: url(../img/yosemite-trafficlight.png) 0 -28px;
+.close-button:focus, .close-button.focus {
+    background: url(../img/pack/close-focus.svg);
+    background-size: 12px 12px;
 }
 
 .minimize-disabled {
-    margin-top: 2px;
+    margin-top: -5px;
     margin-left: 40px;
     height: 12px;
     width: 12px;
@@ -117,8 +118,8 @@ body, html {
     padding: 0;
     height: 100%;
     width: 100%;
-    margin-top: 25px;
-    padding-top: 20px;
+    margin-top: 18px;
+    padding-top: 18px;
     z-index: 1;
     position: relative;
     background-color: #ececec;

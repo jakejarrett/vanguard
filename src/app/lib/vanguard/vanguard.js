@@ -527,4 +527,7 @@ exports.listChannels = function() {
     console.log(timelineDIV.length);
 }
 
-//
+// Export Project (This will be expanded on when this is enabled)
+exports.exportProject = function() {
+    
+}

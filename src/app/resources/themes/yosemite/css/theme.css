@@ -246,16 +246,18 @@ input.bpm-input {
     margin-left: 10px;
     height: 12px;
     width: 12px;
-    background: url(../img/yosemite-trafficlight.png) 0 0;
+    background: url(../img/pack/close-normal.svg);
+    background-size: 12px 12px;
 }
 
-.close-button:hover {
-    background: url(../img/yosemite-trafficlight.png) 0 -14px;
+.close-button:hover, .close-button.hover {
+    background: url(../img/pack/close-hover.svg);
+    background-size: 12px 12px;
 }
 
-.close-button:focus {
-
-    background: url(../img/yosemite-trafficlight.png) 0 -28px;
+.close-button:focus, .close-button.focus {
+    background: url(../img/pack/close-focus.svg);
+    background-size: 12px 12px;
 }
 
 .minimize-button {
@@ -263,15 +265,18 @@ input.bpm-input {
     margin-left: 10px;
     height: 12px;
     width: 12px;
-    background: url(../img/yosemite-trafficlight.png) -14px 0;
+    background: url(../img/pack/min-normal.svg);
+    background-size: 12px 12px;
 }
 
-.minimize-button:hover {
-    background: url(../img/yosemite-trafficlight.png) -14px -14px;
+.minimize-button:hover, .minimize-button.hover {
+    background: url(../img/pack/min-hover.svg);
+    background-size: 12px 12px;
 }
 
-.minimize-button:focus {
-    background: url(../img/yosemite-trafficlight.png) -14px -28px;
+.minimize-button:focus, .minimize-button.focus {
+    background: url(../img/pack/min-focus.svg);
+    background-size: 12px 12px;
 }
 
 
@@ -284,17 +289,20 @@ input.bpm-input {
     margin-left: 10px;
     height: 12px;
     width: 12px;
-    background: url(../img/yosemite-trafficlight.png) -28px 0;
+    background: url(../img/pack/max-normal.svg);
+    background-size: 12px 12px;
 }
 
-.fullscreen-expand:hover {
-    background: url(../img/yosemite-trafficlight.png) -28px -14px;
+.fullscreen-expand:hover, .fullscreen-expand.hover {
+    background: url(../img/pack/max-hover.svg);
+    background-size: 12px 12px;
 }
 
-.fullscreen-expand:focus {
-    background: url(../img/yosemite-trafficlight.png) -28px -28px;
+.fullscreen-expand:focus, .fullscreen-expand.focus {
+    background: url(../img/pack/max-focus.svg);
+    background-size: 12px 12px;
 }
-
+/*
 .fullscreen-compress {
     margin-top: 17px;
     margin-left: 10px;
@@ -309,7 +317,7 @@ input.bpm-input {
 
 .fullscreen-compress:focus {
     background: url(../img/yosemite-trafficlight.png) -42px -42px;
-}
+}*/
 
 .back-button {
     margin-top: -1px;

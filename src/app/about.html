@@ -55,6 +55,33 @@
         e.preventDefault();
         ngui.Shell.openExternal($(this).html());
     });
+
+    $('.close-button').hover(
+        function () {
+            $('.close-button').toggleClass("hover");
+        },
+        function() {
+            $('.close-button').toggleClass("hover");
+        }
+    );
+
+    $('.minimize-disabled').hover(
+        function () {
+            $('.close-button').toggleClass("hover");
+        },
+        function() {
+            $('.close-button').toggleClass("hover");
+        }
+    );
+
+    $('.fullscreen-disabled').hover(
+        function () {
+            $('.close-button').toggleClass("hover");
+        },
+        function() {
+            $('.close-button').toggleClass("hover");
+        }
+    );
     </script>
 </body>
 </html>
