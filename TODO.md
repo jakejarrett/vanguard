@@ -26,7 +26,7 @@ High Priority
 * Implement GulpJS for testing & Builds
 
 #### UI
-* New Traffic Light buttons (High Res)
+* ~~New Traffic Light buttons (High Res)~~
 * ~~When DAW Becomes scrollable, Headerbar becomes transparent.~~
 
 Low priority

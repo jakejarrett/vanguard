@@ -417,8 +417,16 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
 }
 
-#holder { border: 10px dashed #ccc; width: 100%; height: 100%; margin: 20px auto; display: none;}
-#holder.hover { border: 10px dashed #333; }
+#holder {
+    border: 10px dashed #ccc;
+    width: 100%;
+    height: 100%;
+    margin: 20px auto;
+    display: none;
+}
+#holder.hover {
+    border: 10px dashed #333;
+}
 
 .col-md-1 {
     min-width: 160px;
