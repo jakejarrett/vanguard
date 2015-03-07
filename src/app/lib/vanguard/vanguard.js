@@ -325,7 +325,7 @@ function createTrack(trackNumber) {
 
 // Remove Track
 function removeTrack(trackNumber) {
-    if (trackNumber > globalNumberOfTracks) {
+    if (trackNumber == "") {
         return false;
     } else if(trackNumber == "*") {
         // Remove ALL tracks
@@ -372,6 +372,7 @@ function removeTrack(trackNumber) {
 
         // Output what track you removed (This is more a debug feature)
         console.log('Track ' + trackNumber + ' Removed');
+
     } else {
         return false;
     }
@@ -529,5 +530,5 @@ exports.listChannels = function() {
 
 // Export Project (This will be expanded on when this is enabled)
 exports.exportProject = function() {
-    
+
 }

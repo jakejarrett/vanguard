@@ -432,3 +432,7 @@ input[type=number]::-webkit-outer-spin-button {
     min-width: 160px;
     max-with: 160px;
 }
+
+.push-content {
+    padding-bottom: 2%;
+}

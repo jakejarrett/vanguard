@@ -73,7 +73,7 @@ input.bpm-input {
 }
 
 .rightsidebar {
-  background-color: #fffffff;
+  background-color: #ffffff;
   border-left: 1px solid #d9d9d9;
   border-radius: 0px 0px 4px 4px;
   overflow-x: hidden;
@@ -536,6 +536,7 @@ input.volumeController {
 
 ::-webkit-scrollbar {
 	width: 8px;
+    z-index: 51;
 }
 ::-webkit-scrollbar-button {
 	width: 8px;
@@ -554,4 +555,14 @@ input.volumeController {
 }
 ::-webkit-scrollbar-thumb:hover {
 	background: #5c575c;
+}
+
+/* Landing Page */
+
+.landing-colour {
+    color: #017dc4;
+}
+
+.landing-colour:hover, .landing-colour:focus {
+    color: #005cc3;
 }
