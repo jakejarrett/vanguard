@@ -29,6 +29,7 @@ High Priority
 * ~~New Traffic Light buttons (High Res)~~
 * ~~When DAW Becomes scrollable, Headerbar becomes transparent.~~
 * Possibly use React to handle changing of views.
+* ~~Handle double clicks on Headerbar to zoom window.~~
 
 Low priority
 ===========

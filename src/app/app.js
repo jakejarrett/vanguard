@@ -43,7 +43,13 @@ var
     VSTHost = require("node-vst-host").host,
 
     // Create VST Host
-    host = new VSTHost();
+    host = new VSTHost(),
+
+	// Application User Interface (Native Window etc)
+	appUserInterface = {},
+
+	// Application Handlers
+	appHandler = {};
 
 // newProject Info
 var NewProject = JSON.parse(defaultproj.newProject),
@@ -87,6 +93,362 @@ var NewProject = JSON.parse(defaultproj.newProject),
 	globalNumberOfTracks,
 	globalWavesurfers = [];
 
+// Loading Screen
+appUserInterface.initialize = function() {
+	if(document.readyState = "complete") {
+		// Implement react to create doms here instead?
+		$( "#newpage" ).show();
+		$( "#landingpage" ).show();
+		$( "#landingpage-left" ).show();
+		$( "#landingpage-right" ).show();
+		$( "#project" ).hide();
+		$( "#bpm" ).hide();
+		$( ".projectnav" ).hide();
+	}
+};
+
+// Vanguard Window Controls
+appUserInterface.controls = function() {
+	// Close Button
+	$('.close-button').hover(
+		function () {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		},
+		function() {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		}
+	).click(function(){
+		win.close();
+	});
+
+	// Minimize Button
+	$('.minimize-button').hover(
+		function () {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		},
+		function() {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		}
+	).click(function(){
+		win.minimize();
+	});
+
+	// Fullscreen Button
+	$('.fullscreen-button').hover(
+		function () {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		},
+		function() {
+			$('.close-button').toggleClass("hover");
+			$('.minimize-button').toggleClass("hover");
+			$('.fullscreen-button').toggleClass("hover");
+		}
+	).click(function(){
+		win.toggleFullscreen();
+	});
+
+	// Headerbar
+	$('#headerbar').dblclick(function(){
+		var maximized = false;
+		if(maximized === false) {
+			win.maximize();
+			maximized = true;
+		} else {
+			win.unmaximize();
+		}
+	});
+};
+
+// Native Menubar for OSX (Frameless windows are not supported on Windows & Linux?)
+appUserInterface.menuBar = function() {
+	if (process.platform !== "darwin") {
+		return false;
+	}
+
+	var nativeMenuBar = new gui.Menu({ type: "menubar" }),
+		file = new gui.Menu(),
+		Window = new gui.Menu(),
+		playback = new gui.Menu(),
+		help = new gui.Menu(),
+		clipboard = gui.Clipboard.get();
+
+
+	nativeMenuBar.createMacBuiltin("Vanguard", {
+		hideEdit: false,
+		hideWindow: true
+	});
+
+	// Create File Menu
+	nativeMenuBar.insert(
+		new gui.MenuItem({
+			label: 'File',
+			submenu: file
+		}), 1
+	);
+
+	// New Project
+	file.append(
+		new gui.MenuItem({
+			label: 'New Project',
+			click: function() {
+				console.log("New Project");
+				clearProject();
+				vanguard.newProject();
+			},
+			key: "n",
+			modifiers: "cmd"
+		})
+	);
+
+	// Open Project
+	file.append(
+		new gui.MenuItem({
+			label: 'Open Project',
+			click: function() {
+				console.log("Open Project");
+				vanguard.openProject();
+			},
+			key: "o",
+			modifiers: "cmd"
+		})
+	);
+
+	// Save Project
+	file.append(
+		new gui.MenuItem({
+			label: 'Save Project',
+			click: function() {
+				console.log("Save Project");
+				vanguard.saveProject();
+			},
+			key: "s",
+			modifiers: "cmd"
+		})
+	);
+
+	// Close Project
+	file.append(
+		new gui.MenuItem({
+			label: 'Close Project',
+			click: function() {
+				console.log("Close Project");
+				closeCurrent();
+			},
+			key: "w",
+			modifiers: "cmd"
+		})
+	);
+
+
+	// Seperator
+	file.append (
+		new gui.MenuItem({
+			type: 'separator'
+		})
+	);
+
+	// Install Instrument
+	file.append(
+		new gui.MenuItem({
+			label: 'Install Instrument',
+			click: function() {
+				alert("sorry, not functional yet!");
+			}
+		})
+	);
+
+	// Create Window Menu
+	nativeMenuBar.insert(
+		new gui.MenuItem({
+			label: 'Window',
+			submenu: Window
+		}), 3
+	);
+
+	// Minimize Window
+	Window.append(
+		new gui.MenuItem({
+			label: 'Minimize',
+			click: function() {
+				win.minimize();
+			},
+			key: "m",
+			modifiers: "cmd"
+		})
+	);
+
+	// Zoom Window
+	Window.append(
+		new gui.MenuItem({
+			label: 'Zoom',
+			click: function() {
+				var maximized = false;
+				if(maximized === false) {
+					win.maximize();
+					maximized = true;
+				} else {
+					win.unmaximize();
+				}
+			}
+		})
+	);
+
+	// Seperator
+	Window.append (
+		new gui.MenuItem({
+			type: 'separator'
+		})
+	);
+
+	// Minimize Window
+	Window.append(
+		new gui.MenuItem({
+			label: 'Bring All to Front',
+			click: function() {
+				win.focus();
+			}
+		})
+	);
+
+	// Create Playback Menu
+	nativeMenuBar.insert(
+		new gui.MenuItem({
+			label: 'Playback',
+			submenu: playback
+		}), 3
+	);
+
+	// Help Menu
+	nativeMenuBar.append(
+		new gui.MenuItem({
+			label: 'Help',
+			submenu: help
+		}), 4
+	);
+
+	// DevTools
+	help.append(
+		new gui.MenuItem({
+			label: 'Github',
+			click: function() {
+				gui.Shell.openExternal("https://github.com/jakejarrett/vanguard");
+			}
+		})
+	);
+
+	// Seperator
+	help.append (
+		new gui.MenuItem({
+			type: 'separator'
+		})
+	);
+
+	// DevTools
+	help.append(
+		new gui.MenuItem({
+			label: 'DevTools',
+			click: function() {
+				win.showDevTools();
+			}
+		})
+	);
+
+	win.menu = nativeMenuBar;
+};
+
+// Handle External Links
+appHandler.external = function() {
+	$('.open-external').click(function(e) {
+		e.preventDefault();
+		gui.Shell.openExternal($(this).attr('href'));
+	});
+};
+
+// Handle Play (And Pause) events
+appHandler.play = function() {
+	$( "#playPause" ).click(function() {
+		var $this = $(".icon-playpause");
+
+		if ($this.hasClass("fa-play")) {
+			$this.removeClass("fa-play").addClass("fa-pause");
+			return;
+		}
+
+		if ($this.hasClass("fa-pause")) {
+			$this.removeClass("fa-pause").addClass("fa-play");
+			return;
+		}
+
+	}).dblclick(function(){
+		return false;
+	});
+
+	Mousetrap.bind(['space'], function (e) {
+		$('body').trigger('playPause-event');
+		var $this = $(".icon-playpause");
+
+		if ($this.hasClass("fa-play"))
+		{
+		$this.removeClass("fa-play").addClass("fa-pause");
+		return;
+		}
+		if ($this.hasClass("fa-pause"))
+		{
+		$this.removeClass("fa-pause").addClass("fa-play");
+		return;
+		}
+	});
+};
+
+// Handle Stop events
+appHandler.stop = function() {
+	$( "#stop" ).click(function() {
+		var $this = $(".icon-playpause");
+		if(isPlaying == true) {
+			if ($this.hasClass("fa-pause")) {
+				$this.removeClass("fa-pause").addClass("fa-play");
+				return;
+			}
+		}
+	}).dblclick(function(){
+		return false;
+	});
+};
+
+// Handle DevTools Event (Single event in the HTML menu in the headerbar)
+appHandler.devtools = function() {
+	$('.open-devtools').click(function(e) {
+		win.showDevTools();
+	});
+};
+
+// Handle Clock Event/Info
+appHandler.clock = function() {
+	$("#clock").dblclick(function(){
+		return false;
+	})
+};
+
+// Handle Wavesurfer Timeline
+appHandler.timeline = function() {
+	$("#zoomOut").dblclick(function(){
+		return false;
+	});
+
+	$("#zoomIn").dblclick(function(){
+		return false;
+	});
+};
 
 var wavesurfer = (function () {
     'use strict';
@@ -224,7 +586,7 @@ initSched({
     audioContext: ac
 });
 
-// PLayback & Timeline Event Handlers ()
+// Playback & Timeline Event Handlers ()
 $('body').bind('playPause-event', function(e){
     schedPlay(ac.currentTime);
 });
@@ -899,4 +1261,20 @@ win.on("devtools-opened", function(url) {
 process.on('uncaughtException', function (err) {
 	window.console.error(err, err.stack);
 	// Maybe warn the user with "We've detected an issue, Please wait while we restart the program" and save a backup project so when the user comes back it's ready to continue.
+});
+
+// Start App
+$(document).ready( function () {
+	// Initialize Application UI
+	appUserInterface.initialize();
+	appUserInterface.controls();
+	appUserInterface.menuBar();
+
+	// App Handlers
+	appHandler.external();
+	appHandler.play();
+	appHandler.stop();
+	appHandler.devtools();
+	appHandler.clock();
+	appHandler.timeline();
 });

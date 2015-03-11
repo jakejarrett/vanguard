@@ -70,14 +70,17 @@ input.bpm-input {
   border-right: 1px solid #d9d9d9;
   border-radius: 0px 0px 4px 4px;
   padding-left: 0px !important;
+  z-index: 20;
 }
 
 .rightsidebar {
-  background-color: #ffffff;
+  background-color: #f6f6f6;
   border-left: 1px solid #d9d9d9;
   border-radius: 0px 0px 4px 4px;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-top: 15px;
+  z-index: 20;
 }
 
 .instrumentsbutton {
@@ -98,6 +101,7 @@ input.bpm-input {
 .track {
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
+  z-index: 20;
 }
 
 .addTrack {
@@ -130,17 +134,9 @@ input.bpm-input {
 
 .trackBox {
   position: relative;
-  background-color: #f5f5f5;
-  border-top: 1px solid #a8a8a8;
-  border-bottom: 1px solid #a8a8a8;
-}
-
-.timeline {
-  height: 40px;
-  margin-bottom: 10px;
-  background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
-  border-radius: 10px;
+  background-color: #dcdcdc;
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
 }
 
 #left ul.nav li a:hover .lbl {
@@ -478,17 +474,27 @@ html {
     border-radius: 7px 7px 4px 4px;
 }
 
-/* Timeline Fix */
+/* Timeline */
 
 .timeline_pull {
-  padding-top: 5px;
   position: fixed;
-  bottom: 0;
-  z-index: 50;
+  top: 35px;
+  z-index: 9;
   background-color: transparent;
-  max-width: 99%;
-  margin-left: -5px;
-  padding-left: 20px;
+  max-width: 100%;
+  width: 100%;
+  margin-left: -94px;
+  border: 0;
+  border-radius: 0;
+}
+
+.timeline {
+  height: 20px;
+  margin-bottom: 10px;
+  background-color: #EEEEEE;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
 }
 
 /* Track ID */
@@ -520,12 +526,12 @@ input.volumeController {
 
 #pushTracks {
     height: 15px;
-    background-color: #FFFFFF;
+    background-color: #f6f6f6;
 }
 
 .pushTrackDIV {
     height: 20px;
-    background-color: #FFFFFF;
+    background-color: #f6f6f6;
 }
 
 .btn-toolbar {
@@ -565,4 +571,15 @@ input.volumeController {
 
 .landing-colour:hover, .landing-colour:focus {
     color: #005cc3;
+}
+
+/* Nav Fix */
+#headerbar {
+    -webkit-user-select: none;
+}
+
+/* Scrollable */
+
+.scrollable {
+    padding-top: 15px;
 }

@@ -19,7 +19,7 @@
   </head>
   <body>
       <div id="holder"></div>
-      <nav class="navbar navbar-default navbar-fixed-top" style="-webkit-app-region: drag" role="navigation">
+      <nav class="navbar navbar-default navbar-fixed-top" id="headerbar" style="-webkit-app-region: drag" role="navigation">
           <!-- Collect the nav links, forms, and other content for toggling -->
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -80,7 +80,6 @@
                       <i class="fa fa-repeat fa-3"></i>
                     </a>
                 </li>
-
             </ul>
             <!-- Project Navigation (Close, Play/Pause, Stop, Step Back, Step Forward etc) -->
 
@@ -93,6 +92,18 @@
             <!-- Project Center (Project Title & Project Location) -->
 
             <ul class="nav navbar-nav navbar-right projectnav" id="projectNav" style="-webkit-app-region: no-drag">
+                <li>
+                    <a id="zoomOut" href="#" draggable="false">
+                        <i class="fa fa-minus"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a id="zoomIn" href="#" draggable="false">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </li>
+                
                 <div class="col-xs-1">
                     <div id="clock" class="clock btn btn-default"></div>
                 </div>
@@ -163,7 +174,7 @@
           <div class="landingpage-content">
             <div class="row">
                 <a id="newproject" class="newproject" href="#" draggable="false">
-                    <div class="col-md-2 fa-stack fa-3x">
+                    <div class="col-md-2 fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x landing-colour"></i>
                         <i class="fa fa-file fa-stack-1x fa-inverse"></i>
                     </div>
@@ -176,7 +187,7 @@
 
             <div class="row">
                 <a class="openproject" href="#" draggable="false">
-                    <div class="col-md-2 fa-stack fa-3x">
+                    <div class="col-md-2 fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x landing-colour"></i>
                         <i class="fa fa-clipboard fa-stack-1x fa-inverse"></i>
                     </div>
@@ -189,7 +200,7 @@
 
             <div class="row">
                 <a class="collaborations" href="#" data-toggle="modal" data-target="#collaborate" draggable="false">
-                    <div class="col-md-2 fa-stack fa-3x">
+                    <div class="col-md-2 fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x landing-colour"></i>
                         <i class="fa fa-users fa-stack-1x fa-inverse"></i>
                     </div>
@@ -254,20 +265,6 @@
                   <!-- Start Timeline / DAW Contents -->
                   <div class="span9 scrollable">
                       <div class="row timeline_pull">
-                          <div class="span1 tcontrols">
-                              <div id="zoom">
-                                  <div class="btn-toolbar">
-                                      <div class="btn-group">
-                                          <button type="button" class="btn btn-mini" id="zoomOut">
-                                              <i class="fa fa-minus"></i>
-                                          </button>
-                                          <button type="button" class="btn btn-mini" id="zoomIn">
-                                              <i class="fa fa-plus"></i>
-                                          </button>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
                           <div class="span9 timeline">
                               <canvas id="timeline">
                               </canvas>
@@ -376,7 +373,7 @@
       </div>
       <!-- End Settings Modal -->
 
-      <!-- 3rd party Dependencies, Run these first so the app knows that everything exists -->
+      <!-- 3rd party Dependencies -->
       <script src="lib/jquery/jquery-1.11.0.min.js"></script>
       <script src="lib/jquery/jquery-migrate-1.2.1.min.js"></script>
       <script src="lib/jquery/jquery-ui.js"></script>
@@ -392,17 +389,14 @@
       <script src="lib/mousetrap/mousetrap.min.js"></script>
       <script src="lib/bootstrap/bootstrap.min.js"></script>
 
-      <!-- Core Dependencies (OpenDAW Legacy Code) Will be porting these to Node to allow for a better overall experience -->
+      <!-- Core Dependencies -->
       <script src="lib/core/scheduler.js"></script>
       <script src="lib/core/storage.js"></script>
       <script src="lib/core/recorder.js"></script>
       <script src="lib/core/effects.js"></script>
       <script src="lib/core/vumeter.js"></script>
 
-      <!-- Platform Specific Code -->
-      <script src="lib/core/osx-menu.js"></script>
-
-      <!-- Requirements to run the Application -->
+      <!-- Initialize Application -->
       <script src="database.js"></script>
       <script src="settings.js"></script>
       <script src="app.js"></script>
@@ -426,84 +420,6 @@
               }
           });
 
-          // Make AppButtons act like native buttons
-          $('.close-button').hover(
-              function () {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              },
-              function() {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              }
-          );
-
-          $('.minimize-button').hover(
-              function () {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              },
-              function() {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              }
-          );
-
-          $('.fullscreen-button').hover(
-              function () {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              },
-              function() {
-                  $('.close-button').toggleClass("hover");
-                  $('.minimize-button').toggleClass("hover");
-                  $('.fullscreen-button').toggleClass("hover");
-              }
-          );
-
-          // Open Links in Default Browser (Prevent loading inside of node-webkit Instance)
-          $('.open-external').click(function(e) {
-              e.preventDefault();
-              gui.Shell.openExternal($(this).attr('href'));
-          });
-
-          $('.open-devtools').click(function(e) {
-              win.showDevTools();
-          });
-
-          $( "#playPause" ).click(function() {
-              var $this = $(".icon-playpause");
-
-              if ($this.hasClass("fa-play")) {
-                  $this.removeClass("fa-play").addClass("fa-pause");
-                  return;
-              }
-
-              if ($this.hasClass("fa-pause")) {
-                  $this.removeClass("fa-pause").addClass("fa-play");
-                  return;
-              }
-
-          });
-
-          $( "#stop" ).click(function() {
-              var $this = $(".icon-playpause");
-              if(isPlaying == true) {
-                //   Check if the DAW is actually playing anything, We don't want to just change the icon even though it does nothing.
-                  if ($this.hasClass("fa-pause")) {
-                      $this.removeClass("fa-pause").addClass("fa-play");
-                      return;
-                  }
-              }
-
-
-          });
-
           // Close Current Project
           function closeCurrent() {
               if(projectState.currentState != null) {
@@ -525,29 +441,6 @@
               }
           }
 
-          $( "body" ).load(function() {
-              console.log("Loading...");
-              // Loading screen. Currently it just hides everything until ready.
-              $( "#newpage" ).hide();
-              $( "#landingpage" ).hide();
-              $( "#landingpage-left" ).hide();
-              $( "#landingpage-right" ).hide();
-              $( "#project" ).hide();
-              $( "#bpm" ).hide();
-              $( ".projectnav" ).hide();
-          });
-
-          $( window ).ready(function() {
-              console.log("Done loading...");
-              $( "#newpage" ).show();
-              $( "#landingpage" ).show();
-              $( "#landingpage-left" ).show();
-              $( "#landingpage-right" ).show();
-              $( "#project" ).hide();
-              $( "#bpm" ).hide();
-              $( ".projectnav" ).hide();
-          });
-
           // New Project
           $( ".newproject" ).click(function() {
               vanguard.newProject();
@@ -568,11 +461,6 @@
               vanguard.addChannel();
           });
 
-          // Close Project
-          $( ".close-button" ).click (function() {
-              win.close();
-          });
-
           $( "#about-panel" ).click (function() {
               aboutWindow = gui.Window.open('about.html', {
                   position: 'center',
@@ -586,36 +474,7 @@
               });
           });
 
-          $( ".minimize-button" ).click(function() {
-              win.minimize();
-          });
-
-          // Listen to the minimize event
-          win.on('minimize', function() {
-              console.log('Window is minimized');
-          });
-
-          // Toggle between Fullscreen icons
-          $( ".fullscreen-button" ).click(function() {
-              win.toggleFullscreen();
-              var $this = $(".fullscreen-button");
-              if ($this.hasClass("fullscreen-expand")) {
-                  $this.removeClass("fullscreen-expand").addClass("fullscreen-compress");
-                  return;
-              }
-              // End IF statement
-
-              if ($this.hasClass("fullscreen-compress")) {
-                  $this.removeClass("fullscreen-compress").addClass("fullscreen-expand");
-                  return;
-              }
-              // End IF statement
-
-          });
-          // End of .click
-
           // Keyboard Shortcuts
-
           $( window ).keyup(function (e) {
               console.log(e.keyCode);
               // Output which keys the user Presses (Have REMOVE-DEBUG at end of each Debug feature inside index.html) REMOVE-DEBUG
@@ -630,23 +489,6 @@
               if(key.keyCode == 79 && key.ctrlKey)  // Open Project
               {
                   vanguard.openProject();
-              }
-
-              if(key.keyCode == 32)  // Pause/Play
-              {
-                  $('body').trigger('playPause-event');
-                  var $this = $(".icon-playpause");
-
-                  if ($this.hasClass("fa-play"))
-                  {
-                    $this.removeClass("fa-play").addClass("fa-pause");
-                    return;
-                  }
-                  if ($this.hasClass("fa-pause"))
-                  {
-                    $this.removeClass("fa-pause").addClass("fa-play");
-                    return;
-                  }
               }
 
               if(key.keyCode == 87 && key.ctrlKey) // Close Project
@@ -681,8 +523,7 @@
           window.ondragover = function(e) { e.preventDefault(); return false; };
           window.ondrop = function(e) { e.preventDefault(); return false; };
 
-          holder.ondrop = function (e)
-          {
+          holder.ondrop = function (e) {
               e.preventDefault();
               var file = e.dataTransfer.files[0],
                   reader = new FileReader();
