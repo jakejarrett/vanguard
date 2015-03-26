@@ -393,7 +393,6 @@ exports.newProject = function() {
         defaultLocation = newProject['projectInfo'].location,
         trackNumber = Number(newProject['projectInfo'].tracks);
 
-
     if(projectState.currentState != null) {
         var confirmNew = window.confirm("Do you wish to dismiss Changes?");
         if(confirmNew == true){
@@ -401,6 +400,7 @@ exports.newProject = function() {
             removeTrack("*");
         }
     }
+    
         // Show
         show("bpm");
         show("project");

@@ -490,11 +490,15 @@ html {
 
 .timeline {
   height: 20px;
-  margin-bottom: 10px;
-  background-color: #EEEEEE;
+  margin-bottom: 0;
+  background-color: transparent;
   width: 100%;
   border: 0;
   border-radius: 0;
+}
+
+#timeline {
+    size: 100%;
 }
 
 /* Track ID */

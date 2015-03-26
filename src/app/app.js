@@ -49,7 +49,10 @@ var
 	appUserInterface = {},
 
 	// Application Handlers
-	appHandler = {};
+	appHandler = {},
+
+	// Default Views
+	appView = {};
 
 // newProject Info
 var NewProject = JSON.parse(defaultproj.newProject),
@@ -92,6 +95,14 @@ var NewProject = JSON.parse(defaultproj.newProject),
 	// Set Global Vars for track management
 	globalNumberOfTracks,
 	globalWavesurfers = [];
+
+// Window Variable for Menubar.
+window.togglePlay = "";
+if (isPlaying) {
+window.togglePlay = "Pause";
+} else {
+    window.togglePlay = "Play";
+}
 
 // Loading Screen
 appUserInterface.initialize = function() {
@@ -181,7 +192,6 @@ appUserInterface.menuBar = function() {
 		playback = new gui.Menu(),
 		help = new gui.Menu(),
 		clipboard = gui.Clipboard.get();
-
 
 	nativeMenuBar.createMacBuiltin("Vanguard", {
 		hideEdit: false,
@@ -328,6 +338,16 @@ appUserInterface.menuBar = function() {
 		}), 3
 	);
 
+	// New Project
+	playback.append(
+		new gui.MenuItem({
+			label: togglePlay,
+			click: function() {
+				$('body').trigger('playPause-event');
+			}
+		})
+	);
+
 	// Help Menu
 	nativeMenuBar.append(
 		new gui.MenuItem({
@@ -445,9 +465,27 @@ appHandler.timeline = function() {
 		return false;
 	});
 
+	Mousetrap.bind(['-'], function(e) {
+		$('body').trigger('zoomOut-event');
+	});
+
 	$("#zoomIn").dblclick(function(){
 		return false;
 	});
+
+	Mousetrap.bind(['+'], function(e) {
+		$('body').trigger('zoomIn-event');
+	});
+
+
+	if(projectState.currentState == "newProject") {
+		drawTimeline();
+		resetCanvas();
+	}
+};
+
+appView.landingPage = function() {
+
 };
 
 var wavesurfer = (function () {
@@ -1036,8 +1074,6 @@ $(document).ready(function(){
 	setMasterVolume(ui.value );
       }
     });
-
-    drawTimeline();
 
 });
 

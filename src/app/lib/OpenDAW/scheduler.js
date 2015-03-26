@@ -115,6 +115,7 @@ function schedPlay(time) {
     //if not playing, then play
     if (!isPlaying) {
 	console.log("playing");
+    window.togglePlay = "Pause";
 	playTime = time;
 	//if resuming from a pause
 	if (isPaused) {
@@ -151,6 +152,7 @@ function schedPlay(time) {
 	});
 
 	console.log("paused");
+    window.togglePlay = "Play";
 	isPlaying = !isPlaying;
 	isPaused = !isPlaying;
 

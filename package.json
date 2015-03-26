@@ -11,6 +11,9 @@
     "Music Production",
     "Digital Audio Workstation"
   ],
+  "scripts": {
+    "start": "nw"
+  },
   "author": [
     {
       "name": "Jake Jarrett",
@@ -42,6 +45,7 @@
     "nedb": "^0.10.11",
     "node-vst-host": "^0.0.3",
     "node-webkit-fdialogs": "latest",
+    "nw": "latest",
     "q": "^1.1.2",
     "react": "^0.12.2",
     "readdirp": "*",
