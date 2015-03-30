@@ -5,7 +5,7 @@
   "homepage": "https://github.com/jakehh/vanguard",
   "version": "0.0.1",
   "releaseName": "",
-  "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features",
+  "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features --enable-transparent-visuals --disable-gpu",
   "keywords": [
     "vanguard",
     "Music Production",
