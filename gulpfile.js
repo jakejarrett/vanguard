@@ -9,7 +9,6 @@ var gulp = require('gulp'),
         platforms: ['win', 'osx', 'linux']
     });
 
-
 gulp.src(['./package.json'])
   .pipe(install());
 
