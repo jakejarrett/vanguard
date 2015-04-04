@@ -9,5 +9,4 @@ Open Terminal & CD Into the directory where vanguard is located & run these comm
 ```
 $ npm install
 $ npm start
-
 ```
