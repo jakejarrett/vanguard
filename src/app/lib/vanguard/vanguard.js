@@ -378,6 +378,11 @@ function removeTrack(trackNumber) {
     }
 }
 
+// Reset Timeline / Scheduler
+function resetTimeline() {
+
+}
+
 // Export Create & Remove Track(s) so they can be used outside of vanguard.js
 exports.createTrack = createTrack;
 exports.removeTrack = removeTrack;
@@ -398,9 +403,12 @@ exports.newProject = function() {
         if(confirmNew == true){
             // default the project, this way we can prevent adding multiple new projects onto each other
             removeTrack("*");
+
+            // Reset Timeline / Scheduler
+            // schedStop();
         }
     }
-    
+
         // Show
         show("bpm");
         show("project");

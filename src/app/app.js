@@ -96,8 +96,11 @@ var NewProject = JSON.parse(defaultproj.newProject),
 	globalNumberOfTracks,
 	globalWavesurfers = [];
 
-// Window Variable for Menubar.
+// Window Variables for Global Settings.
 window.togglePlay = "";
+window.maximized = "";
+
+// Play/Pause Stuff
 if (isPlaying) {
 window.togglePlay = "Pause";
 } else {
@@ -115,6 +118,8 @@ appUserInterface.initialize = function() {
 		$( "#project" ).hide();
 		$( "#bpm" ).hide();
 		$( ".projectnav" ).hide();
+	} else {
+		console.log("Waiting");
 	}
 };
 
@@ -170,12 +175,12 @@ appUserInterface.controls = function() {
 
 	// Headerbar
 	$('#headerbar').dblclick(function(){
-		var maximized = false;
-		if(maximized === false) {
+		if(window.maximized === false) {
 			win.maximize();
-			maximized = true;
+			window.maximized = true;
 		} else {
 			win.unmaximize();
+			window.maximized = false;
 		}
 	});
 };
@@ -212,7 +217,6 @@ appUserInterface.menuBar = function() {
 			label: 'New Project',
 			click: function() {
 				console.log("New Project");
-				clearProject();
 				vanguard.newProject();
 			},
 			key: "n",
@@ -484,8 +488,18 @@ appHandler.timeline = function() {
 	}
 };
 
-appView.landingPage = function() {
+// Handle Updates for Application
+appHandler.update = function() {
 
+};
+
+// appView = Views / Pages. Take a reactJS approach and init all dom's via Objects.
+appView.landingPage = function() {
+	// Clear out DOM, Create a landing page & drop all variables that are not vital to the application.
+};
+
+appView.project = function () {
+	// Clear landing page & create the project page with Data binding & provide a much nicer way to interact with app
 };
 
 var wavesurfer = (function () {
@@ -1313,4 +1327,7 @@ $(document).ready( function () {
 	appHandler.devtools();
 	appHandler.clock();
 	appHandler.timeline();
+
+	// App Views
+	appView.headerBar();
 });
