@@ -10,3 +10,6 @@ Open Terminal & CD Into the directory where vanguard is located & run these comm
 $ npm install
 $ npm start
 ```
+
+# Known issues
+* If on windows, Remove these lines from package.json (line 8) ```--enable-transparent-visuals --disable-gpu``` (Window is unable to maximise otherwise)

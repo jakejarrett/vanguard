@@ -1221,29 +1221,6 @@ Mousetrap.bind('alt', function() {
 
 });
 
-Mousetrap.bind('f11', function (e) {
-	var spawn = require('child_process').spawn,
-		argv = gui.App.fullArgv,
-		CWD = process.cwd();
-
-	argv.push(CWD);
-	spawn(process.execPath, argv, {
-		cwd: CWD,
-		detached: true,
-		stdio: ['ignore', 'ignore', 'ignore']
-	}).unref();
-	gui.App.quit();
-});
-
-Mousetrap.bind(['?', '/', '\''], function (e) {
-	e.preventDefault();
-	App.vent.trigger('keyboard:toggle');
-});
-
-Mousetrap.bind('shift+up shift+up shift+down shift+down shift+left shift+right shift+left shift+right shift+b shift+a', function () {
-	$('body').addClass('knm');
-});
-
 // Fullscreen for OS X
 if (process.platform === 'darwin') {
 	Mousetrap.bind('command+ctrl+f', function (e) {
