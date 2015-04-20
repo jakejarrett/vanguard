@@ -436,3 +436,9 @@ input[type=number]::-webkit-outer-spin-button {
 .push-content {
     padding-bottom: 2%;
 }
+
+/* Border Fix */
+
+#timeline {
+    z-index: 5;
+}

@@ -1304,7 +1304,4 @@ $(document).ready( function () {
 	appHandler.devtools();
 	appHandler.clock();
 	appHandler.timeline();
-
-	// App Views
-	appView.headerBar();
 });
