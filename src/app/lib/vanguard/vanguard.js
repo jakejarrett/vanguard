@@ -483,6 +483,9 @@ exports.closeProject = function() {
             // Empty Tracks & trackControls
             vanguard.removeTrack("*");
 
+            // Stop Timeline & Reset back to 0
+            resetCanvas();
+
             projectState.currentState = null;
 
             console.log(projectState);

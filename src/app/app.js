@@ -196,6 +196,7 @@ appUserInterface.menuBar = function() {
 		Window = new gui.Menu(),
 		playback = new gui.Menu(),
 		help = new gui.Menu(),
+		debug = new gui.Menu(),
 		clipboard = gui.Clipboard.get();
 
 	nativeMenuBar.createMacBuiltin("Vanguard", {
@@ -324,7 +325,7 @@ appUserInterface.menuBar = function() {
 		})
 	);
 
-	// Minimize Window
+	// Bring all to Front
 	Window.append(
 		new gui.MenuItem({
 			label: 'Bring All to Front',
@@ -352,12 +353,30 @@ appUserInterface.menuBar = function() {
 		})
 	);
 
+	// Debugging Tools
+	nativeMenuBar.append(
+		new gui.MenuItem({
+			label: 'Debug',
+			submenu: debug
+		}), 4
+	);
+
+	// Reset Timeline (Canvas)
+	debug.append(
+		new gui.MenuItem({
+			label: 'Reset Canvas',
+			click: function() {
+				resetCanvas();
+			}
+		})
+	);
+
 	// Help Menu
 	nativeMenuBar.append(
 		new gui.MenuItem({
 			label: 'Help',
 			submenu: help
-		}), 4
+		}), 5
 	);
 
 	// DevTools
@@ -1262,32 +1281,15 @@ else {
 	});
 }
 
-// Drop & Drap Files to open project (Not supported yet)
-
-holder.ondrop = function (e) {
-	e.preventDefault();
-
-	for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-		console.log(e.dataTransfer.files[i].path);
-	}
-	return false;
-};
-
-
 // -f argument to open in fullscreen
 if (gui.App.fullArgv.indexOf('-f') !== -1) {
 	win.enterFullscreen();
 }
 
-win.on("devtools-opened", function(url) {
-	console.log("devtools-opened: " + url);
-	schedStop();
-});
-
 // Show 404 page on uncaughtException
 process.on('uncaughtException', function (err) {
 	window.console.error(err, err.stack);
-	// Maybe warn the user with "We've detected an issue, Please wait while we restart the program" and save a backup project so when the user comes back it's ready to continue.
+	// This will be replaced with something that produces an overlay over the page to say "There was an error etc"
 });
 
 // Start App
