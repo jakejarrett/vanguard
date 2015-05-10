@@ -1,5 +1,4 @@
-High Priority
-====
+# High Priority
 
 #### vanguard.js
 * Landing Page
@@ -31,8 +30,7 @@ High Priority
 * Possibly use React to handle changing of views.
 * ~~Handle double clicks on Headerbar to zoom window.~~
 
-Low priority
-===========
+# Low priority
 
 #### vanguard.js
 * Settings
