@@ -27,11 +27,11 @@ var
 	// Default Project (New Project defaults)
 	defaultproj = require('./lib/core/newproject.js'),
 
-    // Settings
-    settings = require('./settings.js'),
+	// Settings
+	settings = require('./settings.js'),
 
-    // Project State (Move this to states.js ?)
-    projectState = require('./lib/core/projectstate.js'),
+  // Project State (Move this to states.js ?)
+  projectState = require('./lib/core/projectstate.js'),
 
 	// Files JS
 	file = require('./lib/core/files.js'),
@@ -39,11 +39,11 @@ var
 	// Vanguard JS
 	vanguard = require('./lib/vanguard/vanguard.js'),
 
-    // VST Support
-    VSTHost = require("node-vst-host").host,
+  // VST Support
+  VSTHost = require("node-vst-host").host,
 
-    // Create VST Host
-    host = new VSTHost(),
+  // Create VST Host
+  host = new VSTHost(),
 
 	// Application User Interface (Native Window etc)
 	appUserInterface = {},
@@ -56,7 +56,6 @@ var
 
 // newProject Info
 var NewProject = JSON.parse(defaultproj.newProject),
-
 	// Recording Variables
 	micStream,
 	activeRecorder,
@@ -97,14 +96,14 @@ var NewProject = JSON.parse(defaultproj.newProject),
 	globalWavesurfers = [];
 
 // Window Variables for Global Settings.
-window.togglePlay = "";
-window.maximized = "";
+window.togglePlay;
+window.maximized;
 
 // Play/Pause Stuff
 if (isPlaying) {
-window.togglePlay = "Pause";
+	window.togglePlay = "Pause";
 } else {
-    window.togglePlay = "Play";
+  window.togglePlay = "Play";
 }
 
 // Loading Screen
@@ -185,7 +184,7 @@ appUserInterface.controls = function() {
 	});
 };
 
-// Native Menubar for OSX (Frameless windows are not supported on Windows & Linux?)
+// Native Menubar for OSX
 appUserInterface.menuBar = function() {
 	if (process.platform !== "darwin") {
 		return false;
@@ -371,6 +370,38 @@ appUserInterface.menuBar = function() {
 		})
 	);
 
+	// Open CWD Folder
+	debug.append(
+		new gui.MenuItem({
+			label: 'Open Folder',
+			click: function() {
+				gui.Shell.openItem('./');
+			}
+		})
+	);
+
+	// Seperator
+	help.append (
+		new gui.MenuItem({
+			type: 'separator'
+		})
+	);
+
+	// Dump current state of app to .debug file
+	debug.append(
+		new gui.MenuItem({
+			label: 'Dump State',
+			click: function() {
+				var bodyState = document.getElementsByTagName('body');
+				var bodyState = JSON.stringify(bodyState);
+				fs.writeFile('state.debug', bodyState, function(err) {
+					if (err) throw err;
+					console.log('It\'s saved!');
+				})
+			}
+		})
+	);
+
 	// Help Menu
 	nativeMenuBar.append(
 		new gui.MenuItem({
@@ -468,7 +499,15 @@ appHandler.stop = function() {
 	});
 };
 
-// Handle DevTools Event (Single event in the HTML menu in the headerbar)
+// Write Errors to error.log
+appHandler.logError = function(data) {
+	fs.appendFile('error.log', data, function(err) {
+		if (err) throw err;
+		console.log(data);
+	})
+};
+
+// Handle DevTools Event
 appHandler.devtools = function() {
 	$('.open-devtools').click(function(e) {
 		win.showDevTools();
@@ -509,12 +548,11 @@ appHandler.timeline = function() {
 
 // Handle Updates for Application
 appHandler.update = function() {
-
+	//
 };
 
-// appView = Views / Pages. Take a reactJS approach and init all dom's via Objects.
 appView.landingPage = function() {
-	// Clear out DOM, Create a landing page & drop all variables that are not vital to the application.
+	//
 };
 
 appView.project = function () {
@@ -522,540 +560,552 @@ appView.project = function () {
 };
 
 var wavesurfer = (function () {
-    'use strict';
+	'use strict';
 
-    var createWavesurfer = function (song) {
-        var startTimes = song.startTime,
-        	sampleNumber = 0,
-        	sampleUrl = song.url.split("/"),
-        	sampleTitle = sampleUrl[sampleUrl.length-1],
-        	obj;
+	var createWavesurfer = function (song) {
+		var startTimes = song.startTime,
+				sampleNumber = 0,
+				sampleUrl = song.url.split("/"),
+				sampleTitle = sampleUrl[sampleUrl.length-1],
+				obj;
+
 		// Will need to clean this up
-        $("#libraryList").append("<li id=librarySample" + song.id +" class='librarySample' data-id="+song.id+" data-url="+song.url+" data-duration="+song.duration+"><a href='#'>" + sampleTitle + "</a></li>");
-        $("#librarySample" + song.id).draggable({
-            revert: true,
-            helper: "clone",
-            start: function(event, ui) { $(this).css("z-index", 10); }
-        });
-        $.each(startTimes, function(){
-	    if(sampleNumber == 0){
-		obj = ({bufferURL: song.url, id: song.id, startTimes: song.startTime, track: song.track});
-	    }
-	    var currentStartTime = song.startTime[sampleNumber],
-			span = document.createElement('span');
-		span.id = "sample" + song.id + "Span" + sampleNumber;
-		var canvas = document.createElement('canvas');
-	    canvas.className = "sample";
-		canvas.id = "sample" + song.id + "Canvas" + sampleNumber;
-		$("#track"+song.track).append(span);
-		$("#sample" + song.id + "Span" + sampleNumber).append(canvas);
-		$("#sample" + song.id + "Span" + sampleNumber).width(parseFloat(song.duration) * ((pixelsPer4*bpm)/60));
-		// Wavesurfer Dimension Control
-		canvas.width = parseFloat(song.duration) * ((pixelsPer4*bpm)/60);
-		canvas.height = 80;
-		$( "#sample" + song.id + "Span" + sampleNumber).attr('data-startTime',song.startTime[sampleNumber]);
-		$( "#sample" + song.id + "Span" + sampleNumber).css('left',"" + parseInt(currentStartTime*pixelsPer16) + "px");
-		$( "#sample" + song.id + "Span" + sampleNumber).css('position','absolute');
-		$( "#sample" + song.id + "Span" + sampleNumber).draggable({
-			axis: "x",
-			containment: "parent",
-			grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-			stop: function() {
-				//get rid of old entry in table
-				var currentStartBar = $(this).attr('data-startTime');
-				times[currentStartBar] = jQuery.removeFromArray(song.id, times[currentStartBar]);
-				$(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-				var newStartTime = $(this).attr('data-startTime');
-				if(times[newStartTime] == null){
-					times[newStartTime] = [{id: song.id, track: song.track}];
-				} else {
-					times[newStartTime].push({id: song.id, track: song.track});
-				}
-			}
+		$("#libraryList").append("<li id=librarySample" + song.id +" class='librarySample' data-id="+ song.id +" data-url="+ song.url +" data-duration="+ song.duration +"><a href='#'>" + sampleTitle + "</a></li>");
+
+		$("#librarySample" + song.id).draggable({
+			revert: true,
+			helper: "clone",
+			start: function(event, ui) { $(this).css("z-index", 10); }
 		});
-	    $( "#sample" + song.id + "Span" + sampleNumber ).resizable({
-		helper: "ui-resizable-helper",
-		handles: "e",
-		grid: pixelsPer16
-	    });
-            var wavesurfer = Object.create(WaveSurfer);
-            wavesurfer.init({
-                canvas: canvas,
-                waveColor: '#08c',
-                progressColor: '#08c',
-                loadingColor: 'purple',
-                cursorColor: 'navy',
-                audioContext: ac
-            });
-            wavesurfer.load(song.url);
-	    globalWavesurfers.push(wavesurfer);
-            sampleNumber++;
-        });
 
-        return obj;
-    };
+		$.each(startTimes, function(){
+			if(sampleNumber == 0){
+				obj = ({bufferURL: song.url, id: song.id, startTimes: song.startTime, track: song.track});
+			}
 
+			var currentStartTime = song.startTime[sampleNumber],
+					span = document.createElement('span');
 
-    var processData = function (json) {
+			span.id = "sample" + song.id + "Span" + sampleNumber;
+			var canvas = document.createElement('canvas');
+			canvas.className = "sample";
+			canvas.id = "sample" + song.id + "Canvas" + sampleNumber;
+			$("#track"+song.track).append(span);
+			$("#sample" + song.id + "Span" + sampleNumber).append(canvas);
+			$("#sample" + song.id + "Span" + sampleNumber).width(parseFloat(song.duration) * ((pixelsPer4*bpm)/60));
+
+			// Wavesurfer Dimension Control
+			canvas.width = parseFloat(song.duration) * ((pixelsPer4*bpm)/60);
+			canvas.height = 80;
+			$( "#sample" + song.id + "Span" + sampleNumber).attr('data-startTime',song.startTime[sampleNumber]);
+			$( "#sample" + song.id + "Span" + sampleNumber).css('left',"" + parseInt(currentStartTime*pixelsPer16) + "px");
+			$( "#sample" + song.id + "Span" + sampleNumber).css('position','absolute');
+
+			$( "#sample" + song.id + "Span" + sampleNumber).draggable({
+				axis: "x",
+				containment: "parent",
+				grid: [pixelsPer16, 0],		//grid snaps to 16th notes
+				stop: function() {
+					//get rid of old entry in table
+					var currentStartBar = $(this).attr('data-startTime');
+					times[currentStartBar] = jQuery.removeFromArray(song.id, times[currentStartBar]);
+					$(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
+					var newStartTime = $(this).attr('data-startTime');
+					if(times[newStartTime] == null){
+						times[newStartTime] = [{id: song.id, track: song.track}];
+					} else {
+						times[newStartTime].push({id: song.id, track: song.track});
+					}
+				}
+			});
+
+			$( "#sample" + song.id + "Span" + sampleNumber ).resizable({
+				helper: "ui-resizable-helper",
+				handles: "e",
+				grid: pixelsPer16
+			});
+
+			var wavesurfer = Object.create(WaveSurfer);
+
+			wavesurfer.init({
+				canvas: canvas,
+				waveColor: '#08c',
+				progressColor: '#08c',
+				loadingColor: 'purple',
+				cursorColor: 'navy',
+				audioContext: ac
+			});
+
+			wavesurfer.load(song.url);
+			globalWavesurfers.push(wavesurfer);
+			sampleNumber++;
+
+		});
+
+		return obj;
+	};
+
+	var processData = function (json) {
 		// Process JSON Data (New Project)
 		// Still inside of a wavesurfer instance.
-        var numberOfTracks = Number(NewProject['projectInfo'].tracks);
-        effects = NewProject['projectInfo'].effects;
-        var trackNumber = Number(NewProject['projectInfo'].tracks);
-        //create track-specific nodes
-        globalNumberOfTracks = numberOfTracks;
-        createNodes(numberOfTracks);
+		var numberOfTracks = Number(NewProject['projectInfo'].tracks);
+		effects = NewProject['projectInfo'].effects;
+		var trackNumber = Number(NewProject['projectInfo'].tracks);
+  	//create track-specific nodes
+		globalNumberOfTracks = numberOfTracks;
+		createNodes(numberOfTracks);
 
-        for(var i=0;i<numberOfTracks;i++){
-	   var currentTrackNumber = i+1;
-	    createTrack(currentTrackNumber);
-	    $.each(effects[i],function(){
-		if(this.type == "Compressor"){
-		    var trackCompressor = ac.createDynamicsCompressor();
-		    var inputNode = trackInputNodes[currentTrackNumber];
-		    var volumeNode = trackVolumeGains[currentTrackNumber];
-		    inputNode.disconnect();
-		    inputNode.connect(trackCompressor);
-		    trackCompressor.connect(volumeNode);
-		    trackCompressors[currentTrackNumber] = trackCompressor;
+		for(var i=0;i<numberOfTracks;i++){
+			var currentTrackNumber = i+1;
+			createTrack(currentTrackNumber);
+
+			$.each(effects[i],function(){
+				if(this.type == "Compressor"){
+					var trackCompressor = ac.createDynamicsCompressor();
+					var inputNode = trackInputNodes[currentTrackNumber];
+					var volumeNode = trackVolumeGains[currentTrackNumber];
+					inputNode.disconnect();
+					inputNode.connect(trackCompressor);
+					trackCompressor.connect(volumeNode);
+					trackCompressors[currentTrackNumber] = trackCompressor;
+				}
+
+				if(this.type == "Filter"){
+					var trackFilter = ac.createBiquadFilter();
+					var inputNode = trackInputNodes[currentTrackNumber];
+					var volumeNode = trackVolumeGains[currentTrackNumber];
+					inputNode.disconnect();
+					inputNode.connect(trackFilter);
+					trackFilter.connect(volumeNode);
+					trackFilters[currentTrackNumber] = trackFilter;
+				}
+			});
 		}
-		if(this.type == "Filter"){
-		    var trackFilter = ac.createBiquadFilter();
-		    var inputNode = trackInputNodes[currentTrackNumber];
-		    var volumeNode = trackVolumeGains[currentTrackNumber];
-		    inputNode.disconnect();
-		    inputNode.connect(trackFilter);
-		    trackFilter.connect(volumeNode);
-		    trackFilters[currentTrackNumber] = trackFilter;
-		}
-	    });
-    }
-        // wavesurfers is an array of all tracks
-        var wavesurfers = json.samples.map(createWavesurfer);
-        $.each(wavesurfers, function(){
-	    var currentSample = this;
-	    // if they are in workspace...
-	    if(currentSample != undefined){
-            //load the buffer
-            load(currentSample.bufferURL, currentSample.id);
-            //store the times
-            $.each(currentSample.startTimes, function(){
-                var currentStartTime = this;
-                if(times[currentStartTime] == null){
-                    times[currentStartTime] = [{id: currentSample.id, track: currentSample.track}];
-                } else {
-                    times[currentStartTime].push({id: currentSample.id, track: currentSample.track});
-                }
-            });
-        }
-        });
-    };
+		// wavesurfers is an array of all tracks
+		var wavesurfers = json.samples.map(createWavesurfer);
+		$.each(wavesurfers, function(){
+			var currentSample = this;
+
+			// if they are in workspace...
+			if(currentSample != undefined) {
+				//load the buffer
+				load(currentSample.bufferURL, currentSample.id);
+				//store the times
+				$.each(currentSample.startTimes, function(){
+					var currentStartTime = this;
+					if(times[currentStartTime] == null){
+						times[currentStartTime] = [{id: currentSample.id, track: currentSample.track}];
+					} else {
+						times[currentStartTime].push({id: currentSample.id, track: currentSample.track});
+					}
+				});
+			}
+		});
+	};
 }());
 
 initSched({
-    bufferArray: buffers,
-    audioContext: ac
+	bufferArray: buffers,
+	audioContext: ac
 });
 
 // Playback & Timeline Event Handlers ()
 $('body').bind('playPause-event', function(e){
-    schedPlay(ac.currentTime);
+	schedPlay(ac.currentTime);
 });
 
 $('body').bind('stop-event', function(e){
-    schedStop();
+  schedStop();
 });
 
 $('body').bind('stepBackward-event', function(e){
-    schedStepBack(ac.currentTime);
+	schedStepBack(ac.currentTime);
 });
 
 $('body').bind('stepForward-event', function(e){
-    schedStepAhead(ac.currentTime);
+	schedStepAhead(ac.currentTime);
 });
 
 $('body').bind('mute-event', function(e, trackNumber){
-    muteTrack(trackNumber);
+  muteTrack(trackNumber);
 });
 
 $('body').bind('solo-event', function(e, trackNumber){
-    solo(trackNumber);
+  solo(trackNumber);
 });
 
 $('body').bind('zoomIn-event', function(e){
-    timelineZoomIn();
+  timelineZoomIn();
 });
 
 $('body').bind('zoomOut-event', function(e){
-    timelineZoomOut();
+  timelineZoomOut();
 });
 
 // Initialize all the divs on ready (Probably move this to when you have opened/created a project?)
 $(document).ready(function(){
-    $(".effectDrag").draggable({
-	revert: true,
-	helper: "clone"
-    });
+	$(".effectDrag").draggable({
+		revert: true,
+		helper: "clone"
+	});
 
-    $("#effectSortable").sortable({
-	cancel: "canvas,input",
-	/*
-	sort: function(event, ui){
-	     console.log($( "#effectSortable" ).sortable( "toArray" ))
+	$("#effectSortable").sortable({
+		cancel: "canvas,input",
+		/*
+		sort: function(event, ui){
+		console.log($( "#effectSortable" ).sortable( "toArray" ))
 	}*/
+  });
 
-    });
+	$("#trackEffects").droppable({
+		accept: ".effectDrag",
+		drop: function(event, ui){
+			$("#"+ui.draggable[0].textContent).removeClass('hidden');
+			if(ui.draggable[0].textContent == "Reverb"){
+				$("#reverbIrSelectKnob").val(0).trigger('change');
+				$("#reverbWetDryKnob").val(50).trigger('change');
 
-    $("#trackEffects").droppable({
-	accept: ".effectDrag",
-	drop: function(event, ui){
-	    $("#"+ui.draggable[0].textContent).removeClass('hidden');
-	    if(ui.draggable[0].textContent == "Reverb"){
-		$("#reverbIrSelectKnob").val(0).trigger('change');
-		$("#reverbWetDryKnob").val(50).trigger('change');
+				var trackReverb = createTrackReverb();
+				var inputNode = trackInputNodes[activeTrack];
+				var volumeNode = trackVolumeGains[activeTrack];
 
+				inputNode.disconnect();
+				inputNode.connect(trackReverb[0]);
 
-		var trackReverb = createTrackReverb();
-		var inputNode = trackInputNodes[activeTrack];
-		var volumeNode = trackVolumeGains[activeTrack];
+				if (trackFilters[activeTrack] != null ) {
+					trackReverb[1].connect(trackFilters[activeTrack]);
+				} else if (trackCompressors[activeTrack != null]) {
+					trackReverb[1].connect(trackCompressors[activeTrack]);
+				} else if (trackTremolos[activeTrack != null]) {
+					trackReverb[1].connect(trackTremolos[activeTrack][0]);
+				} else if(trackDelays[activeTrack] != null){
+					trackReverb[1].connect(trackDelays[activeTrack][0]);
+				} else {
+					trackReverb[1].connect(volumeNode);
+				}
 
-		inputNode.disconnect();
-		inputNode.connect(trackReverb[0]);
+				trackReverbs[activeTrack] = trackReverb;
+				effects[activeTrack-1].push({
+					type: "Reverb",
+					ir:  "0",
+					wetDry: "50"
+				});
+			}
 
-		if (trackFilters[activeTrack] != null ) {
-		    trackReverb[1].connect(trackFilters[activeTrack]);
-		}else if (trackCompressors[activeTrack != null]) {
-		    trackReverb[1].connect(trackCompressors[activeTrack]);
-		}else if (trackTremolos[activeTrack != null]) {
-		    trackReverb[1].connect(trackTremolos[activeTrack][0]);
-		}else if(trackDelays[activeTrack] != null){
-		    trackReverb[1].connect(trackDelays[activeTrack][0]);
-		}else{
-		    trackReverb[1].connect(volumeNode);
-		}
+			if(ui.draggable[0].textContent == "Filter") {
+				$("#filterCutoffKnob").val(30).trigger('change');
+				$("#filterQKnob").val(1).trigger('change');
+				$("#filterTypeKnob").val(0).trigger('change');
+				var trackFilter = ac.createBiquadFilter();
+				var inputNode = trackInputNodes[activeTrack];
+				var volumeNode = trackVolumeGains[activeTrack];
 
-		trackReverbs[activeTrack] = trackReverb;
-		effects[activeTrack-1].push({
-		    type: "Reverb",
-		    ir:  "0",
-		    wetDry: "50"
-		});
-	    }
-	    if(ui.draggable[0].textContent == "Filter"){
-		$("#filterCutoffKnob").val(30).trigger('change');
-		$("#filterQKnob").val(1).trigger('change');
-		$("#filterTypeKnob").val(0).trigger('change');
-		var trackFilter = ac.createBiquadFilter();
-		var inputNode = trackInputNodes[activeTrack];
-		var volumeNode = trackVolumeGains[activeTrack];
+				if (trackReverbs[activeTrack] != null) {
+					trackReverbs[activeTrack][1].disconnect();
+					trackReverbs[activeTrack][1].connect(trackFilter);
+				} else {
+					inputNode.disconnect();
+					inputNode.connect(trackFilter);
+				}
 
-		if (trackReverbs[activeTrack] != null) {
-		    trackReverbs[activeTrack][1].disconnect();
-		    trackReverbs[activeTrack][1].connect(trackFilter);
-		}else {
-		    inputNode.disconnect();
-		    inputNode.connect(trackFilter);
-		}
+				if (trackCompressors[activeTrack] != null){
+					trackFilter.connect(trackCompressors[activeTrack]);
+				} else if (trackTremolos[activeTrack != null]) {
+					trackFilter.connect(trackTremolos[activeTrack][0]);
+				} else if(trackDelays[activeTrack] != null){
+					trackFilter.connect(trackDelays[activeTrack][0]);
+				} else{
+					trackFilter.connect(volumeNode);
+				}
 
-		if (trackCompressors[activeTrack] != null){
-		    trackFilter.connect(trackCompressors[activeTrack]);
-		}else if (trackTremolos[activeTrack != null]) {
-		    trackFilter.connect(trackTremolos[activeTrack][0]);
-		}else if(trackDelays[activeTrack] != null){
-		    trackFilter.connect(trackDelays[activeTrack][0]);
-		}else{
-		    trackFilter.connect(volumeNode);
-		}
+				trackFilters[activeTrack] = trackFilter;
+				effects[activeTrack-1].push({
+					type: "Filter",
+					cutoff: "30",
+					q: "1",
+					filterType: "0"
+				});
+			}
 
-		trackFilters[activeTrack] = trackFilter;
-		effects[activeTrack-1].push({
-		    type: "Filter",
-		    cutoff: "30",
-		    q: "1",
-		    filterType: "0"
-		});
-	    }
-	    if(ui.draggable[0].textContent == "Compressor"){
-		$("#compressorThresholdKnob").val(-24).trigger('change');
-		$("#compressorRatioKnob").val(12).trigger('change');
-		$("#compressorAttackKnob").val(3).trigger('change');
-		var trackCompressor = ac.createDynamicsCompressor();
-		var inputNode = trackInputNodes[activeTrack];
-		var volumeNode = trackVolumeGains[activeTrack];
+			if(ui.draggable[0].textContent == "Compressor"){
+				$("#compressorThresholdKnob").val(-24).trigger('change');
+				$("#compressorRatioKnob").val(12).trigger('change');
+				$("#compressorAttackKnob").val(3).trigger('change');
+				var trackCompressor = ac.createDynamicsCompressor();
+				var inputNode = trackInputNodes[activeTrack];
+				var volumeNode = trackVolumeGains[activeTrack];
 
-		if (trackFilters[activeTrack] != null){
-		    trackFilters[activeTrack].disconnect();
-		    trackFilters[activeTrack].connect(trackCompressor);
-		}else if (trackReverbs[activeTrack] != null) {
-		    trackReverbs[activeTrack][1].disconnect();
-		    trackReverbs[activeTrack][1].connect(trackCompressor);
-		}else {
-		    inputNode.disconnect();
-		    inputNode.connect(trackCompressor);
-		}
+				if (trackFilters[activeTrack] != null){
+					trackFilters[activeTrack].disconnect();
+					trackFilters[activeTrack].connect(trackCompressor);
+				} else if (trackReverbs[activeTrack] != null) {
+					trackReverbs[activeTrack][1].disconnect();
+					trackReverbs[activeTrack][1].connect(trackCompressor);
+				} else {
+					inputNode.disconnect();
+					inputNode.connect(trackCompressor);
+				}
 
-		 if (trackTremolos[activeTrack != null]) {
-		    trackCompressor.connect(trackTremolos[activeTrack][0]);
-		}else if (trackDelays[activeTrack] != null) {
-		    trackCompressor.connect(trackDelays[activeTrack][0]);
-		}else{
-		    trackCompressor.connect(volumeNode);
-		}
+				if (trackTremolos[activeTrack != null]) {
+					trackCompressor.connect(trackTremolos[activeTrack][0]);
+				} else if (trackDelays[activeTrack] != null) {
+					trackCompressor.connect(trackDelays[activeTrack][0]);
+				} else{
+					trackCompressor.connect(volumeNode);
+				}
 
-		trackCompressors[activeTrack] = trackCompressor;
-		effects[activeTrack-1].push({
-		    type: "Compressor",
-		    threshold: "-24",
-		    ratio: "12",
-		    attack: ".003"
-		});
-		//console.log(effects[activeTrack-1]);
-	    }
-	    if(ui.draggable[0].textContent == "Tremolo"){
+				trackCompressors[activeTrack] = trackCompressor;
+				effects[activeTrack-1].push({
+					type: "Compressor",
+		    	threshold: "-24",
+		    	ratio: "12",
+		    	attack: ".003"
+				});
+				//console.log(effects[activeTrack-1]);
+			}
 
-		$("#tremoloRateKnob").val(1).trigger('change');
-		$("#tremoloDepthKnob").val(10).trigger('change');
-		var trackTremolo = createTrackTremolo();
-		var inputNode = trackInputNodes[activeTrack];
-		var volumeNode = trackVolumeGains[activeTrack];
+			if(ui.draggable[0].textContent == "Tremolo") {
 
-		if (trackCompressors[activeTrack] != null){
-		    trackCompressors[activeTrack].disconnect();
-		    trackCompressors[activeTrack].connect(trackTremolo[0]);
-		}else if(trackFilters[activeTrack] != null) {
-		    trackFilters[activeTrack].disconnect();
-		    trackFilters[activeTrack].connect(trackTremolo[0]);
-		}else if (trackReverbs[activeTrack] != null) {
-		    trackReverbs[activeTrack][1].disconnect();
-		    trackReverbs[activeTrack][1].connect(trackTremolo[0]);
-		}else {
-		    inputNode.disconnect();
-		    inputNode.connect(trackTremolo[0]);
-		}
+				$("#tremoloRateKnob").val(1).trigger('change');
+				$("#tremoloDepthKnob").val(10).trigger('change');
+				var trackTremolo = createTrackTremolo();
+				var inputNode = trackInputNodes[activeTrack];
+				var volumeNode = trackVolumeGains[activeTrack];
 
-		if (trackDelays[activeTrack] != null) {
-		    trackTremolo[1].connect(trackDelays[activeTrack][0]);
-		}else{
-		    trackTremolo[1].connect(volumeNode);
-		}
+				if (trackCompressors[activeTrack] != null) {
+					trackCompressors[activeTrack].disconnect();
+					trackCompressors[activeTrack].connect(trackTremolo[0]);
+				} else if(trackFilters[activeTrack] != null) {
+					trackFilters[activeTrack].disconnect();
+					trackFilters[activeTrack].connect(trackTremolo[0]);
+				} else if (trackReverbs[activeTrack] != null) {
+					trackReverbs[activeTrack][1].disconnect();
+					trackReverbs[activeTrack][1].connect(trackTremolo[0]);
+				} else {
+					inputNode.disconnect();
+					inputNode.connect(trackTremolo[0]);
+				}
 
-		trackTremolos[activeTrack] = trackTremolo;
-		effects[activeTrack-1].push({
-		    type: "Tremolo",
-		    rate: "1",
-		    depth: "10"
-		});
-		//console.log(effects[activeTrack-1]);
-	    }
+				if (trackDelays[activeTrack] != null) {
+					trackTremolo[1].connect(trackDelays[activeTrack][0]);
+				} else{
+					trackTremolo[1].connect(volumeNode);
+				}
+
+				trackTremolos[activeTrack] = trackTremolo;
+				effects[activeTrack-1].push({
+		    	type: "Tremolo",
+		    	rate: "1",
+		    	depth: "10"
+				});
+				//console.log(effects[activeTrack-1]);
+			}
+
 	    if(ui.draggable[0].textContent == "Delay"){
-		$("#delayTimeKnob").val(1).trigger('change');
-		$("#delayFeedbackKnob").val(20).trigger('change');
-		$("#delayWetDryKnob").val(50).trigger('change');
-		var trackDelay = createTrackDelay();
-		var inputNode = trackInputNodes[activeTrack];
-		var volumeNode = trackVolumeGains[activeTrack];
+				$("#delayTimeKnob").val(1).trigger('change');
+				$("#delayFeedbackKnob").val(20).trigger('change');
+				$("#delayWetDryKnob").val(50).trigger('change');
+				var trackDelay = createTrackDelay();
+				var inputNode = trackInputNodes[activeTrack];
+				var volumeNode = trackVolumeGains[activeTrack];
 
-		if (trackFilters[activeTrack] != null){
-		    trackFilters[activeTrack].disconnect();
-		    trackFilters[activeTrack].connect(trackDelay[0]);
-		}else if (trackReverbs[activeTrack] != null) {
-		    trackReverbs[activeTrack][1].disconnect();
-		    trackReverbs[activeTrack][1].connect(trackDelay[0]);
-		}else if(trackCompressors[activeTrack] != null) {
-		    trackCompressors[activeTrack].disconnect();
-		    trackCompressors[activeTrack].connect(trackDelay[0]);
-		}else if(trackTremolos[activeTrack] != null) {
-		    trackTremolos[activeTrack][1].disconnect();
-		    trackTremolos[activeTrack][1].connect(trackDelay[0]);
-		}else{
-		    inputNode.disconnect();
-		    inputNode.connect(trackDelay[0]);
+				if (trackFilters[activeTrack] != null){
+					trackFilters[activeTrack].disconnect();
+					trackFilters[activeTrack].connect(trackDelay[0]);
+				} else if (trackReverbs[activeTrack] != null) {
+					trackReverbs[activeTrack][1].disconnect();
+					trackReverbs[activeTrack][1].connect(trackDelay[0]);
+				} else if(trackCompressors[activeTrack] != null) {
+					trackCompressors[activeTrack].disconnect();
+		    	trackCompressors[activeTrack].connect(trackDelay[0]);
+				} else if(trackTremolos[activeTrack] != null) {
+		    	trackTremolos[activeTrack][1].disconnect();
+		    	trackTremolos[activeTrack][1].connect(trackDelay[0]);
+				} else{
+		    	inputNode.disconnect();
+		    	inputNode.connect(trackDelay[0]);
+				}
+
+				trackDelay[1].connect(volumeNode);
+
+				trackDelays[activeTrack] = trackDelay;
+				effects[activeTrack-1].push({
+					type: "Delay",
+		    	time: "1",
+		    	feedback: "20",
+		    	wetDry: "50"
+				});
+			}
 		}
+	});
 
-		trackDelay[1].connect(volumeNode);
-
-		trackDelays[activeTrack] = trackDelay;
-		effects[activeTrack-1].push({
-		    type: "Delay",
-		    time: "1",
-		    feedback: "20",
-		    wetDry: "50"
-		});
-	    }
-
-
-
-
-	}
-
-    });
-
-    $("#compressorThresholdKnob").knob({
-	change : function(v) {
-	    setCompressorThresholdValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Compressor"){
-		    this.threshold = v;
+	$("#compressorThresholdKnob").knob({
+		change : function(v) {
+			setCompressorThresholdValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Compressor"){
+					this.threshold = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#compressorRatioKnob").knob({
-	change : function(v) {
+	$("#compressorRatioKnob").knob({
+		change : function(v) {
 	    setCompressorRatioValue(activeTrack,v);
 	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Compressor"){
-		    this.ratio = v;
+				if(this.type == "Compressor"){
+					this.ratio = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#compressorAttackKnob").knob({
-	change : function(v) {
-	    setCompressorAttackValue(activeTrack,v);
+	$("#compressorAttackKnob").knob({
+		change : function(v) {
+			setCompressorAttackValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Compressor"){
+					this.attack = v/1000;
+				}
+			});
+		}
+	});
+
+	$("#filterCutoffKnob").knob({
+		change : function(v) {
+			setFilterCutoffValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Filter"){
+					this.cutoff = v;
+				}
+			});
+		}
+	});
+
+	$("#filterQKnob").knob({
+		change : function(v) {
+	  	setFilterQValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Filter"){
+					this.q = v;
+				}
+			});
+		}
+	});
+
+	$("#filterTypeKnob").knob({
+		change : function(v) {
+			setFilterType(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Filter"){
+					this.filterType = v;
+				}
+			});
+		}
+	});
+
+	$("#reverbWetDryKnob").knob({
+		change : function(v) {
+	  	setReverbWetDryValue(activeTrack,v);
 	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Compressor"){
-		    this.attack = v/1000;
+				if(this.type == "Reverb"){
+					this.wetDry = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#filterCutoffKnob").knob({
-	change : function(v) {
-	    setFilterCutoffValue(activeTrack,v);
+	$("#reverbIrSelectKnob").knob({
+		change : function(v) {
+			setReverbIr(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Reverb"){
+					this.ir = v;
+				}
+			});
+		}
+	});
+
+	//$("#reverbList").onchange= setReverbIR()
+
+	$("#delayTimeKnob").knob({
+		change : function(v) {
+			setDelayTimeValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Delay"){
+					this.time = v;
+				}
+			});
+		}
+	});
+
+	$("#delayFeedbackKnob").knob({
+		change : function(v) {
+			setDelayFeedbackValue(activeTrack,v);
 	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Filter"){
-		    this.cutoff = v;
+				if(this.type == "Delay"){
+					this.feedback = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#filterQKnob").knob({
-	change : function(v) {
-	    setFilterQValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Filter"){
-		    this.q = v;
+	$("#delayWetDryKnob").knob({
+		change : function(v) {
+	  	setDelayWetDryValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Delay"){
+					this.wetDry = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#filterTypeKnob").knob({
-	change : function(v) {
-	    setFilterType(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Filter"){
-		    this.filterType = v;
+	$("#tremoloRateKnob").knob({
+		change : function(v) {
+			setTremoloRateValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Tremolo"){
+					this.rate = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#reverbWetDryKnob").knob({
-	change : function(v) {
-	    setReverbWetDryValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Reverb"){
-		    this.wetDry = v;
+	$("#tremoloDepthKnob").knob({
+		change : function(v) {
+			setTremoloDepthValue(activeTrack,v);
+			$.each(effects[activeTrack-1], function(){
+				if(this.type == "Tremolo"){
+					this.depth = v;
+				}
+			});
 		}
-	    });
-	}
-    });
+	});
 
-    $("#reverbIrSelectKnob").knob({
-	change : function(v) {
-	    setReverbIr(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Reverb"){
-		    this.ir = v;
-		}
-	    });
-	}
-    });
+	$(".dial").knob();
 
-    //$("#reverbList").onchange= setReverbIR()
+	$("#playPause").click(function(){
+		$('body').trigger('playPause-event');
+	});
 
-    $("#delayTimeKnob").knob({
-	change : function(v) {
-	    setDelayTimeValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Delay"){
-		    this.time = v;
-		}
-	    });
-	}
-    });
+	$("#stop").click(function(){
+		$('body').trigger('stop-event');
+	});
 
-    $("#delayFeedbackKnob").knob({
-	change : function(v) {
-	    setDelayFeedbackValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Delay"){
-		    this.feedback = v;
-		}
-	    });
-	}
-    });
-    $("#delayWetDryKnob").knob({
-	change : function(v) {
-	    setDelayWetDryValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Delay"){
-		    this.wetDry = v;
-		}
-	    });
-	}
-    });
+	$("#step-backward").click(function(){
+		$('body').trigger('stepBackward-event');
+	});
 
-    $("#tremoloRateKnob").knob({
-	change : function(v) {
-	    setTremoloRateValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Tremolo"){
-		    this.rate = v;
-		}
-	    });
-	}
-    });
+	$("#step-forward").click(function(){
+		$('body').trigger('stepForward-event');
+	});
 
-    $("#tremoloDepthKnob").knob({
-	change : function(v) {
-	    setTremoloDepthValue(activeTrack,v);
-	    $.each(effects[activeTrack-1], function(){
-		if(this.type == "Tremolo"){
-		    this.depth = v;
-		}
-	    });
-	}
-    });
-
-    $(".dial").knob();
-
-    $("#playPause").click(function(){
-        $('body').trigger('playPause-event');
-    });
-
-    $("#stop").click(function(){
-        $('body').trigger('stop-event');
-    });
-
-    $("#step-backward").click(function(){
-        $('body').trigger('stepBackward-event');
-    });
-
-    $("#step-forward").click(function(){
-        $('body').trigger('stepForward-event');
-    });
-
-    $("#zoomIn").click(function(){
-        $('body').trigger('zoomIn-event');
-	var WavesurferCanvases = $(".sample");
-	$.each(WavesurferCanvases,function(){
+	$("#zoomIn").click(function(){
+		$('body').trigger('zoomIn-event');
+		var WavesurferCanvases = $(".sample");
+		$.each(WavesurferCanvases,function(){
 	    var wavesurferCanvas = this;
 	    var oldWidth = wavesurferCanvas.width;
 	    var newWidth = oldWidth*2;
@@ -1063,77 +1113,75 @@ $(document).ready(function(){
 	    $($(wavesurferCanvas).parent()[0]).css("width",newWidth+"px");
 	    var oldLeft = parseInt($($(wavesurferCanvas).parent()[0]).css("left"));
 	    $($(wavesurferCanvas).parent()[0]).css("left",""+oldLeft*2+"px");
-	});
+		});
 
-	$.each(globalWavesurfers, function(){
-	    var wavesurfer = this;
+		$.each(globalWavesurfers, function(){
+			var wavesurfer = this;
 	    wavesurfer.drawer.clear();
 	    wavesurfer.drawer.width  = wavesurfer.drawer.width*2;
 	    wavesurfer.drawer.drawBuffer(wavesurfer.backend.currentBuffer);
+		});
 	});
-    });
 
-    $("#zoomOut").click(function(){
-        $('body').trigger('zoomOut-event');
-	var WavesurferCanvases = $(".sample");
-	$.each(WavesurferCanvases,function(){
-	    var wavesurferCanvas = this;
+	$("#zoomOut").click(function(){
+		$('body').trigger('zoomOut-event');
+		var WavesurferCanvases = $(".sample");
+		$.each(WavesurferCanvases,function(){
+			var wavesurferCanvas = this;
 	    var oldWidth = wavesurferCanvas.width;
 	    wavesurferCanvas.width = oldWidth/2 + 1;
 	    $($(wavesurferCanvas).parent()[0]).css("width",oldWidth/2 + 1+"px");
 	    var oldLeft = parseInt($($(wavesurferCanvas).parent()[0]).css("left"));
 	    $($(wavesurferCanvas).parent()[0]).css("left",""+oldLeft/2+"px");
-	});
-	$.each(globalWavesurfers, function(){
+		});
+		$.each(globalWavesurfers, function(){
 	    var wavesurfer = this;
 	    wavesurfer.drawer.clear();
 	    wavesurfer.drawer.width = wavesurfer.drawer.width/2 + 1;
 	    wavesurfer.drawer.drawBuffer(wavesurfer.backend.currentBuffer);
+		});
 	});
-    });
 
-    $("#trackEffectsClose").click(function(){
-	$("#trackEffects").css("display","none");
-	$("#masterControl").css("display","none");
-    });
+	$("#trackEffectsClose").click(function(){
+		$("#trackEffects").css("display","none");
+		$("#masterControl").css("display","none");
+	});
 
-    $( "#masterVolume" ).slider({
-      orientation: "vertical",
-      range: "min",
-      min: 0,
-      max: 100,
-      value: 80,
-      slide: function( event, ui ) {
-	setMasterVolume(ui.value );
-      }
-    });
-
+	$( "#masterVolume" ).slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 100,
+		value: 80,
+		slide: function( event, ui ) {
+			setMasterVolume(ui.value );
+		}
+	});
 });
 
 function createNodes(numTracks) {
-    // for each track create a master gain node. specific tracks represented by array index i
-    for (var i = 1; i <= numTracks; i++) {
-	var trackMasterGainNode = ac.createGain(),
-		trackInputNode = ac.createGain(),
-		trackVolumeNode = ac.createGain();
+	// for each track create a master gain node. specific tracks represented by array index i
+	for (var i = 1; i <= numTracks; i++) {
+		var trackMasterGainNode = ac.createGain(),
+				trackInputNode = ac.createGain(),
+				trackVolumeNode = ac.createGain();
 
-	trackMasterGainNode.connect(masterGainNode);
-	trackVolumeNode.connect(trackMasterGainNode);
-	trackInputNode.connect(trackVolumeNode);
-
-	trackMasterGains[i] = {node: trackMasterGainNode, isMuted: false, isSolo: false};
-	trackVolumeGains[i] = trackVolumeNode;
-	trackInputNodes[i] = trackInputNode;
-    }
+		trackMasterGainNode.connect(masterGainNode);
+		trackVolumeNode.connect(trackMasterGainNode);
+		trackInputNode.connect(trackVolumeNode);
+		trackMasterGains[i] = {node: trackMasterGainNode, isMuted: false, isSolo: false};
+		trackVolumeGains[i] = trackVolumeNode;
+		trackInputNodes[i] = trackInputNode;
+	}
 }
 
 function startUserMedia(stream) {
-    micStream = stream;
+	micStream = stream;
 }
 
 // Ask user to use microphone on load (Probably should do this at the moment they press record, (If user selects allow, It should then initiate recording, otherwise tell the user they can't record))
 window.addEventListener("load", function() {
-    try {
+	try {
 		window.URL = window.URL || window.webkitURL;
 	} catch (e) {
 		alert('No web audio support in this browser!');
@@ -1214,70 +1262,61 @@ String.prototype.endsWith = function (suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-// Shortcuts
-Mousetrap.bind(['shift+f12', 'f12', 'command+0'], function (e) {
-	win.showDevTools();
-});
+appHandler.shortcuts = function() {
+	// Shortcuts
+	Mousetrap.bind(['shift+f12', 'f12', 'mod+0'], function (e) {
+		win.showDevTools();
+	});
 
-Mousetrap.bind(['shift+f10', 'f10', 'command+9'], function (e) {
-	console.log('Opening: ' + App.settings['tmpLocation']);
-	gui.Shell.openItem(App.settings['tmpLocation']);
-});
+	Mousetrap.bind('mod+,', function (e) {
+		// Open Settings
+		$('#settings').modal('toggle');
+	});
 
-Mousetrap.bind('mod+,', function (e) {
-	// Open Settings
-	$('#settings').modal('toggle');
-});
+	Mousetrap.bind('up up down down left right left right b a enter', function() {
+		console.log("30 Lives Unlocked");
+		// Change this before any releases
+	});
 
-Mousetrap.bind('up up down down left right left right b a enter', function() {
-	console.log("30 Lives Unlocked");
-	// Change this before any releases
-});
+	Mousetrap.bind('alt', function() {
+		console.log("alt key");
+		// When holding alt key, You should be able to switch to maximize. This will feel more native for OS X Uses
 
-Mousetrap.bind('alt', function() {
-	console.log("alt key");
-	// When holding alt key, You should be able to switch to maximize. This will feel more native for OS X Uses
-
-});
+	});
+};
 
 // Fullscreen for OS X
 if (process.platform === 'darwin') {
-	Mousetrap.bind('command+ctrl+f', function (e) {
+	Mousetrap.bind('mod+ctrl+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
 		// Toggle button when user enters Fullscreen
 
 		var $this = $(".icon-fullscreen");
-		if ($this.hasClass("fa-expand"))
-		{
+		if ($this.hasClass("fa-expand")) {
 			$this.removeClass("fa-expand").addClass("fa-compress");
 			return;
 		}
 
-		if ($this.hasClass("fa-compress"))
-		{
+		if ($this.hasClass("fa-compress")) {
 			$this.removeClass("fa-compress").addClass("fa-expand");
 			return;
 		}
 	});
-}
-
-else {
-	Mousetrap.bind('ctrl+alt+f', function (e) {
+} else {
+	Mousetrap.bind('mod+alt+f', function (e) {
 		e.preventDefault();
 		win.toggleFullscreen();
 		// Toggle button when user enters Fullscreen
-        var $this = $(".icon-fullscreen");
-        if ($this.hasClass("fa-expand"))
-        {
-            $this.removeClass("fa-expand").addClass("fa-compress");
-            return;
-        }
-        if ($this.hasClass("fa-compress"))
-        {
-            $this.removeClass("fa-compress").addClass("fa-expand");
-            return;
-        }
+		var $this = $(".icon-fullscreen");
+		if ($this.hasClass("fa-expand")) {
+			$this.removeClass("fa-expand").addClass("fa-compress");
+			return;
+    }
+		if ($this.hasClass("fa-compress"))	{
+			$this.removeClass("fa-compress").addClass("fa-expand");
+			return;
+		}
 	});
 }
 
@@ -1288,9 +1327,28 @@ if (gui.App.fullArgv.indexOf('-f') !== -1) {
 
 // Show 404 page on uncaughtException
 process.on('uncaughtException', function (err) {
+	// Log error
 	window.console.error(err, err.stack);
-	// This will be replaced with something that produces an overlay over the page to say "There was an error etc"
+
+	// Write error into Modal contents
+	$("#error-contents").html(err);
+	// Toggle Modal
+	$('#error').modal('toggle');
+
+	// Write error to error.log in the root directory
+	appHandler.logError(err);
 });
+
+// Show 404 page on uncaughtException
+function testError(err) {
+
+	$("#error-contents").html(err);
+
+	$('#error').modal('toggle');
+
+	// Write error to error.log in the root directory
+	appHandler.logError(err);
+};
 
 // Start App
 $(document).ready( function () {
@@ -1306,4 +1364,5 @@ $(document).ready( function () {
 	appHandler.devtools();
 	appHandler.clock();
 	appHandler.timeline();
+	appHandler.shortcuts();
 });

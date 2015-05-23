@@ -2,7 +2,7 @@
   "name": "Vanguard",
   "main": "./src/app/index.html",
   "description": "Digital Audio Workstation",
-  "homepage": "https://github.com/jakehh/vanguard",
+  "homepage": "https://github.com/jakejarrett/vanguard",
   "version": "0.0.1",
   "releaseName": "",
   "chromium-args": "--enable-webaudio-input --enable-experimental-canvas-features --enable-transparent-visuals --disable-gpu",
@@ -18,7 +18,7 @@
     {
       "name": "Jake Jarrett",
       "email": "jakeryanjarrett@gmail.com",
-      "web": "https://github.com/jakehh"
+      "web": "https://github.com/jakejarrett"
     }
   ],
   "window": {
