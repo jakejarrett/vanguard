@@ -30,8 +30,8 @@ var
 	// Settings
 	settings = require('./settings.js'),
 
-  // Project State (Move this to states.js ?)
-  projectState = require('./lib/core/projectstate.js'),
+	// Project State (Move this to states.js ?)
+	projectState = require('./lib/core/projectstate.js'),
 
 	// Files JS
 	file = require('./lib/core/files.js'),
@@ -39,11 +39,11 @@ var
 	// Vanguard JS
 	vanguard = require('./lib/vanguard/vanguard.js'),
 
-  // VST Support
-  VSTHost = require("node-vst-host").host,
+	// VST Support
+	VSTHost = require("node-vst-host").host,
 
-  // Create VST Host
-  host = new VSTHost(),
+	// Create VST Host
+	host = new VSTHost(),
 
 	// Application User Interface (Native Window etc)
 	appUserInterface = {},
@@ -1220,22 +1220,6 @@ win.error = function () {
 	params.unshift('%c[%cERROR%c] ' + arguments[0], 'color: black;', 'color: red;', 'color: black;');
 	console.error.apply(console, params);
 };
-
-
-if (gui.App.fullArgv.indexOf('--reset') !== -1) {
-
-	var data_path = require('nw.gui').App.dataPath;
-
-	localStorage.clear();
-
-	fs.unlinkSync(path.join(data_path, 'data/settings.db'), function (err) {
-		if (err) throw err;
-	});
-	fs.unlinkSync(path.join(data_path, 'data/previous.db'), function (err) {
-		if (err) throw err;
-	});
-
-}
 
 win.on('resize', function (width, height) {
 	localStorage.width = Math.round(width);

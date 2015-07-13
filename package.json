@@ -1,6 +1,6 @@
 {
   "name": "Vanguard",
-  "main": "./src/app/index.html",
+  "main": "./app/index.html",
   "description": "Digital Audio Workstation",
   "homepage": "https://github.com/jakejarrett/vanguard",
   "version": "0.0.1",

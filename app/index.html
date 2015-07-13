@@ -12,6 +12,7 @@
     <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="resources/css/alertify.min.css" rel="stylesheet" media="screen">
     <link href="resources/css/alertify-bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- Need to implement feature to change theme -->
     <link href="resources/themes/yosemite/css/theme.css" rel="stylesheet" media="screen">
     <link href="resources/css/base.css" rel="stylesheet" media="screen">
     <!--<link href="resources/css/bootstrap-responsive.css" rel="stylesheet">-->
@@ -146,7 +147,7 @@
               </li>
               <li class="divider"></li>
               <li>
-                <a href="#" data-toggle="modal" data-target="#settings" draggable="false"><i class="fa fa-cogs"></i> Preferences</a>
+                <a href="#" data-toggle="modal" data-target="#settingsModal" draggable="false"><i class="fa fa-cogs"></i> Preferences</a>
               </li>
               <li class="divider"></li>
               <li>
@@ -330,7 +331,7 @@
     </div>
     <!-- End Collaboration (Landing Page) Modal -->
 
-    <div class="modal fade settings" id="settings" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
+    <div class="modal fade settings" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -404,7 +405,6 @@
 
     <!-- Initialize Application -->
     <script src="database.js"></script>
-    <script src="settings.js"></script>
     <script src="app.js"></script>
 
     <script>
