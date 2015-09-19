@@ -93,6 +93,7 @@ function createTrack(trackNumber) {
 
   append("tracks", track);
   append("trackControls", controls);
+
   if(effects[trackNumber-1] == null){
     effects[trackNumber-1] = [];
   }
@@ -322,7 +323,7 @@ function createTrack(trackNumber) {
 
 }
 
-// Remove Track (Port to ES6 Compliant object)
+// Remove Track
 function removeTrack(trackNumber) {
   if (trackNumber == "") {
     return false;
@@ -350,6 +351,7 @@ function removeTrack(trackNumber) {
     globalNumberOfTracks = 0;
     newTrackNumber = 1;
 
+    // Debugging
     console.log(trackNumber);
   } else if(trackNumber != null) {
     // Remove Timeline for that Track/Channel
@@ -527,12 +529,11 @@ exports.addChannel = function() {
 exports.listChannels = function() {
     var timelineDIV = window.document.querySelectorAll(".track");
     var numberOfChannels = timelineDIV.length;
-    for(var i=1;i<numberOfChannels;i++){
+
+    for(var i=0;i<numberOfChannels;i++){
       var trackList = 'track' + i;
       console.log(trackList);
     }
-
-    // console.log(timelineDIV.length);
 }
 
 // Export Project (This will be expanded on when this is enabled)
