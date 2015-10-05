@@ -1,15 +1,16 @@
 // Open a file
 exports.Open = function(name) {
     var fs = require('fs'),
+    EventEmitter = require('events').EventEmitter,
+    event = new EventEmitter(),
     chooser = window.document.querySelector(name);
     chooser.addEventListener("change", function(evt) {
-        console.log(this.value);
+        // console.log(this.value);
         fs.readFile(this.value, 'utf8', function (err,data) {
             if (err) {
                 return console.log(err);
             }
-            console.log(data);
-            //  Handle opening Project here.
+          event.emit('finishOpening', event);
         });
     }, false);
 

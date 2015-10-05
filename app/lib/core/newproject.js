@@ -11,14 +11,3 @@ var defaultProject =
     '}';
 
 module.exports.newProject = defaultProject;
-
-// New Project (This shouldn't be exported, So it should be fine to leave it as is for now)
-var Project = JSON.parse(defaultProject),
-    bpm = Project['projectInfo'].tempo,
-    ProjectTitle = Project['projectInfo'].title,
-    ProjectLocation = Project['projectInfo'].location,
-    trackNumbers = Number(Project['projectInfo'].tracks);
-
-// module.exports = function() {
-//         have all the new project stuff in here
-// }

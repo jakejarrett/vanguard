@@ -5,7 +5,7 @@
 var projectState = require('../core/projectstate.js'),
     defaultProject = require('../core/newproject.js'),
     files = require('../core/files.js'),
-    ac = new (window.AudioContext || window.webkitAudioContext),
+    ac = new (window.AudioContext),
     masterGainNode = ac.createGain(),
     $ = require('jquery')(window),
     newProject = JSON.parse(defaultProject.newProject),
@@ -93,233 +93,6 @@ function createTrack(trackNumber) {
 
   append("tracks", track);
   append("trackControls", controls);
-
-  if(effects[trackNumber-1] == null){
-    effects[trackNumber-1] = [];
-  }
-
-    // $("#volumeSlider"+trackNumber).slider({
-    //     value: 80,
-    //     orientation: "horizontal",
-    //     range: "min",
-    //     min: 0,
-    //     max: 100,
-    //     animate: true,
-    //     slide: function( event, ui ) {
-    //         var muteTrackNumber = $(this).attr('id').split('volumeSlider')[1];
-    //         setTrackVolume(muteTrackNumber, ui.value );
-    //     }
-    // });
-
-    // $("#selectTrack"+trackNumber).click(function(){
-    //     var printTrackNumber = $(this).attr('id').split('selectTrack')[1];
-    //     activeTrack = printTrackNumber;
-    //     //compensation for off by one (track1 = effects[0])
-    //     $(".effect").addClass("hidden");
-    //     $.each(effects[activeTrack-1], function(){
-    //         var currentEffect = this;
-    //         $("#"+currentEffect.type).removeClass("hidden");
-    //         if(currentEffect.type == "Compressor"){
-    //             $("#compressorThresholdKnob").val(currentEffect.threshold).trigger('change');
-    //             $("#compressorRatioKnob").val(currentEffect.ratio).trigger('change');
-    //             $("#compressorAttackKnob").val(currentEffect.attack*1000).trigger('change');
-    //         }
-    //         if(currentEffect.type == "Filter"){
-    //             $("#filterCutoffKnob").val(currentEffect.cutoff).trigger('change');
-    //             $("#filterQKnob").val(currentEffect.q).trigger('change');
-    //             $("#filterTypeKnob").val(currentEffect.filterType).trigger('change');
-    //         }
-    //         if(currentEffect.type == "Reverb"){
-    //             $("#reverbWetDryKnob").val(currentEffect.wetDry);
-    //             $("#reverbIrSelectKnob").val(currentEffect.ir);
-    //
-    //         }
-    //         if(currentEffect.type == "Delay"){
-    //             $("#delayTimeKnob").val(currentEffect.time);
-    //             $("#delayFeedbackKnob").val(currentEffect.feedback);
-    //             $("#delayWetDryKnob").val(currentEffect.wetDry);
-    //         }
-    //         if(currentEffect.type == "Tremelo"){
-    //             $("#tremeloRateKnob").val(currentEffect.rate).trigger('change');
-    //             $("#tremeloDepthKnob").val(currentEffect.depth).trigger('change');
-    //         }
-    //     });
-    //
-    //     Object.keys(effects[activeTrack-1]);
-    //
-    //     $("#trackEffectsHeader").html("Track "+printTrackNumber);
-    //
-    //     $("#trackEffects").css("display","block");
-    //
-    //     $("#masterControl").css("display","block");
-    //
-    // });
-    //
-
-    //
-    // $("#solo"+trackNumber).click(function(){
-    //     $(this).button('toggle');
-    //     var soloTrackNumber = $(this).attr('id').split('solo')[1];
-    //     $('body').trigger('solo-event', soloTrackNumber);
-    // });
-    //
-    // $("#record"+trackNumber).click(function(){
-    //     var recordTrackNumber = $(this).attr('id').split('record')[1];
-    //     $(this).button('toggle');
-    //     if($(this).hasClass('active')){
-    //         //Start Recording
-    //         var input = ac.createMediaStreamSource(micStream);
-    //         //input.connect(ac.destination);
-    //         activeRecorder = new Recorder(input);
-    //         activeRecorder.record();
-    //         schedPlay(ac.currentTime);
-    //     } else {
-    //         //Stop Recording
-    //         activeRecorder.stop();
-    //
-    //         var recordingDuration;
-    //
-    //         var startBar;
-    //         if(pauseBeat==undefined){
-    //             startBar = 0;
-    //         } else {
-    //             startBar = pauseBeat;
-    //         }
-    //
-    //         activeRecorder.getBuffer(function(recordingBuffer){
-    //             recordingDuration = recordingBuffer[0].length/ac.sampleRate;
-    //
-    //             var newBuffer = ac.createBuffer( 2, recordingBuffer[0].length, ac.sampleRate );
-    //             //var newSource = ac.createBufferSourceNode();
-    //             newBuffer.getChannelData(0).set(recordingBuffer[0]);
-    //             newBuffer.getChannelData(1).set(recordingBuffer[1]);
-    //             //newSource.buffer = newBuffer;
-    //
-    //             var span = document.createElement('span');
-    //             span.id = "recording" + recordingCount + "Span";
-    //             var canvas = document.createElement('canvas');
-    //             canvas.className = "sample";
-    //             canvas.id = "recording" + recordingCount + "Canvas";
-    //             $("#track"+recordTrackNumber).append(span);
-    //             $("#recording" + recordingCount + "Span").append(canvas);
-    //             $("#recording" + recordingCount + "Span").width(parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60));
-    //             $("#recording" + recordingCount + "Span").attr('data-startTime',startBar);
-    //             $("#recording" + recordingCount + "Span").css('left',"" + startBar*pixelsPer16 + "px");
-    //             $("#recording" + recordingCount + "Span").css('position','absolute');
-    //             $("#recording" + recordingCount + "Span").draggable({
-    //                 axis: "x",
-    //                 containment: "parent",
-    //                 grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-    //                 stop: function() {
-    //                     //get rid of old entry in table
-    //                     var currentRecordingCount = parseInt($(this).attr('id').split('recording')[1]);
-    //                     var currentStartBar = $(this).attr('data-startTime');
-    //                     times[currentStartBar] = jQuery.removeFromArray(currentRecordingCount, times[currentStartBar]);
-    //                     $(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-    //                     var newStartTime = $(this).attr('data-startTime');
-    //                     if(times[newStartTime] == null){
-    //                         times[newStartTime] = [{id: currentRecordingCount, track: recordTrackNumber}];
-    //                     } else {
-    //                         times[newStartTime].push({id: currentRecordingCount, track: recordTrackNumber});
-    //                     }
-    //                     console.log("Old Start Time: "+ currentStartBar);
-    //                     console.log("New Start Time: "+ newStartTime);
-    //                 }
-    //             });
-    //             canvas.width = parseFloat(recordingDuration) * ((pixelsPer4*bpm)/60);
-    //             canvas.height = 80;
-    //
-    //             activeRecorder.exportWAV(function(blob){
-    //                 var url = URL.createObjectURL(blob);
-    //                 var wavesurfer = Object.create(WaveSurfer);
-    //                 wavesurfer.init({
-    //                     canvas: canvas,
-    //                     waveColor: '#08c',
-    //                     progressColor: '#08c',
-    //                     loadingColor: 'purple',
-    //                     cursorColor: 'navy',
-    //                     audioContext: ac
-    //                 });
-    //                 wavesurfer.load(url);
-    //                 globalWavesurfers.push(wavesurfer);
-    //                 buffers[recordingCount] = {buffer: newBuffer};
-    //
-    //                 if(times[startBar] == null){
-    //                     times[startBar] = [{id: recordingCount, track: recordTrackNumber}];
-    //                 } else {
-    //                     times[startBar].push({id: recordingCount, track: recordTrackNumber});
-    //                 }
-    //                 recordingCount++;
-    //             });
-    //         });
-    //     }
-    //
-    // });
-    //
-    // $("#track"+trackNumber+"title").storage({
-    //     storageKey : 'track'+trackNumber
-    // });
-    //
-    // $( "#track"+trackNumber ).droppable({
-    //     accept: ".librarySample",
-    //     drop: function( event, ui ) {
-    //         var startBar = Math.floor((ui.offset.left-$(this).offset().left)/6);
-    //         var sampleStartTime = startBar;
-    //         var rand = parseInt(Math.random() * 10000);
-    //         var span = document.createElement('span');
-    //         var sampleID = ui.helper.attr("data-id");
-    //         var sampleDuration = ui.helper.attr("data-duration");
-    //         var sampleURL = ui.helper.attr("data-url");
-    //         span.id = "sample" + sampleID + "Span" + rand;
-    //         var canvas = document.createElement('canvas');
-    //         canvas.className = "sample";
-    //         canvas.id = "sample" + sampleID + "Canvas" + rand;
-    //         $(this).append(span);
-    //         $("#sample" + sampleID + "Span" + rand).append(canvas);
-    //         $("#sample" + sampleID + "Span" + rand).width(parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60));
-    //         canvas.width = parseFloat(sampleDuration) * ((pixelsPer4*bpm)/60);
-    //         canvas.height = 80;
-    //         $( "#sample" + sampleID + "Span" + rand).attr('data-startTime',startBar);
-    //         $( "#sample" + sampleID + "Span" + rand).css('left',"" + startBar*pixelsPer16 + "px");
-    //         $( "#sample" + sampleID + "Span" + rand).css('position','absolute');
-    //         $( "#sample" + sampleID + "Span" + rand).draggable({
-    //             axis: "x",
-    //             containment: "parent",
-    //             grid: [pixelsPer16, 0],		//grid snaps to 16th notes
-    //             stop: function() {
-    //                 var currentStartBar = $(this).attr('data-startTime');
-    //                 times[currentStartBar] = jQuery.removeFromArray(sampleID, times[currentStartBar]);
-    //                 $(this).attr('data-startTime',parseInt($(this).css('left'))/pixelsPer16);
-    //                 var newStartTime = $(this).attr('data-startTime');
-    //                 if(times[newStartTime] == null){
-    //                     times[newStartTime] = [{id: sampleID, track: trackNumber}];
-    //                 } else {
-    //                     times[newStartTime].push({id: sampleID, track: trackNumber});
-    //                 }
-    //             }
-    //         });
-    //
-    //         var wavesurfer = Object.create(WaveSurfer);
-    //         wavesurfer.init({
-    //             canvas: canvas,
-    //             waveColor: 'violet',
-    //             progressColor: 'purple',
-    //             loadingColor: 'purple',
-    //             cursorColor: 'navy',
-    //             audioContext: ac
-    //         });
-    //         wavesurfer.load(sampleURL);
-    //         globalWavesurfers.push(wavesurfer);
-    //         if(buffers[sampleID]==undefined){
-    //             load(sampleURL, sampleID);
-    //         }
-    //         if(times[sampleStartTime] == null){
-    //             times[sampleStartTime] = [{id: sampleID, track: trackNumber}];
-    //         } else {
-    //             times[sampleStartTime].push({id: sampleID, track: trackNumber});
-    //         }
-    //     }
-    // });
 
 }
 
@@ -441,11 +214,10 @@ exports.openProject = function() {
   if(projectState.currentState == undefined) {
     files.Open('#openfileDialog');
     // use promises instead of if statement.
-    if( window.document.querySelector('#openfileDialog').value == "" ) {
-      // You have opened a project
-      projectState.currentState = "openedProject";
-      console.log(projectState);
-    }
+    opener = window.document.querySelector('#openfileDialog');
+    event.once('connection', function (stream) {
+      console.log('Ah, we have our first user!');
+    });
   }
 };
 
@@ -467,17 +239,19 @@ exports.closeProject = function() {
       // Show content
       show("newpage");
       show("landingpage");
-      show("landingpage-left");
 
       // Hide Content
       hide("project");
       hide("bpm");
+      hide("projectTitle");
+      hide("projectNav");
+      hide("projectRight");
 
       // Empty Tracks & trackControls
-      vanguard.removeTrack("*");
+      removeTrack("*");
 
       // Stop Timeline & Reset back to 0
-      resetCanvas();
+      window.resetCanvas();
 
       // Reset Project State
       projectState.currentState = null;

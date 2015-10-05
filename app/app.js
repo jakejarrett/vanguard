@@ -601,22 +601,6 @@ $('body').bind('zoomOut-event', function(e){
   timelineZoomOut();
 });
 
-function createNodes(numTracks) {
-	// for each track create a master gain node. specific tracks represented by array index i
-	for (var i = 1; i <= numTracks; i++) {
-		var trackMasterGainNode = ac.createGain(),
-				trackInputNode = ac.createGain(),
-				trackVolumeNode = ac.createGain();
-
-		trackMasterGainNode.connect(masterGainNode);
-		trackVolumeNode.connect(trackMasterGainNode);
-		trackInputNode.connect(trackVolumeNode);
-		trackMasterGains[i] = {node: trackMasterGainNode, isMuted: false, isSolo: false};
-		trackVolumeGains[i] = trackVolumeNode;
-		trackInputNodes[i] = trackInputNode;
-	}
-}
-
 function startUserMedia(stream) {
 	micStream = stream;
 }
