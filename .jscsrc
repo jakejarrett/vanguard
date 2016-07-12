@@ -1,0 +1,16 @@
+{
+  "requireSemicolons": true,
+  "safeContextKeyword": "that",
+  "validateQuoteMarks": {
+    "mark": "\"",
+    "escape": true
+  },
+  "validateIndentation": 4,
+  "maximumLineLength": 121,
+  "maxErrors": null,
+  "jsDoc": {
+    "checkAnnotations": "closurecompiler",
+    "checkTypes": "strictNativeCase",
+    "enforceExistence": "exceptExports"
+  }
+}

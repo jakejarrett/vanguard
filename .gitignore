@@ -96,3 +96,5 @@ nwsnapshot
 *.app
 build/*
 cache/*
+
+.idea/
